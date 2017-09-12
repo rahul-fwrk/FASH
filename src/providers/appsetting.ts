@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class Appsetting {
 audio:any;
- myGlobalVar: string = 'http://rakesh.crystalbiltech.com/fash/api/';//'http://ec2-13-59-151-198.us-east-2.compute.amazonaws.com/fash/api/';
+ myGlobalVar: string = 'http://fashapp.io/api/';//'http://ec2-13-59-151-198.us-east-2.compute.amazonaws.com/fash/api/';
   constructor(public http: Http) {
     console.log('Hello Appsetting Provider');
   }

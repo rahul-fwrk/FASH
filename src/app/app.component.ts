@@ -146,14 +146,14 @@ export class MyApp {
 		// Handle incoming notifications
 		this.firebase.onNotificationOpen().subscribe(
 			(notification: NotificationModel) => {
-				alert('alert - > ' + JSON.stringify(notification))
+			//	alert('alert - > ' + JSON.stringify(notification))
 
 				!notification.tap
 					? console.log('The user was using the app when the notification arrived...')
 					: console.log('The app was closed when the notification arrived...')
 
 				let toast = this.toastCtrl.create({
-					message: '<center>' + notification.title + '</center> <br />'+notification.body,
+					message: '' + notification.title + ''+notification.body,
 					duration: 3000,
 					position:"top",
 					cssClass: "notification",
