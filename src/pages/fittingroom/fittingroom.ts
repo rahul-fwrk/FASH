@@ -196,6 +196,8 @@ export class FittingroomPage {
                 var d = moment(date).format('h:mm a');
                 this.time = d;
                 
+              }else{
+                this.time = '';
               }
               if (data.data[i].Accept.isgroup != 0) {
                 data.data[i].Accept.time = this.time;
@@ -204,15 +206,13 @@ export class FittingroomPage {
                 this.chatlist();
               } else if (data.data[i].Accept.groupid == user_id) {
                 data.data[i].Users.lastmessage = data.data[i][0].message;
-                 
                 data.data[i].Users.time = this.time;
                 console.log('IM HERE ELSE IF->', this.time)
                 this.userimage.push(data.data[i].Users);
                 console.log('ALL DATA 1', this.userimage)
-
                 this.chatlist();
               } else {
-                data.data[i].Accept.time = this.time;
+                data.data[i].User.time = this.time;
                 data.data[i].User.lastmessage = data.data[i][0].message;
               
                // console.log('IM HERE ELSE->', this.time)

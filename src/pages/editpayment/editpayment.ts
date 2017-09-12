@@ -81,6 +81,17 @@ export class EditpaymentPage {
           if (data.status == 0) {
             this.card = data.data.Billing[0];
             this.addressid = this.card.id;
+            if(data.data.Card.cardnumber){
+               var card = data.data.Card.cardnumber;
+                console.log(card);
+                if (card.length == 4) {
+                  data.data.Card.cardnumber = card + '-';
+                } else if (card.length == 9) {
+                  data.data.Card.cardnumber = card + '-';
+                } else if (card.length == 14) {
+                  data.data.Card.cardnumber = card + '-';
+                }
+            }
             this.card = {
               address: data.data.Billing[0].address,
               apt: data.data.Billing[0].apt,

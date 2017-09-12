@@ -32,7 +32,7 @@ export class HomePage {
     public media: Media
   
   ) {
-   //alert('new');
+ //  alert('new');
     if (this.navParams.get('checkout') == 'yes') {
       // refreshes the controller after checkout
       console.log('CHECKOUT');
