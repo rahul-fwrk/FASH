@@ -13,7 +13,7 @@ import { SportyfyPage } from '../sportyfy/sportyfy';
   selector: 'page-birthday',
   templateUrl: 'birthday.html'
 })
-//Rahul maurya updated code
+
 export class BirthdayPage {
   data1:any = {};
   constructor(
