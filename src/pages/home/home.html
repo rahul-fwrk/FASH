@@ -1,0 +1,85 @@
+<ion-header>
+  
+  <ion-navbar color="header-color">
+    <!-- <button (click)="genderPage()">click</button> -->
+    <ion-title class="" style="font-weight: bold;">FASH</ion-title>
+    <ion-avatar item-start item-end>
+      <div (click)="profilePage()" class="profile_user">
+      <img *ngIf='profileimage != null' [src]="profileimage">
+      <img *ngIf='profileimage == null' src="assets/images/unnamed(52).jpg">
+    </div>
+    </ion-avatar>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+   <!-- <button (click)="birthday()">gggg</button>  -->
+  <!-- <button ion-button (click)="confirmation()">hh</button> -->
+     <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content style="color:#878787;" pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
+<div class="padding_outer">
+  <div id="photos" >
+    <div class="product_box" *ngFor="let home of response" (click)="cardswipePage(home.Lookbook.id)">
+     <!-- <img *ngIf="home.Lookbook.brand.indexOf('HTTP') || home.Lookbook.brand.indexOf('http')" src="{{home.Lookbook.brand}}"> -->
+  <img src="{{home.Lookbook.image}}">
+  <div class="overlay"></div>
+  <div class="content_pro">
+    <h4 *ngIf="home.Lookbook.name">{{home.Lookbook.name}}</h4>
+    <h5 *ngIf="brandlink == 0">{{home.Lookbook.brand}}</h5>
+    <img *ngIf="brandlink == 1" style="width:30px !important; height: auto; border:none;" class="brandimage" src="{{home.Lookbook.brand}}">
+    <p *ngIf="home.Lookbook.text">{{home.Lookbook.text}}</p>
+  </div>
+    </div>
+ 
+ <!--<div class="product_box">
+  <img src="/assets/images/unnamed2.jpg">
+  <div class="overlay"></div>
+  <div class="content_pro">
+    <h4>GOLDEN DREAMS</h4>
+    <p>Alessia Cara, Hailee Steinfeld</p>
+  </div>
+    </div>
+
+  <div class="product_box">
+  <img src="/assets/images/unnamed 1.jpg">
+  <div class="overlay2"></div>
+  <div class="content_problack">
+    <h4>STARLET</h4>
+    <h5>WILDFOX X</h5>
+    <p>Selena Gomez, Taylor Swift, Bey</p>
+  </div>
+    </div>
+
+<div class="product_box">
+  <img src="/assets/images/unnamed3.jpg">
+  <div class="overlay"></div>
+  <div class="content_pro">
+    <h4>THE VACATION SHOP</h4>
+    <h5>UMMER MIX</h5>
+    <p>Ed Sheeran, Miley Cyrus, Justin</p>
+  </div>
+    </div>
+ 
+  <div class="product_box">
+  <img src="/assets/images/unnamed4.jpg">
+  <div class="overlay"></div>
+  <div class="content_pro">
+    <h4>THE VACATION SHOP</h4>
+    <h5>UMMER MIX</h5>
+    <p>Ed Sheeran, Miley Cyrus, Justin</p>
+  </div>
+    </div>
+
+  <div class="product_box">
+  <img src="/assets/images/unnamed5.jpg">
+  <div class="overlay2"></div>
+  <div class="content_problack">
+    <h4>FUN IN THE SUN</h4>
+    
+  </div>
+    </div>-->
+
+</div>
+</div>
+</ion-content>

@@ -1,0 +1,46 @@
+<ion-header>
+ 
+  <ion-navbar color="header-color">
+    <ion-title class="title1">YOU DON'T KNOW ME
+      <p>Jax Jones feat. RAYE</p>
+    </ion-title>
+    
+    <ion-buttons end>
+      <button ion-button color="light" clear>
+<img width="18px" src="assets/images/fast-forward.png">
+</button>
+      <button ion-button color="light" clear>
+<img width="12px" src="assets/images/pause.png">
+</button>
+      <button ion-button color="light" clear>
+<img width="18px" src="assets/images/fast-forwardr.png">
+</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
+<div class="padding_outer">
+  <div id="">
+    <div *ngFor="let product of allProducts" (click)="productDetails(product?.Product?.id)" class="product_box">
+      <div class="img_outers">
+        <img [src]="product?.Product?.image"> 
+        <div class="overlay"></div>
+      </div>
+      
+      <div class="content_pro">
+        <div class="favpro_title">${{product?.Product?.price | number: '1.2-2'}}</div>
+      </div>
+      <div class="cart_sec">
+        <div class="cart_title">{{product?.Product?.name}}</div>
+        <button style="width: 20%; float: right;" ion-button color="dark" small clear icon-only>
+          <ion-icon style="padding:0 0.4em;" name="md-cart"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</ion-content>

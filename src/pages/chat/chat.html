@@ -1,0 +1,80 @@
+<ion-header>
+ <ion-navbar color="header-color">
+    <ion-title class="title1">YOU DON'T KNOW ME<p>Jax Jones feat. RAYE</p></ion-title>
+    <ion-buttons end>
+      <button ion-button color="light" clear>
+      <img width="18px" src="assets/images/fast-forward.png">
+      </button>
+      <button ion-button color="light" clear>
+      <img width="12px" src="assets/images/pause.png">
+      </button>
+      <button ion-button color="light" clear>
+      <img width="18px" src="assets/images/fast-forwardr.png">
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+
+<div class="chat_protitle">Fitting room - <span style="font-family: futuraheavy;">{{chatname}}</span> </div>
+<ion-toolbar style="padding:0;" *ngIf="listImages">
+    <ion-scroll padding scrollX="true">
+  <div class="product_car" *ngFor="let img of listImages">
+       <div class="imagepro_inn"> 
+         <img (click)='productPage(img[0]?.prodid)' [src]="img[0]?.prodimage"/>
+         <div class="likecomm">
+           <div class="liken" (click)="likeDislikeProduct(img.Chat.id,1)"> <ion-icon *ngIf="img.Chat.productlike != null" name="thumbs-up" class="liked"><span class="count_no">  </span></ion-icon><ion-icon  *ngIf="img.Chat.productlike == null" name="thumbs-up"></ion-icon> </div>
+           <div end class="disslike" (click)="likeDislikeProduct(img.Chat.id,0)"> <ion-icon *ngIf="img.Chat.productdislike != null" name="thumbs-down" class="disliked"></ion-icon> <ion-icon *ngIf="img.Chat.productdislike == null" name="thumbs-down"></ion-icon></div>
+         </div>
+       </div>
+        <div class="chtpro_title"><div class="protitle_n">{{img[0]?.prodname}}</div>
+        <div style="float:right; font-family: futuraheavy !important;">${{img[0]?.prodprice}}</div>
+      </div>
+  </div>
+ 
+</ion-scroll>
+</ion-toolbar>
+
+</ion-header>
+
+<ion-content id="scroll">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh"
+      refreshingSpinner="bubbles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+<div class="padding">
+<div class="chatlist">
+<div  *ngFor="let msg of userchat">
+  <div (click)="presentActionSheet(msg.Chat.id,msg.Chat.message,msg.Chat.userid)" class="boxchat" [ngClass]="(msg.Chat.userid == loggeduser) ? 'chat-bubble right' : 'chat-bubble left'">
+  <div class="chat-users" style="position:relative;"> 
+    <!-- <div class="chatusername">Username</div> -->
+    <p> {{msg.Chat.message}}</p>
+    <span class="time">{{msg.Chat.time}}</span>
+  </div>
+  </div>
+  </div>
+</div>
+</div>
+
+
+</ion-content>
+<ion-footer class="footer_bg">
+<div class="chat_footer"> 
+    <div class="input_send">
+      <ion-input type="text" placeholder="Type a message" [(ngModel)]="data" ></ion-input> 
+    <!-- <ion-input type="number" placeholder="Number Input with no label"></ion-input> -->
+    
+    <div class="icon_send" *ngIf="data && editedmsg == null">
+     <ion-icon  ios="ios-send" md="md-send" (click)="onetoone(data)"></ion-icon>
+    </div>
+
+    <div class="icon_send" *ngIf="data && editedmsg != null">
+     <ion-icon ios="ios-send" md="md-send" (click)="editedchat(data)"></ion-icon>
+    </div>
+
+    </div>
+</div>
+</ion-footer>
