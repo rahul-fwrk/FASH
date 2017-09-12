@@ -33,3 +33,7 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 /nbproject/private/
+nbproject/configs/ios_1.properties
+nbproject/configs/android.properties
+nbproject/configs/android_1.properties
+nbproject/configs/ios.properties

@@ -266,14 +266,14 @@ export class SearchPage {
           this.navCtrl.push(FittingroomPage);
         } else if (data.status == 2) {
           let alert = this.alertCtrl.create({
-            title: 'Fash Invitation',
+            title: 'FASH Invitation',
             subTitle: data.msg,
             buttons: ['Dismiss']
           });
           alert.present();
         } else {
           let alert = this.alertCtrl.create({
-            title: 'Fash Invitation',
+            title: 'FASH Invitation',
             subTitle: data.msg,
             buttons: ['Dismiss']
           });

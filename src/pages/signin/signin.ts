@@ -52,6 +52,7 @@ export class SigninPage {
     console.log('updated')
   }
 
+
   public login(form) {
     // this.firebase.getToken().then(token => {
     //     console.log(`The token is ${token}`)

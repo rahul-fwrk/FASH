@@ -25,7 +25,7 @@
   <div *ngIf="sharebit == 1" style="padding: 20px;text-align: center;font-size: 15px;font-family: futuraheavy !important; font-weight: 600; color: #8e8e93;letter-spacing: 0.9px;"><span>Chat with friends and share your favorite items for votes!</span></div>
 <ion-searchbar [(ngModel)]="data" [showCancelButton]="shouldShowCancel" (ionInput)="setFilteredItems()" (ionCancel)="onCancel()"></ion-searchbar>
 <!--<ion-searchbar [(ngModel)]="data" (ngModelChange)="SearchPage($event, points)"></ion-searchbar>-->
-<ion-list style="margin-bottom:0px;" class="list_cnt">
+<ion-list style="margin-bottom: 1px;border-bottom: 1px solid #ccc!important;" class="list_cnt">
   <ion-item>
       <!-- <a (click)="editPage()">Edit</a> -->
     <a class="group_txt" (click)="creategroupPage()" item-end><ion-icon name="add"><span>Group</span></ion-icon></a>
@@ -35,7 +35,7 @@
 
 <ion-list class="invite" style="border:none;">
 
-  <ion-item *ngFor="let userlist of accepteduser">
+  <ion-item *ngFor="let userlist of accepteduser" style="padding-top:2px; padding-bottom:2px;">
         <ion-avatar item-start>
           <img *ngIf="userlist[0].userimage != null" [src]="userlist[0].userimage">
           <img *ngIf="userlist[0].userimage == null" src="assets/images/user1.png">
@@ -63,10 +63,10 @@
         <p class="loc_title" *ngIf="userlist.lastmessage != null">{{userlist.lastmessage}}</p>
         <ion-note style="margin-top:2px;" item-end="" class="note note-ios">{{userlist.time}}</ion-note>
       </a>
-      <!--<div class="acpt">
+      <!-- <div class="acpt">
         <button ion-button color="header-color" small (click)="accpet(userlist.User.id)" >Accept</button>
         <button ion-button color="light" small (click)="decline(userlist.User.id)">Decline</button>
-      </div>-->
+      </div> -->
   </ion-item>
 </div>
 <div *ngIf='errorValue == 0'>

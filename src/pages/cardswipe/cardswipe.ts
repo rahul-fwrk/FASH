@@ -194,7 +194,6 @@ title: any;
           console.log(value);
         //  alert(value.Lookbook.playlist);
           aa.getplaylist(accessToken,tokenType,value.Lookbook.playlist);
-         
           if(value.Lookbook.brand != null){
             var search = value.Lookbook.brand.search('http://');
             var searchhttps = value.Lookbook.brand.search('https://');
@@ -206,7 +205,6 @@ title: any;
               aa.brandlink = 0;
             }
           }
-         
           allcards.push(value)
         })
         this.allcards = allcards;
