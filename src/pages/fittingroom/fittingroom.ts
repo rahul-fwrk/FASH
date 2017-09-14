@@ -26,7 +26,7 @@ export class FittingroomPage {
   errorValue = '2';
   moment: any;
   fit: any;
-  sharebit;
+  sharebit = 0;
   dPipe = new DatePipe('en-US');
 
   constructor(
@@ -52,7 +52,6 @@ export class FittingroomPage {
       this.ConfirmUser();
      // this.showToast('Please login to use this feature');
     }
-      
     })
     this.fit = JSON.parse(localStorage.getItem('fitting_status'));
      if (this.fit == 0) {
@@ -225,6 +224,9 @@ export class FittingroomPage {
         this.chatlist();
       }
     })
+     },err=>{
+       console.log(err);
+        Loading.dismiss();
      });
   }
 
