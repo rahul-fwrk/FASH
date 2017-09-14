@@ -83,14 +83,15 @@ export class EditpaymentPage {
             this.addressid = this.card.id;
             if(data.data.Card.cardnumber){
                var card = data.data.Card.cardnumber;
-                console.log(card.replace(/[^\dA-Z]/g, '-').replace(/(.{4})/g, '$1 -').trim());
-                if (card.length == 4) {
-                  data.data.Card.cardnumber = card + '-';
-                } else if (card.length == 9) {
-                  data.data.Card.cardnumber = card + '-';
-                } else if (card.length == 14) {
-                  data.data.Card.cardnumber = card + '-';
-                }
+               console.log(card.substr(0,4));
+               var a = card.substring(0,4);
+               var b = card.substring(4,8);
+               var c = card.substring(8,12);
+               var d = card.substring(12,16);
+               var carnNo = a+'-'+b+'-'+c+'-'+d;
+                console.log('first:'+a+'second:'+b+'third'+c+'fourth:'+d);
+                console.log(carnNo);
+              
             }
             this.card = {
               address: data.data.Billing[0].address,
@@ -102,7 +103,7 @@ export class EditpaymentPage {
               username: data.data.Billing[0].name,
               state: data.data.Billing[0].state,
               zip: data.data.Billing[0].zipcode,
-              cardnumber: data.data.Card.cardnumber,
+              cardnumber: carnNo,
               cvc: data.data.Card.cvc,
               defaultcardstatus: data.data.Card.defaultcardstatus,
               mmyy: data.data.Card.mmyy,

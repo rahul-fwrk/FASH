@@ -14,7 +14,6 @@ export class CartmodelPage {
   public navParam : NavParams,
   public events : Events) {
 
-
      this.name = this.navParam.get('name');
      this.price = this.navParam.get('price');
      this.size = this.navParam.get('size');

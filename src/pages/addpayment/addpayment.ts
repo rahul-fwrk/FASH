@@ -88,6 +88,12 @@ public add_card(formdata) {
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem('USERID');
+    var apt;
+    if(formdata.value.apt != null){
+      apt = formdata.value.apt;
+    }else{
+      apt = '';
+    }
     var cardno = formdata.value.cardnumber.split('-');
   
     cardno = cardno[0]+cardno[1]+cardno[2]+cardno[3];
@@ -99,7 +105,7 @@ public add_card(formdata) {
       cvc:'', //formdata.value.cvc,
       username: formdata.value.username,
       address: formdata.value.address,
-      apt: formdata.value.apt,
+      apt: apt,
       status : 0,
       defaultcardstatus : this.defaultcardstatus,
       country: formdata.value.country,
