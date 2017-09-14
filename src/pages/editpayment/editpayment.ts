@@ -83,7 +83,7 @@ export class EditpaymentPage {
             this.addressid = this.card.id;
             if(data.data.Card.cardnumber){
                var card = data.data.Card.cardnumber;
-                console.log(card);
+                console.log(card.replace(/[^\dA-Z]/g, '-').replace(/(.{4})/g, '$1 -').trim());
                 if (card.length == 4) {
                   data.data.Card.cardnumber = card + '-';
                 } else if (card.length == 9) {

@@ -40,7 +40,7 @@
           <img *ngIf="userlist[0].userimage != null" [src]="userlist[0].userimage">
           <img *ngIf="userlist[0].userimage == null" src="assets/images/user1.png">
         </ion-avatar>
-     <a (click)="chatPage(userlist.Accept.userid);">
+     <a>
         <h3 class="inv_title">{{userlist[0].username}}</h3>
         <p class="loc_title">Sent you a fitting room invitation</p>
         <ion-note style="margin-top:2px;" item-end="" class="note note-ios">{{userlist.Accept.time}}</ion-note>

@@ -10,11 +10,12 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class Appsetting {
+ 
 audio:any;
-
- myGlobalVar: string = 'http://ec2-18-220-33-187.us-east-2.compute.amazonaws.com/api/';//'http://fashapp.io/api/';
+ myGlobalVar: string = 'http://fashapp.io/api/';//'http://ec2-18-220-33-187.us-east-2.compute.amazonaws.com/api/';
   constructor(public http: Http) {
     console.log('Hello Appsetting Provider');
+    // alert('jdhjdh');
   }
 
 }
