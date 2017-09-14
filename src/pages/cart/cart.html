@@ -55,7 +55,7 @@ color:#878787;" class="emptycart" *ngIf='this?.cartItems?.length == 0'>
                   <span>{{item.Cart.quantity}}</span>
                 <ion-icon name="add" (click)='Increase(item.Cart.quantity,item.Cart.id)'></ion-icon>
               </div>
-              <div class="price"> ${{item.Cart.price * item.Cart.quantity}}  </div>
+              <div class="price"> ${{item.Cart.price * item.Cart.quantity | number : '1.2-2'}}  </div>
           </div>
         </div>
 
@@ -88,7 +88,7 @@ color:#878787;" class="emptycart" *ngIf='this?.cartItems?.length == 0'>
   <ion-item>
       Subtotal:
     <ion-note item-end="" class="note note-ios totlebold">
-      ${{subtotal}}
+      ${{subtotal | number : '1.2-2'}}
     </ion-note>
   </ion-item>
    <ion-item>
