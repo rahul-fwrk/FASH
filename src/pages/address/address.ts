@@ -47,6 +47,16 @@ export class AddressPage {
         })
     })
   }
+    doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+    delete this.addressList;
+    this.AllAddresses();
+    console.log('refreshed')
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
   serializeObj(obj) {
     var result = [];
     for (var property in obj)

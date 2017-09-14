@@ -16,6 +16,9 @@
 </ion-header>
 
 <ion-content no-padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content style="color:#878787;" pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
   <div *ngIf="user_id != null" class="questions" (click)="chatPage()"><img width="20px" src="assets/images/Shape.png"></div>
   <!--<button  text-center small full ion-button color="dark" clear>Edit</button>-->
 <div class="profile_sec">

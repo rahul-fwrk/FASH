@@ -111,8 +111,6 @@ export class FittingroomPage {
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem("USERID");
-    //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/userslist'; 
-
     var postdata = {
       id: user_id
     };
@@ -138,7 +136,6 @@ export class FittingroomPage {
         this.http.post(this.appsetting.myGlobalVar + 'lookbooks/usersfittingroomfriend', serialized, options).map(res => res.json()).subscribe(data => {
           //  Loading.dismiss();
           console.log(data)
-
           console.log('herereeee');
           if (data.data != null) {
             for (var i = 0; i < data.data.length; i++) {
@@ -200,7 +197,9 @@ export class FittingroomPage {
                 this.time = '';
               }
               if (data.data[i].Accept.isgroup != 0) {
-                data.data[i].Accept.time = this.time;
+                var date = data.data[i][0].groupdate;
+                var d = moment(date).format('h:mm a');
+                data.data[i].Accept.time = d;
                 console.log('IM HERE IF->', data.data[i])
                 this.groupdata.push(data.data[i]);
                 this.chatlist();
@@ -214,7 +213,6 @@ export class FittingroomPage {
               } else {
                 data.data[i].User.time = this.time;
                 data.data[i].User.lastmessage = data.data[i][0].message;
-              
                // console.log('IM HERE ELSE->', this.time)
                 this.userimage.push(data.data[i].User);
                 console.log('ALL DATA 2', this.userimage)

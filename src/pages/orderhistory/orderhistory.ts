@@ -46,7 +46,6 @@ orderHistory(){
 console.log(data);
 Loading.dismiss();
 if(data.status == 0){
-  
 this.History = data.data;
 this.length = this.History.length;
 console.log(this.History.length);

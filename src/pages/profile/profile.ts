@@ -247,6 +247,17 @@ export class ProfilePage {
 			alert(JSON.stringify(error));
 		})
 	}
+	  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+  delete this.profile ;
+  delete this.srcImage;
+    this.profilePage();
+    console.log('refreshed')
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
 	orderhistoryPage() {
 		this.navCtrl.push(OrderhistoryPage);
 	}

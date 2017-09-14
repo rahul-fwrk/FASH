@@ -51,11 +51,17 @@ export class AddaddressPage {
     let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem('USERID');
     //  console.log(formdata);
+    var apt;
+    if(formdata.value.apt != undefined){
+      apt = formdata.value.apt;
+    }else{
+      apt = '';
+    }
     var postdata = {
       uid: user_id,
       name: formdata.value.name,
       address: formdata.value.address,
-      apt: formdata.value.apt,
+      apt: apt,
       defaultstatus : this.defaultstatus,
       country: formdata.value.country,
       city: formdata.value.city,

@@ -198,11 +198,11 @@ title: any;
             var search = value.Lookbook.brand.search('http://');
             var searchhttps = value.Lookbook.brand.search('https://');
            if(search >= 0 || searchhttps >= 0){
-             aa.brandlink = 1;
+             value.Lookbook.brandlink = 1;
               // value.Lookbook.image = value.Lookbook.brand;
               // value.Lookbook.brand = '';
             }else{
-              aa.brandlink = 0;
+              value.Lookbook.brandlink = 0;
             }
           }
           allcards.push(value)

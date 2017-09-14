@@ -19,6 +19,7 @@ export class GroupchatPage {
   {
      setTimeout(() => {
         this.content.scrollToBottom(300);
+        this.chatshow();
      }, 1000);
   }
 public Loading=this.loadingCtrl.create({
@@ -102,22 +103,17 @@ this.editedmsg = null;
       friendid: this.chat_id,
       message: message,
       status:1,
+      single:0,
 			userid: user_id,
       productid:""
 		};
 		console.log(postdata);
-		var serialized = this.serializeObj(postdata);
-
-  
+	var serialized = this.serializeObj(postdata);
   this.http.post(this.appsetting.myGlobalVar+'lookbooks/onetoonechat',serialized, options).map(res => res.json()).subscribe(data => {
   this.Loading.dismiss();
  console.log(data)
-
   this.chatshow()
   this.data = '';
-     
-      
-        
    })
 }
 

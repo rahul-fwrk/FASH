@@ -50,7 +50,7 @@
           <ion-row>
             <ion-col col-6 *ngIf='res?.Product?.non_products != 1'>
               <div class="product_title">
-                <h4 *ngIf="res?.Product?.name">{{ res?.Product?.name}}</h4>
+                <h4 *ngIf="res?.Product?.brandedName">{{ res?.Product?.brandedName}}</h4>
                 <!--<h5 class="product_subtitle">Who Needs Friends?</h5>-->
               </div>
             </ion-col>
@@ -68,9 +68,9 @@
         </ion-grid>
         <ion-grid *ngIf='res?.Lookbook?.image'>  
           <div class="content_pro" >
-            <h4 *ngIf="res?.Lookbook?.name">{{res?.Lookbook?.name}}</h4>
-            <h5 *ngIf="brandlink == 0" style="text-transform:uppercase;">{{res?.Lookbook?.brand}}</h5>
-            <img  *ngIf="brandlink == 1" style="width:30px !important;height: auto;margin-top: 37px;" src="{{res?.Lookbook?.brand}}">
+            <h4 *ngIf="res?.Lookbook?.brandedName">{{res?.Lookbook?.brandedName}}</h4>
+            <h5 *ngIf="res?.Lookbook?.brandlink == 0" style="text-transform:uppercase;">{{res?.Lookbook?.brand}}</h5>
+            <img  *ngIf="res?.Lookbook?.brandlink == 1" style="width:30px !important;height: auto;margin-top: 37px;" src="{{res?.Lookbook?.brand}}">
             <p *ngIf="res?.Lookbook?.text">{{res?.Lookbook?.text}}</p>
           </div>
         </ion-grid>

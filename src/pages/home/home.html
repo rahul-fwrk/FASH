@@ -26,8 +26,8 @@
   <div class="overlay"></div>
   <div class="content_pro">
     <h4 *ngIf="home.Lookbook.name">{{home.Lookbook.name}}</h4>
-    <h5 *ngIf="brandlink == 0">{{home.Lookbook.brand}}</h5>
-    <img *ngIf="brandlink == 1" style="width:30px !important; height: auto; border:none;" class="brandimage" src="{{home.Lookbook.brand}}">
+    <h5 *ngIf="home.Lookbook.brandlink == 0">{{home.Lookbook.brand}}</h5>
+    <img *ngIf="home.Lookbook.brandlink == 1" style="width:30px !important; height: auto; border:none;" class="brandimage" src="{{home.Lookbook.brand}}">
     <p *ngIf="home.Lookbook.text">{{home.Lookbook.text}}</p>
   </div>
     </div>

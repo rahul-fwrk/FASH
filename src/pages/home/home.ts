@@ -20,7 +20,7 @@ import {ConfirmationPage} from '../confirmation/confirmation';
 export class HomePage {
   profile;
   srcImage;
-  response; IDtobe;profileimage;brandlink;
+  response; IDtobe;profileimage;brandlink:any = 0;
 
 
   constructor(public navCtrl: NavController,
@@ -72,16 +72,17 @@ export class HomePage {
         var search = data.data[i].Lookbook.brand.search('http://');
         var searchhttps = data.data[i].Lookbook.brand.search('https://');
          if(search >= 0 || searchhttps >= 0){
-             this.brandlink = 1;
+             data.data[i].Lookbook.brandlink = 1;
               // value.Lookbook.image = value.Lookbook.brand;
                //data.data[i].Lookbook.brand = '';
             }else{
-              this.brandlink = 0;
+              data.data[i].Lookbook.brandlink = 0;
             }
         }
        
       }
       this.response = data.data;
+      console.log(this.response);
     })
   }
 

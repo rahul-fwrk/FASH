@@ -91,7 +91,7 @@ export class ChatPage {
           this.username = data.data[i][0].username;
         }
       }
-      this.ionViewDidLoad();
+      //this.ionViewDidLoad();
       this.userchat = data.data;
 
     })
@@ -109,6 +109,7 @@ export class ChatPage {
       friendid: this.chat_id,
       message: message,
       status: 1,
+      single:1,
       userid: user_id,
       productid: ""
     };

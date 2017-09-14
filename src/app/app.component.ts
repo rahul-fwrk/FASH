@@ -153,7 +153,7 @@ export class MyApp {
 					: console.log('The app was closed when the notification arrived...')
 
 				let toast = this.toastCtrl.create({
-					message: '' + notification.title + ''+notification.body,
+					message: '' + notification.title + ' '+notification.body,
 					duration: 3000,
 					position:"top",
 					cssClass: "notification",
