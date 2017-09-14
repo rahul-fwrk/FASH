@@ -233,16 +233,19 @@ export class ProductdetailsPage {
       if (!last) {
         this.slides.slideNext();
       }else if(last == true){
+        this.lastslide();
         //alert('true last');
-         this.first = this.slides.isBeginning();
-      console.log('first', this.first)
-      if (!this.first) {
-        this.slides.slidePrev();
-      }
+      //    this.first = this.slides.isBeginning();
+      // console.log('first', this.first)
+      // if (!this.first) {
+      //   this.slides.slidePrev();
+      // }
       }
     }
   }
-
+lastslide(){
+  this.ChangeSlide('next');
+}
   AddToCart(name, id, sizeid, price,retailer) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');

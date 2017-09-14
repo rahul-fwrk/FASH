@@ -176,7 +176,7 @@ export class ChatPage {
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/chatliststatus', serialized, options).map(res => res.json()).subscribe(data => {
       this.Loading.dismiss();
       console.log(data)
-
+      this.chat_id = '';
       this.listImages = data.data;
 
     })

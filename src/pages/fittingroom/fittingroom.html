@@ -22,7 +22,8 @@
    <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content style="color:#878787;" pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing..."></ion-refresher-content>
   </ion-refresher>
-  <div *ngIf="sharebit == 1" style="padding: 20px;text-align: center;font-size: 15px;font-family: futuraheavy !important; font-weight: 600; color: #8e8e93;letter-spacing: 0.9px;"><span>Chat with friends and share your favorite items for votes!</span></div>
+  <div *ngIf="sharebit == 1" style="padding: 20px;text-align: center;font-size: 14x;font-family: futuraheavy !important; font-weight: 600; color: #8e8e93;letter-spacing: 0.9px;">
+    <span>Choose a chat below to share your item!</span></div>
 <ion-searchbar [(ngModel)]="data" [showCancelButton]="shouldShowCancel" (ionInput)="setFilteredItems()" (ionCancel)="onCancel()"></ion-searchbar>
 <!--<ion-searchbar [(ngModel)]="data" (ngModelChange)="SearchPage($event, points)"></ion-searchbar>-->
 <ion-list style="margin-bottom: 1px;border-bottom: 1px solid #ccc!important;" class="list_cnt">

@@ -60,7 +60,7 @@ export class FittingroomPage {
     }
     console.log('UPDATE  !! !!')
    
-    
+    this.showuserlist();
     if(this.navParams.get('sharebit')){
       this.sharebit = this.navParams.get('sharebit');
     }
@@ -116,13 +116,12 @@ export class FittingroomPage {
     };
     console.log(postdata);
     var serialized = this.serializeObj(postdata);
-    //  var Loading = this.loadingCtrl.create({
-    //     spinner: 'hide',
-    //     content: '<img width="32px" src="../assets/images/Loading_icon.gif">'
-    //   });
-    //   Loading.present().then(() => {
+     var Loading = this.loadingCtrl.create({
+        spinner: 'bubbles',
+      });
+      Loading.present().then(() => {
     this.http.post(this.appsetting.myGlobalVar + 'users/user', serialized, options).map(res => res.json()).subscribe(data => {
-      //this.Loading.dismiss();
+      Loading.dismiss();
       console.log(data)
       this.status = data.data[0].User.fitting_status;
       console.log(this.status)
@@ -226,7 +225,7 @@ export class FittingroomPage {
         this.chatlist();
       }
     })
-    // });
+     });
   }
 
   public accpet(id) {
