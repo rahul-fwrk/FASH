@@ -58,8 +58,6 @@ export class FittingroomPage {
         localStorage.setItem('fitting_status', '1')
     }
     console.log('UPDATE  !! !!')
-   
-    this.showuserlist();
     if(this.navParams.get('sharebit')){
       this.sharebit = this.navParams.get('sharebit');
     }

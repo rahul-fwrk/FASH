@@ -4,6 +4,7 @@ import { AlertController, ActionSheetController, ToastController } from 'ionic-a
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { LoadingController, Content } from 'ionic-angular';
 import 'rxjs/add/operator/map';
+
 import { Appsetting } from '../../providers/appsetting';
 import { FittingroomPage } from '../fittingroom/fittingroom';
 import { ProductdetailsPage } from '../productdetails/productdetails';
@@ -16,12 +17,14 @@ import * as moment from 'moment';
 })
 export class ChatPage {
   @ViewChild(Content) content: Content;
-  ionViewDidLoad() {
-    setTimeout(() => {
-      this.content.scrollToBottom(300);
-      this.chatshow();
-    }, 1000);
+   ionViewDidLoad()
+  {
+     setTimeout(() => {
+        this.content.scrollToBottom(300);
+        this.chatshow();
+     }, 1000);
   }
+
   public Loading = this.loadingCtrl.create({
     content: 'Please wait...'
   });
@@ -40,7 +43,7 @@ export class ChatPage {
     this.chat_id = this.navParams.get('chat_id');
     this.chatname = this.navParams.get('name');
     console.log(this.chatname);
-    this.chatshow();
+    // this.chatshow();
     this.showproductlist();
 
     /********** Code to refresh page after 1 second **************/
@@ -176,7 +179,7 @@ export class ChatPage {
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/chatliststatus', serialized, options).map(res => res.json()).subscribe(data => {
       this.Loading.dismiss();
       console.log(data)
-      this.chat_id = '';
+      var share_id: null;
       this.listImages = data.data;
 
     })
