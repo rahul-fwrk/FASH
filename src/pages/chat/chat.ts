@@ -4,7 +4,7 @@ import { AlertController, ActionSheetController, ToastController } from 'ionic-a
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { LoadingController, Content } from 'ionic-angular';
 import 'rxjs/add/operator/map';
-
+import {Observable} from 'rxjs';
 import { Appsetting } from '../../providers/appsetting';
 import { FittingroomPage } from '../fittingroom/fittingroom';
 import { ProductdetailsPage } from '../productdetails/productdetails';
@@ -16,14 +16,9 @@ import * as moment from 'moment';
   templateUrl: 'chat.html'
 })
 export class ChatPage {
+  interval: any;
   @ViewChild(Content) content: Content;
-   ionViewDidLoad()
-  {
-     setTimeout(() => {
-        this.content.scrollToBottom(300);
-        this.chatshow();
-     }, 1000);
-  }
+ 
 
   public Loading = this.loadingCtrl.create({
     content: 'Please wait...'
@@ -47,8 +42,14 @@ export class ChatPage {
     this.showproductlist();
 
     /********** Code to refresh page after 1 second **************/
+this.interval = setInterval(() => {
+   this.content.scrollToBottom(300);
+    this.chatshow();
+  }, 2000);
+    
   
   // Observable.interval(1000).subscribe(x => {
+  //   this.content.scrollToBottom(300);
   //   this.chatshow();
   // });
 
@@ -63,10 +64,13 @@ export class ChatPage {
   }
 
   public back() {
+   clearInterval(this.interval);
     this.navCtrl.push(FittingroomPage, { share_id: null });
+     
   }
 
   public chatshow() {
+
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
@@ -180,7 +184,7 @@ export class ChatPage {
       this.Loading.dismiss();
       console.log(data)
       var share_id: null;
-      this.listImages = data.data;
+      this.listImages = data.data.reverse();
 
     })
   }

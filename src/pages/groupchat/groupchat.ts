@@ -3,6 +3,7 @@ import { NavController, NavParams , AlertController,ActionSheetController,ToastC
 import {Http, Headers, RequestOptions} from '@angular/http';
 import { LoadingController,Content} from 'ionic-angular';
 import 'rxjs/add/operator/map';
+
 import { Appsetting } from '../../providers/appsetting';
 import { FittingroomPage } from '../fittingroom/fittingroom'; 
 import { ProductdetailsPage } from '../productdetails/productdetails'; 

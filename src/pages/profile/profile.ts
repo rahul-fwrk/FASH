@@ -239,12 +239,12 @@ export class ProfilePage {
 
 	facebookLogout() {
 		this.facebook.logout().then((sucess) => {
-			alert('facebook logout successfull');
+			//alert('facebook logout successfull');
 			localStorage.clear();
 			this.app.getRootNav().setRoot(SigninPage);
 		}).catch((error) => {
-			alert('facebook logout unsuccessful');
-			alert(JSON.stringify(error));
+			//alert('facebook logout unsuccessful');
+			//alert(JSON.stringify(error));
 		})
 	}
 	  doRefresh(refresher) {

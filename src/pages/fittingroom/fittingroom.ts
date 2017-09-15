@@ -60,7 +60,9 @@ export class FittingroomPage {
     console.log('UPDATE  !! !!')
     if(this.navParams.get('sharebit')){
       this.sharebit = this.navParams.get('sharebit');
+      this.showuserlist();
     }
+    
     this.share_id = this.navParams.get('share_id');
     console.log('fitting room, prod id', this.share_id);
   }
@@ -103,7 +105,8 @@ export class FittingroomPage {
 
 
   public showuserlist() {
-    // alert("start")
+     this.groupdata = [];
+    this.userimage = [];
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
