@@ -25,7 +25,7 @@
        <div class="imagepro_inn"> 
          <img (click)='productPage(img[0]?.prodid)' [src]="img[0]?.prodimage"/>
          <div class="likecomm">
-           <div class="liken" (click)="likeDislikeProduct(img.Chat.id,1)"> <ion-icon *ngIf="img.Chat.productlike != null" name="thumbs-up" class="liked"><span class="count_no">  </span></ion-icon><ion-icon  *ngIf="img.Chat.productlike == null" name="thumbs-up"></ion-icon> </div>
+           <div class="liken" (click)="likeDislikeProduct(img.Chat.id,1)" [class.disabled]="img.Chat.productlike == 1"> <ion-icon *ngIf="img.Chat.productlike != null" name="thumbs-up" class="liked"><span class="count_no">  </span></ion-icon><ion-icon  *ngIf="img.Chat.productlike == null" name="thumbs-up"></ion-icon> </div>
            <div end class="disslike" (click)="likeDislikeProduct(img.Chat.id,0)"> <ion-icon *ngIf="img.Chat.productdislike != null" name="thumbs-down" class="disliked"></ion-icon> <ion-icon *ngIf="img.Chat.productdislike == null" name="thumbs-down"></ion-icon></div>
          </div>
        </div>

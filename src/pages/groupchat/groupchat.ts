@@ -16,18 +16,12 @@ import * as moment from 'moment';
 })
 export class GroupchatPage {
    @ViewChild(Content) content: Content;
-   ionViewDidLoad()
-  {
-     setTimeout(() => {
-        this.content.scrollToBottom(300);
-        this.chatshow();
-     }, 1000);
-  }
+
 public Loading=this.loadingCtrl.create({
     content: 'Please wait...'
   });
   chat_id;editedmsg;editedmsgid;
- moment: any;
+ moment: any;interval;
   data;userchat;listImages;time;loggeduser:any;groupdata;
   constructor(public navCtrl: NavController,
   public alertCtrl: AlertController,
@@ -38,7 +32,10 @@ public Loading=this.loadingCtrl.create({
   public actionSheetCtrl:ActionSheetController,
   public toastCtrl:ToastController
 ) {
-
+this.interval = setInterval(() => {
+   this.content.scrollToBottom(300);
+    this.chatshow();
+  }, 2000);
     this.chat_id = this.navParams.get('chat_id');
     this.chatshow();
     this.Groupdata();
@@ -56,6 +53,7 @@ this.editedmsg = null;
   }
   
  public back() {
+   clearInterval(this.interval);
     this.navCtrl.push(FittingroomPage, {  share_id : null });
   }
 
@@ -86,7 +84,7 @@ this.editedmsg = null;
 
           }
   }
-   this.ionViewDidLoad();
+  
   this.userchat  = data.data;  
  
    })
@@ -167,7 +165,7 @@ public shareImage(share_id){
   this.Loading.dismiss();
   console.log(data)
    	
- this.ionViewDidLoad();
+ 
         this.listImages = data.data;
         
         
@@ -350,7 +348,7 @@ Groupdata(){
   this.Loading.dismiss();
   console.log(data)
   if(data.status == 0){
-     this.ionViewDidLoad();
+    
     this.groupdata = data.data.Fitting;
     
   } else{
@@ -411,23 +409,5 @@ Groupdata(){
     }, 2000);
   }
 
-
-showAlert() {
-    let alert = this.alertCtrl.create({
-      subTitle: 'You voted YES for Cabana Top!',
-      cssClass:'vote',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
-  showaAlert() {
-    let alert = this.alertCtrl.create({
-      subTitle: 'You voted NO for Cabana Top!',
-      cssClass:'vote',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
 
 }

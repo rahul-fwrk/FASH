@@ -19,7 +19,7 @@ import {ConfirmationPage} from '../confirmation/confirmation';
 
 export class HomePage {
   profile;
-  srcImage;
+  srcImage;interval;
   response; IDtobe;profileimage;brandlink:any = 0;
 
 
@@ -43,7 +43,7 @@ export class HomePage {
       this.image() // if a user is logged in
       this.srcImage = null;
     }
-    
+    console.log(this.interval);
     this.lookbooklist();
     events.subscribe('homepage', (myFav) => {
       console.log(myFav);

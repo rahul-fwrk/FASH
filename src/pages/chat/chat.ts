@@ -44,14 +44,9 @@ export class ChatPage {
     /********** Code to refresh page after 1 second **************/
 this.interval = setInterval(() => {
    this.content.scrollToBottom(300);
-    this.chatshow();
+   // this.chatshow();
   }, 2000);
     
-  
-  // Observable.interval(1000).subscribe(x => {
-  //   this.content.scrollToBottom(300);
-  //   this.chatshow();
-  // });
 
     /***** end **********/
     var share_id = this.navParams.get('share_id');
@@ -172,7 +167,6 @@ this.interval = setInterval(() => {
     let options = new RequestOptions({ headers: headers });
 
     var user_id = localStorage.getItem("USERID")
-
     var postdata = {
       friendid: this.chat_id,
       userid: user_id
@@ -184,6 +178,7 @@ this.interval = setInterval(() => {
       this.Loading.dismiss();
       console.log(data)
       var share_id: null;
+      
       this.listImages = data.data.reverse();
 
     })
