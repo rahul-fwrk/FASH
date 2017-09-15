@@ -72,11 +72,19 @@ export class ChangepasswordPage {
 				});
 
 		} else {
-			alert('Passwords do not match')
+			this.showToast('Passwords do not match');
 		}
 
 	}
-
+  showToast(msg) {
+    var toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000,
+      cssClass: 'toastCss',
+      position: 'middle',
+    });
+    toast.present();
+  }
 
 
 }

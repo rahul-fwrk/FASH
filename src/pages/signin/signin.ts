@@ -54,20 +54,20 @@ export class SigninPage {
 
 
   public login(form) {
-    // this.firebase.getToken().then(token => {
-    //     console.log(`The token is ${token}`)
-    //     //  alert(token)
-    //     this.token = token
-    //     console.log('onToken->', this.token);
-    //   }) // save the token server-side and use it to push notifications to this device
-    //   .catch(error => {
-    //     console.error('Error getting token', error)
-    //   });
-    // this.firebase.onTokenRefresh().subscribe(
-    //   token => {
-    //     console.log(`The new token is ${token}`);
-    //     this.token = token;
-    //     console.log('onTokenRefresh->', this.token);
+    this.firebase.getToken().then(token => {
+        console.log(`The token is ${token}`)
+        //  alert(token)
+        this.token = token
+        console.log('onToken->', this.token);
+      }) // save the token server-side and use it to push notifications to this device
+      .catch(error => {
+        console.error('Error getting token', error)
+      });
+    this.firebase.onTokenRefresh().subscribe(
+      token => {
+        console.log(`The new token is ${token}`);
+        this.token = token;
+        console.log('onTokenRefresh->', this.token);
        // starts here
 
         let headers = new Headers();
@@ -171,10 +171,10 @@ export class SigninPage {
           })
         }
         //end here
-      // },
-      // error => {
-      //   console.error('Error refreshing token', error);
-      // });
+      },
+      error => {
+        console.error('Error refreshing token', error);
+      });
   }
 
   facebookLogin(): firebase.Promise<any> {

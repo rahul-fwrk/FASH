@@ -60,7 +60,7 @@
      <a (click)="chatPage(userlist.id,userlist.first_name);">
         <h3 class="inv_title">{{userlist.first_name}}</h3>
         
-        <p class="loc_title" *ngIf="userlist.lastmessage == null">Start a conversation with <span style="text-transform: capitalize;">{{userlist.first_name}}</span></p>
+        <p class="loc_title" *ngIf="userlist.lastmessage == null">Start a conversation with <strong style="text-transform: capitalize;">{{userlist.first_name}}</strong></p>
         <p class="loc_title" *ngIf="userlist.lastmessage != null">{{userlist.lastmessage}}</p>
         <ion-note style="margin-top:2px;" item-end="" class="note note-ios">{{userlist.time}}</ion-note>
       </a>
@@ -93,9 +93,9 @@
         </ion-avatar>
      <a (click)="groupchatPage(groupinfo.Fitting.id)">
         <h3 class="inv_title">{{groupinfo.Fitting.name}}</h3>
-        <p class="loc_title" *ngIf="groupinfo[0].groupmessage == null">Start a conversation in <span style="text-transform: capitalize;">{{groupinfo.Fitting.name}}</span></p>
+        <p class="loc_title" *ngIf="groupinfo[0].groupmessage == null">Start a conversation in <strong style="text-transform: capitalize;">{{groupinfo.Fitting.name}}</strong></p>
         <p class="loc_title" *ngIf="groupinfo[0].groupmessage != null">{{groupinfo[0].groupmessage}}</p>
-        <ion-note *ngIf="groupinfo.Accept.time!=null" item-end="" class="note note-ios">{{groupinfo.Accept.time}}</ion-note>
+        <ion-note *ngIf="groupinfo.Accept.time" item-end="" class="note note-ios">{{groupinfo.Accept.time}}</ion-note>
       </a>
       <!--<div class="acpt">
         <button ion-button color="header-color" small (click)="accpet(userlist.User.id)" >Accept</button>

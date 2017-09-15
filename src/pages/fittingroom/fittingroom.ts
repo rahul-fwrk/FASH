@@ -47,6 +47,7 @@ export class FittingroomPage {
          delete this.accepteduser;
          this.groupdata = [];
          this.userimage = [];
+         
       this.showuserlist();
     }else{
       this.ConfirmUser();
@@ -62,7 +63,7 @@ export class FittingroomPage {
       this.sharebit = this.navParams.get('sharebit');
       this.showuserlist();
     }
-    
+    this.showuserlist();
     this.share_id = this.navParams.get('share_id');
     console.log('fitting room, prod id', this.share_id);
   }

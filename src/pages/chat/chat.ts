@@ -44,7 +44,7 @@ export class ChatPage {
     /********** Code to refresh page after 1 second **************/
 this.interval = setInterval(() => {
    this.content.scrollToBottom(300);
-   // this.chatshow();
+   this.chatshow();
   }, 2000);
     
 

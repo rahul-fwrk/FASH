@@ -233,9 +233,8 @@ playTrack(track){
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem('USERID');
-    if (user_id == null || undefined) {
+    if (user_id == null || user_id == undefined) {
       this.ConfirmUser();
-      // this.showToast('Please login to use this feature');
     } else {
       var postdata = {
         userid: user_id,
@@ -272,10 +271,7 @@ playTrack(track){
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
-           // console.log(localStorage.getItem('USERID'));
-           // if (localStorage.getItem('USERID') == null) {
               this.navCtrl.push(TabsPage);
-            //}
           }
         },
         {

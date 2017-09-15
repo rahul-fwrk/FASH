@@ -18,7 +18,7 @@ import { Stripe } from '@ionic-native/stripe'; // move to PAY NOW page
   templateUrl: 'payment.html'
 })
 export class PaymentPage {
-  data: any = '';
+  data: any = '';apt;
   card: any = {};  //ngmodel
   cards: any = ''   //list of cards
   cvc: any = '';
@@ -193,6 +193,11 @@ export class PaymentPage {
     var cardno = formdata.value.cardnumber.split('-');
     cardno = cardno[0]+cardno[1]+cardno[2]+cardno[3];
     console.log(cardno);
+    if(formdata.value.apt){
+      this.apt = formdata.value.apt;
+    }else{
+      this.apt = '';
+    }
     //return false;
     if (this.setDefaultAddress == true) {
       var postdata: any = {

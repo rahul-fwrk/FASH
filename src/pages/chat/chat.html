@@ -1,5 +1,5 @@
 <ion-header>
- <ion-navbar color="header-color">
+ <ion-toolbar color="header-color">
     <ion-title class="title1">YOU DON'T KNOW ME<p>Jax Jones feat. RAYE</p></ion-title>
      <button start ion-button clear (click)="back()">
 <img width="11px" src="assets/images/back_btn.svg">
@@ -15,17 +15,18 @@
       <img width="18px" src="assets/images/fast-forwardr.png">
       </button>
     </ion-buttons>
-  </ion-navbar>
+ </ion-toolbar>
 
-
+<ion-toolbar>
 <div class="chat_protitle">Fitting room - <span style="font-family: futuraheavy;">{{chatname}}</span> </div>
-<ion-toolbar style="padding:0;" *ngIf="listImages">
+<div style="padding:0;" *ngIf="listImages">
     <ion-scroll padding scrollX="true">
   <div class="product_car" *ngFor="let img of listImages">
        <div class="imagepro_inn"> 
+         <div class="overly"></div>
          <img (click)='productPage(img[0]?.prodid)' [src]="img[0]?.prodimage"/>
          <div class="likecomm">
-           <div class="liken {{disabled}}" (click)="likeDislikeProduct(img.Chat.id,1)"> <ion-icon *ngIf="img.Chat.productlike != null" name="thumbs-up" class="liked"><span class="count_no">  </span></ion-icon><ion-icon  *ngIf="img.Chat.productlike == null" name="thumbs-up"></ion-icon> </div>
+           <div class="liken" (click)="likeDislikeProduct(img.Chat.id,1)"> <ion-icon *ngIf="img.Chat.productlike != null" name="thumbs-up" class="liked"><span class="count_no">  </span></ion-icon><ion-icon  *ngIf="img.Chat.productlike == null" name="thumbs-up"></ion-icon> </div>
            <div end class="disslike" (click)="likeDislikeProduct(img.Chat.id,0)"> <ion-icon *ngIf="img.Chat.productdislike != null" name="thumbs-down" class="disliked"></ion-icon> <ion-icon *ngIf="img.Chat.productdislike == null" name="thumbs-down"></ion-icon></div>
          </div>
        </div>
@@ -35,11 +36,12 @@
   </div>
  
 </ion-scroll>
+</div>
 </ion-toolbar>
 
 </ion-header>
 
-<ion-content id="scroll">
+<ion-content id="scroll" class="scrollcard">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh"
       refreshingSpinner="bubbles"

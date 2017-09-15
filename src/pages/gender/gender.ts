@@ -50,7 +50,7 @@ data1:any = {};
         address: '',
         cards: "",
         state_in: '',
-        gender: gender,
+        gender: userdata.gender,
         id: user_id,
       }
     } else {
@@ -68,7 +68,7 @@ data1:any = {};
         address: '',
         cards: "",
         state_in: '',
-        gender: gender,
+        gender: usedata.gender,
         id: user_id,
       };
     }

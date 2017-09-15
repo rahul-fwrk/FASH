@@ -156,15 +156,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', e
 }
 
 .swiper-slide img {
-    width: 100%;
-    max-width: inherit !important;
-    max-height: inherit;
+    max-width: 100% !important;
     position: absolute;
     top: 0;
-    left: -50%;
+    left: 0;
     height: inherit;
     bottom: 0;
-    right: -50%;
+    right: 0;
     margin: auto;
 }
 

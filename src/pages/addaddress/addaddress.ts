@@ -52,7 +52,7 @@ export class AddaddressPage {
     var user_id = localStorage.getItem('USERID');
     //  console.log(formdata);
     var apt;
-    if(formdata.value.apt != undefined){
+    if(formdata.value.apt){
       apt = formdata.value.apt;
     }else{
       apt = '';

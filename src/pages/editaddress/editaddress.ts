@@ -11,7 +11,7 @@ import { Appsetting } from '../../providers/appsetting';
   templateUrl: 'editaddress.html'
 })
 export class EditaddressPage {
-  address_id; addressInfo;
+  address_id; addressInfo;apt;
   data: any = {}; countries;
   default:boolean= false;
   defaultstatus;
@@ -94,6 +94,7 @@ export class EditaddressPage {
 
   //SHIPPING/ DELIVERY ADDRESS
   public edit_address(formdata) {
+    
     console.log(formdata.value.contact_number)
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
@@ -104,12 +105,17 @@ export class EditaddressPage {
     } else {
        var address_id = this.navParams.get('address_id')
     }; 
+      if(formdata.value.apt){
+        this.apt = formdata.value.apt;
+      }else{
+        this.apt = '';
+      }
     var postdata = {
       uid: user_id,
       name: formdata.value.name,
       addressid : address_id,
       address: formdata.value.address,
-      apt: formdata.value.apt,
+      apt: this.apt,
       country: formdata.value.country,
       defaultstatus : this.defaultstatus,
       city: formdata.value.city,

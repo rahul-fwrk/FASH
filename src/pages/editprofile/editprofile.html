@@ -57,7 +57,7 @@
 
     <ion-item>
       <ion-label style="margin-top:11px;" stacked>E-mail</ion-label>
-      <ion-input type="email" [(ngModel)]="data1.email" name='email' #email="ngModel"></ion-input>
+      <ion-input readonly type="email" [(ngModel)]="data1.email" name='email' #email="ngModel"></ion-input>
     </ion-item>
  <ion-label class="alert alert-danger" color="danger">
   <div *ngIf="email.errors && (email.dirty || email.touched)" >
