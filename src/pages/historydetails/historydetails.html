@@ -26,17 +26,16 @@
   <div class="order_history">
 <ion-list *ngIf="Historydetail">
   <ion-item style="padding: 0;" text-wrap *ngFor="let hist_detail of Historydetail">
-    <p>Order number: #{{hist_detail.OrderItem.id}}</p>
+    <p>Order item number: #{{hist_detail.OrderItem.id}}</p>
     <ion-grid style="padding:0;">
       <ion-row>
          <ion-col col-5 style="padding: 10px 0 10px 4px;">
         <div class="cart">
           <img [src]="hist_detail.Product.image">
-          <div *ngIf="hist_detail.OrderItem.soldout == 0 && hist_detail.OrderItem.trackingid == null" class="priceremove"> Pending </div>
-          <div *ngIf="hist_detail.OrderItem.soldout == 0 && hist_detail.OrderItem.trackingid != null" class="priceremove"> Confirm </div>
-      <div *ngIf="hist_detail.OrderItem.soldout != 0 && hist_detail.OrderItem.trackingid == null" class="priceremove"> Canceled </div>
+           <div *ngIf="hist_detail.OrderItem.soldout == 1 && hist_detail.OrderItem.trackingid == null" class="priceremove"> SOLD OUT </div>
+          <div *ngIf="hist_detail.OrderItem.soldout == 0 && hist_detail.OrderItem.trackingid != null" class="priceremove"> {{hist_detail.OrderItem.trackingid}} </div>
+      
         </div>
-        
         </ion-col>
         <ion-col col-7 style="padding: 10px;">
           <div class="carttxt_right">

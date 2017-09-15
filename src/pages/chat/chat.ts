@@ -16,7 +16,7 @@ import * as moment from 'moment';
   templateUrl: 'chat.html'
 })
 export class ChatPage {
-  interval: any;
+  interval: any;isDisabled = false;
   @ViewChild(Content) content: Content;
  
 
@@ -178,7 +178,14 @@ this.interval = setInterval(() => {
       this.Loading.dismiss();
       console.log(data)
       var share_id: null;
-      
+      for(var i=0;i<data.data.length;i++){
+        console.log(data.data[i].Chat.productlike);
+        if(data.data[i].Chat.productlike != null){
+          this.isDisabled = true;
+        }else{
+          this.isDisabled = false;
+        }
+      }
       this.listImages = data.data.reverse();
 
     })

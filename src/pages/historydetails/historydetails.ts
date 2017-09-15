@@ -41,7 +41,7 @@ orderHistoryDetail(orderid){
             spinner: 'bubbles',
           });
           Loading.present().then(() => {
-    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/orderhistorydetails', serialized, options).map(res => res.json()).subscribe(data => {
+    this.http.post(this.appsetting.myGlobalVar + 'shop/userorderdata', serialized, options).map(res => res.json()).subscribe(data => {
 console.log(data);
 Loading.dismiss();
 if(data.status == 0){

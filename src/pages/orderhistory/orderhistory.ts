@@ -31,8 +31,6 @@ orderHistory(){
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem("USERID" );
-    //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/userslist'; 
-    
     var postdata = {
       userid: user_id
     };
@@ -42,7 +40,7 @@ orderHistory(){
             spinner: 'bubbles',
           });
           Loading.present().then(() => {
-    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/orderhistory', serialized, options).map(res => res.json()).subscribe(data => {
+    this.http.post(this.appsetting.myGlobalVar + 'shop/userneworder', serialized, options).map(res => res.json()).subscribe(data => {
 console.log(data);
 Loading.dismiss();
 if(data.status == 0){
