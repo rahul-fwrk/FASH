@@ -42,7 +42,7 @@ export class ProfilePage {
 		public nav: Nav,
 		private facebook: Facebook,
 	) {
-	//	alert('jjjj');
+		//	alert('jjjj');
 
 		if (localStorage.getItem("USERID")) {
 			this.user_id = localStorage.getItem("USERID");
@@ -72,8 +72,9 @@ export class ProfilePage {
 					const options: CameraOptions = {
 						quality: 5,
 						sourceType: 1,
-						targetWidth:800,
-						targetHeight:800,
+						targetWidth: 800,
+						allowEdit: true,
+						targetHeight: 800,
 						correctOrientation: true,
 						destinationType: this.camera.DestinationType.DATA_URL,
 						encodingType: this.camera.EncodingType.JPEG,
@@ -124,8 +125,9 @@ export class ProfilePage {
 					const options: CameraOptions = {
 						quality: 5,
 						sourceType: 0,
-						targetWidth:800,
-						targetHeight:800,
+						targetWidth: 800,
+						targetHeight: 800,
+						allowEdit: true,
 						correctOrientation: true,
 						destinationType: this.camera.DestinationType.DATA_URL,
 						encodingType: this.camera.EncodingType.JPEG,
@@ -192,13 +194,13 @@ export class ProfilePage {
 		};
 		console.log(postdata);
 		var serialized = this.serializeObj(postdata);
-		 // alert(JSON.stringify(postdata));
+		// alert(JSON.stringify(postdata));
 		this.http.post(this.appsetting.myGlobalVar + 'users/user', serialized, options).map(res => res.json()).subscribe(data => {
 			console.log(data);
 			this.profile = data.data[0].User;
 			this.srcImage = this.profile.image;
 			console.log(this.profile);
-		//	alert(JSON.stringify(this.profile));
+			//	alert(JSON.stringify(this.profile));
 
 		})
 	}
@@ -247,17 +249,17 @@ export class ProfilePage {
 			//alert(JSON.stringify(error));
 		})
 	}
-	  doRefresh(refresher) {
-    console.log('Begin async operation', refresher);
-  delete this.profile ;
-  delete this.srcImage;
-    this.profilePage();
-    console.log('refreshed')
-    setTimeout(() => {
-      console.log('Async operation has ended');
-      refresher.complete();
-    }, 2000);
-  }
+	doRefresh(refresher) {
+		console.log('Begin async operation', refresher);
+		delete this.profile;
+		delete this.srcImage;
+		this.profilePage();
+		console.log('refreshed')
+		setTimeout(() => {
+			console.log('Async operation has ended');
+			refresher.complete();
+		}, 2000);
+	}
 	orderhistoryPage() {
 		this.navCtrl.push(OrderhistoryPage);
 	}
