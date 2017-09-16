@@ -6,7 +6,7 @@ import { ProfilePage } from '../profile/profile';
 import { EditpaymentPage } from '../editpayment/editpayment'; 
 import { ShippingPage } from '../shipping/shipping'; //
 import { CartPage } from '../cart/cart';
-import { LoadingController, AlertController } from 'ionic-angular';
+import { LoadingController, AlertController ,Platform} from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Appsetting } from '../../providers/appsetting';
 import { ToastController } from 'ionic-angular';
@@ -44,9 +44,30 @@ export class PaymentPage {
     public toastCtrl: ToastController,
     public appsetting: Appsetting,
     public navParams: NavParams,
-    public stripe: Stripe
+    public stripe: Stripe,
+    public platform: Platform,
   ) {
-    //alert('updated')
+          platform.ready().then(() => {
+        var lastTimeBackPress = 0;
+        var timePeriodToExit  = 2000;
+        platform.registerBackButtonAction(() => {
+            // get current active page
+            let view = this.navCtrl.getActive();
+                if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+                    this.platform.exitApp(); //Exit from app
+                } else {
+                 // alert('Press back again to exit App?');
+                    let toast = this.toastCtrl.create({
+                        message:  'Press back again to exit from app?',
+                        duration: 3000,
+                        position: 'bottom'
+                    });
+                    toast.present();
+                    lastTimeBackPress = new Date().getTime();
+                }
+        });
+    });
+    this.ionViewDidEnter(); 
     this.countrylist();
     this.cardlist();
     this.cvc = ''; // otherwise input come as null
@@ -442,5 +463,18 @@ export class PaymentPage {
     console.log(id)
     this.navCtrl.push(ReviewPage, { ship_id: id });
   }
+  ionViewDidEnter() {
+    console.log('rahul');
+    console.log(window.navigator.onLine);
+    if (window.navigator.onLine == true) {
+    } else {
+      let toast = this.toastCtrl.create({
+        message: 'Network connection failed',
+        duration: 3000,
+        position: 'middle'
+      });
+      toast.present();
+    }
 
+  }
 }

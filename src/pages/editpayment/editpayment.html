@@ -65,7 +65,7 @@
           Expiry date is required
         </div>
         <div [hidden]="!mmyy.errors.pattern" class="alert alert-danger">
-          Invalid Date
+          Invalid date
         </div>
       </div>
       </ion-col>
@@ -198,13 +198,13 @@
       
       <div *ngIf="zip.errors && (zip.dirty || zip.touched)" class="alert alert-danger">
         <div [hidden]="!zip.errors.required" class="alert alert-danger">
-          Zip is required
+          Zipcode is required
         </div>
         <div [hidden]="!zip.errors.pattern" class="alert alert-danger">
-          Invalid Zipcode
+          Invalid zipcode
         </div>
         <div [hidden]="!zip.errors.maxlength" class="alert alert-danger">
-          Only 6 number valid
+          Only 6 digits valid
         </div>
       </div>
       </ion-col>

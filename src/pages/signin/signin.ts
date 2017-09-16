@@ -1,19 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController,Platform ,ToastController} from 'ionic-angular';
 import { SignupPage } from '../signup/signup';
 import { ForgetpaswordPage } from '../forgetpasword/forgetpasword';
 import { HomePage } from '../home/home';
 import { ChangepasswordPage } from '../changepassword/changepassword';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { LoadingController, AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import firebase from 'firebase';
 import { Appsetting } from '../../providers/appsetting';
-import { Platform } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { ToastController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { TabsPage } from '../tabs/tabs';
 import { SportyfyPage } from '../sportyfy/sportyfy';
@@ -50,6 +47,28 @@ export class SigninPage {
     public diagnostic: Diagnostic
   ) {
     console.log('updated')
+        platform.ready().then(() => {
+        var lastTimeBackPress = 0;
+        var timePeriodToExit  = 2000;
+
+        platform.registerBackButtonAction(() => {
+            // get current active page
+            let view = this.navCtrl.getActive();
+                if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+                    this.platform.exitApp(); //Exit from app
+                } else {
+                 // alert('Press back again to exit App?');
+                    let toast = this.toastCtrl.create({
+                        message:  'Press back again to exit from app?',
+                        duration: 3000,
+                        position: 'bottom'
+                    });
+                    toast.present();
+                    lastTimeBackPress = new Date().getTime();
+                }
+        });
+    });
+    this.ionViewDidEnter(); 
   }
 
 
@@ -375,7 +394,6 @@ export class SigninPage {
         }
       })
     }).catch((error) => {
-
       let toast = this.toastCtrl.create({
         message: 'Please enable your location',
         duration: 5000,
@@ -383,7 +401,6 @@ export class SigninPage {
         position: 'middle',
       });
       toast.present();
-      //  this.diagnostic.switchToLocationSettings();
       console.log('Error getting location', error);
     });
   }
@@ -407,5 +424,19 @@ export class SigninPage {
   }
   changepasswordPage() {
     this.navCtrl.push(ChangepasswordPage);
+  }
+    ionViewDidEnter() {
+    console.log('rahul');
+    console.log(window.navigator.onLine);
+    if (window.navigator.onLine == true) {
+    } else {
+      let toast = this.toastCtrl.create({
+        message: 'Network connection failed',
+        duration: 3000,
+        position: 'middle'
+      });
+      toast.present();
+    }
+
   }
 }

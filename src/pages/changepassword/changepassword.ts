@@ -13,7 +13,6 @@ import { Appsetting } from '../../providers/appsetting';
 export class ChangepasswordPage {
 
 	constructor(public navCtrl: NavController, public nav : Nav, public toastCtrl : ToastController, public appsetting: Appsetting, public loadingCtrl: LoadingController, public http: Http, public navParams: NavParams) {
-//alert('ddd');
 	}
 	public data = '';
 	public Loader = this.loadingCtrl.create({    //createding a custom loader which can be used later
@@ -58,9 +57,9 @@ export class ChangepasswordPage {
 						localStorage.clear();
 						this.nav.setRoot(SigninPage);
 						this.nav.popToRoot();
-					}
-					else {
-						//alert(data.msg)
+					}else {
+						alert(data.msg);
+						this.showToast(data.msg);
 					}
 
 				}, err => {

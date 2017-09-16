@@ -58,7 +58,6 @@ export class SignupPage {
     private network: Network,
     private diagnostic:Diagnostic
   ) {
-   // alert('updated');
        platform.ready().then(() => {
         var lastTimeBackPress = 0;
         var timePeriodToExit  = 2000;
@@ -470,7 +469,7 @@ export class SignupPage {
       let toast = this.toastCtrl.create({
         message: 'Network connection failed',
         duration: 3000,
-        position: 'middle'
+        position: 'top'
       });
       toast.present();
     }

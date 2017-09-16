@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController,ToastController,Platform,Events } from 'ionic-angular';
 import { ProductcardPage } from '../productcard/productcard';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { LoadingController, AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Appsetting } from '../../providers/appsetting';
 import { CardswipePage } from '../cardswipe/cardswipe';
 import { ProfilePage } from '../profile/profile';
 // import { GenderPage } from '../gender/gender';
-import { Events } from 'ionic-angular';
 import { Media , MediaObject } from '@ionic-native/media';
 import {BirthdayPage} from '../birthday/birthday';
 import {ConfirmationPage} from '../confirmation/confirmation';
@@ -29,10 +27,33 @@ export class HomePage {
     public appsetting: Appsetting,
     public events: Events,
     public navParams: NavParams,
-    public media: Media
+    public media: Media,
+    public platform: Platform,
+     public toastCtrl: ToastController,
   
   ) {
- //  alert('new');
+       platform.ready().then(() => {
+        var lastTimeBackPress = 0;
+        var timePeriodToExit  = 2000;
+
+        platform.registerBackButtonAction(() => {
+            // get current active page
+            let view = this.navCtrl.getActive();
+                if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+                    this.platform.exitApp(); //Exit from app
+                } else {
+                 // alert('Press back again to exit App?');
+                    let toast = this.toastCtrl.create({
+                        message:  'Press back again to exit from app?',
+                        duration: 3000,
+                        position: 'bottom'
+                    });
+                    toast.present();
+                    lastTimeBackPress = new Date().getTime();
+                }
+        });
+    });
+    this.ionViewDidEnter(); 
     if (this.navParams.get('checkout') == 'yes') {
       // refreshes the controller after checkout
       console.log('CHECKOUT');
@@ -161,5 +182,18 @@ export class HomePage {
 
     return result.join("&");
   }
+  ionViewDidEnter() {
+    console.log('rahul');
+    console.log(window.navigator.onLine);
+    if (window.navigator.onLine == true) {
+    } else {
+      let toast = this.toastCtrl.create({
+        message: 'Network connection failed',
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    }
 
+  }
 }

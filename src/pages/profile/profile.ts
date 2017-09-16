@@ -6,7 +6,7 @@ import { OrderhistoryPage } from '../orderhistory/orderhistory';
 import { EditprofilePage } from '../editprofile/editprofile';
 import { SettingPage } from '../setting/setting';
 import { ChangepasswordPage } from '../changepassword/changepassword';
-import { LoadingController, AlertController } from 'ionic-angular';
+import { LoadingController, AlertController ,Platform,ToastController} from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Appsetting } from '../../providers/appsetting';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -41,8 +41,30 @@ export class ProfilePage {
 		public app: App,
 		public nav: Nav,
 		private facebook: Facebook,
+		 public platform: Platform,
+		  public toastCtrl: ToastController,
 	) {
-
+		platform.ready().then(() => {
+        var lastTimeBackPress = 0;
+        var timePeriodToExit  = 2000;
+        platform.registerBackButtonAction(() => {
+            // get current active page
+            let view = this.navCtrl.getActive();
+                if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+                    this.platform.exitApp(); //Exit from app
+                } else {
+                 // alert('Press back again to exit App?');
+                    let toast = this.toastCtrl.create({
+                        message:  'Press back again to exit from app?',
+                        duration: 3000,
+                        position: 'bottom'
+                    });
+                    toast.present();
+                    lastTimeBackPress = new Date().getTime();
+                }
+        });
+    });
+    this.ionViewDidEnter(); 
 		if (localStorage.getItem("USERID")) {
 			this.user_id = localStorage.getItem("USERID");
 			console.log(this.user_id)
@@ -274,5 +296,18 @@ export class ProfilePage {
 	chatPage() {
 		this.navCtrl.push(FittingroomPage,{support:'true'});
 	}
+  ionViewDidEnter() {
+    console.log('rahul');
+    console.log(window.navigator.onLine);
+    if (window.navigator.onLine == true) {
+    } else {
+      let toast = this.toastCtrl.create({
+        message: 'Network connection failed',
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    }
 
+  }
 }

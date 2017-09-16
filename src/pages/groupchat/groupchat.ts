@@ -1,5 +1,5 @@
 import { Component ,ViewChild ,ContentChild} from '@angular/core';
-import { NavController, NavParams , AlertController,ActionSheetController,ToastController } from 'ionic-angular';
+import { NavController, NavParams , AlertController,ActionSheetController,ToastController ,Platform} from 'ionic-angular';
 import {Http, Headers, RequestOptions} from '@angular/http';
 import { LoadingController,Content} from 'ionic-angular';
 import 'rxjs/add/operator/map';
@@ -26,12 +26,35 @@ public Loading=this.loadingCtrl.create({
   constructor(public navCtrl: NavController,
   public alertCtrl: AlertController,
   public http:Http,
+  public platform: Platform,
   public loadingCtrl:LoadingController,
   public appsetting: Appsetting,
   public navParams : NavParams,
   public actionSheetCtrl:ActionSheetController,
   public toastCtrl:ToastController
 ) {
+         platform.ready().then(() => {
+        var lastTimeBackPress = 0;
+        var timePeriodToExit  = 2000;
+
+        platform.registerBackButtonAction(() => {
+            // get current active page
+            let view = this.navCtrl.getActive();
+                if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+                    this.platform.exitApp(); //Exit from app
+                } else {
+                 // alert('Press back again to exit App?');
+                    let toast = this.toastCtrl.create({
+                        message:  'Press back again to exit from app?',
+                        duration: 3000,
+                        position: 'bottom'
+                    });
+                    toast.present();
+                    lastTimeBackPress = new Date().getTime();
+                }
+        });
+    });
+    this.ionViewDidEnter(); 
 this.interval = setInterval(() => {
    this.content.scrollToBottom(300);
     this.chatshow();
@@ -408,6 +431,19 @@ Groupdata(){
       refresher.complete();
     }, 2000);
   }
+  ionViewDidEnter() {
+    console.log('rahul');
+    console.log(window.navigator.onLine);
+    if (window.navigator.onLine == true) {
+    } else {
+      let toast = this.toastCtrl.create({
+        message: 'Network connection failed',
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
+    }
 
+  }
 
 }

@@ -25,7 +25,7 @@
       <span class="carttitle">PAYMENT CONFIRMATION</span>
     </ion-item>
     <ion-item text-wrap>
-      <span class="confirmation"> Thanks for shopping with us! Our dedicated white-glove shopper will place the order for 	you now. You will receive the order confirmation and a tracking number shortly.</span>
+      <span class="confirmation"> Thanks for shopping with us! Our dedicated white-glove shopper will place the order for you now. You will receive the order confirmation and a tracking number shortly.</span>
     </ion-item>
     
   </ion-list>
@@ -48,7 +48,7 @@
             <h2> {{item.Product.name}}  </h2>
             <!-- <h3>by Montce Swim</h3> -->
         
-          <h3><span> Size : </span> {{item[0].procolor}} - {{item[0].prosize}}</h3>
+          <h3><span> Size: </span> {{item[0].procolor}} - {{item[0].prosize}}</h3>
           <h3><span>Fulfilled by: </span> {{item.Product.retailer}}</h3>
           <!-- <h3><span>Est. delivery: </span> jun 13-14</h3> -->
           <!-- <p>Thanks for shopping with us ! Our dedicated white-glove shopper will place the order for you now. You will receive the order confirmation and a tracking number shortly</p> -->
@@ -63,7 +63,7 @@
   <ion-item>
       Subtotal:
     <ion-note item-end="" class="note note-ios totlebold">
-      ${{subtotal}}
+      ${{subtotal | number : '1.2-2'}}
     </ion-note>
   </ion-item>
    <ion-item>
