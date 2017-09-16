@@ -148,10 +148,10 @@ export class MyApp {
 			(notification: NotificationModel) => {
 			//	alert('alert - > ' + JSON.stringify(notification))
 				 if(notification.tap){
-					 alert('Tapped');
+					// alert('Tapped');
 					console.log("Received in background");
 				} else {
-					 alert('Not Tapped');
+					// alert('Not Tapped');
 					console.log("Received in foreground");
 				};
 				// !notification.tap

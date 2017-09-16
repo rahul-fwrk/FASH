@@ -32,6 +32,7 @@ export class HomePage {
      public toastCtrl: ToastController,
   
   ) {
+    alert('new build');
        platform.ready().then(() => {
         var lastTimeBackPress = 0;
         var timePeriodToExit  = 2000;
