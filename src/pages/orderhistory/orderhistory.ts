@@ -62,7 +62,7 @@ export class OrderhistoryPage {
     this.navCtrl.push(HistoryviewPage);
   }
   chatPage() {
-    this.navCtrl.push(FittingroomPage);
+    this.navCtrl.push(FittingroomPage,{support:'true'});
   }
   serializeObj(obj) {
     var result = [];

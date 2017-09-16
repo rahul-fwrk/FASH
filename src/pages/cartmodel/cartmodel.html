@@ -18,7 +18,7 @@
       <div class="cart_txt">
         <h4>{{name}}</h4>
         <!--<h5>by Shopstyle</h5>-->
-          <p> {{color}}-{{size}}</p>
+          <p> {{color}}<span *ngIf="size">-{{size}}</span></p>
           <p><span> Fulfilled by:</span> {{retailer}}</p>
           <!-- <p><span> Est. delivery:</span> Jun 13 - 14</p> -->
       </div>

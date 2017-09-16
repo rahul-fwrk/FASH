@@ -71,7 +71,7 @@ export class SignupPage {
                 } else {
                  // alert('Press back again to exit App?');
                     let toast = this.toastCtrl.create({
-                        message:  'Press back again to exit App?',
+                        message:  'Press back again to exit from app?',
                         duration: 3000,
                         position: 'bottom'
                     });
@@ -466,10 +466,7 @@ export class SignupPage {
     console.log('rahul');
     console.log(window.navigator.onLine);
     if (window.navigator.onLine == true) {
-     // alert('Network connection');
     } else {
-      //alert('Network connection failed');
-     // alert('Network connection failed');
       let toast = this.toastCtrl.create({
         message: 'Network connection failed',
         duration: 3000,

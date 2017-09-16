@@ -312,7 +312,7 @@ export class ProductdetailsPage {
       //   })
 
       // } else {
-        this.navCtrl.push(FittingroomPage, { share_id: id })
+        this.navCtrl.push(FittingroomPage, { share_id: id ,sharebit:1})
       //}
     }
 
@@ -383,7 +383,7 @@ export class ProductdetailsPage {
   }
 
 customersupport(){
-this.navCtrl.push(FittingroomPage);
+this.navCtrl.push(FittingroomPage,{support:'true'});
 }
   cartmodelModal(id, price, name,retailer) {
     var size = this.selectedSize;

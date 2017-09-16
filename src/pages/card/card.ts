@@ -16,33 +16,6 @@ export class CardPage {
   constructor(public navCtrl: NavController, public http: Http, public appsetting: Appsetting, public loadingCtrl: LoadingController, ) {
     this.cardlist();
   }
-
-  // public cardlist() {
-  //   var Loading = this.loadingCtrl.create({
-  //     content: 'Please wait...'
-  //   });
-  //   let headers = new Headers();
-  //   headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  //   var options = new RequestOptions({ headers: headers });
-  //   if (localStorage.getItem("USERID")) {
-  //     var user_id = localStorage.getItem("USERID");
-  //     var postData = {
-  //       id: user_id
-  //     }
-  //     var serialized = this.serializeObj(postData);
-  //     this.http.post(this.appsetting.myGlobalVar + 'shop/useraddcardslist', serialized, options)
-  //       .map(res => res.json())
-  //       .subscribe(data => {
-  //         Loading.dismiss();
-  //         console.log(data)
-  //         this.card = data.data;
-  //         console.log(this.card)
-
-
-  //       })
-  //   }
-  // }
-
   public cardlist() {
     var Loading = this.loadingCtrl.create({
       spinner: 'bubbles',

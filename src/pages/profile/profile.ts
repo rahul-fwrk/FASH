@@ -42,7 +42,6 @@ export class ProfilePage {
 		public nav: Nav,
 		private facebook: Facebook,
 	) {
-		//	alert('jjjj');
 
 		if (localStorage.getItem("USERID")) {
 			this.user_id = localStorage.getItem("USERID");
@@ -273,7 +272,7 @@ export class ProfilePage {
 		this.navCtrl.push(ChangepasswordPage);
 	}
 	chatPage() {
-		this.navCtrl.push(FittingroomPage);
+		this.navCtrl.push(FittingroomPage,{support:'true'});
 	}
 
 }

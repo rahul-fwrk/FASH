@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ToastController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 import { AddaddressPage } from '../addaddress/addaddress';
 import { EditaddressPage } from '../editaddress/editaddress';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -16,7 +16,7 @@ export class AddressPage {
     public http: Http,
     public appsetting: Appsetting,
     public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController
+   // public toastCtrl: ToastController
   ) {
     this.AllAddresses();
   }

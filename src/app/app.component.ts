@@ -147,10 +147,16 @@ export class MyApp {
 		this.firebase.onNotificationOpen().subscribe(
 			(notification: NotificationModel) => {
 			//	alert('alert - > ' + JSON.stringify(notification))
-
-				!notification.tap
-					? console.log('The user was using the app when the notification arrived...')
-					: console.log('The app was closed when the notification arrived...')
+				 if(notification.tap){
+					 alert('Tapped');
+					console.log("Received in background");
+				} else {
+					 alert('Not Tapped');
+					console.log("Received in foreground");
+				};
+				// !notification.tap
+				// 	? console.log('The user was using the app when the notification arrived...')
+				// 	: console.log('The app was closed when the notification arrived...')
 
 				let toast = this.toastCtrl.create({
 					message: '' + notification.title + ': '+notification.body,

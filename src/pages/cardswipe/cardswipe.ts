@@ -447,7 +447,7 @@ title: any;
 
         console.log(data)
         if (data.status == 0) {
-          this.showToast('');
+          
           console.log(data.bit)
           if (data.bit == 1) {
             
@@ -474,18 +474,8 @@ title: any;
     console.log(id);
     var fit: any = JSON.parse(localStorage.getItem('fitting_status'));
     console.log('statata', fit)
-    // if (fit == 0) {
-    //   let modal = this.modalCtrl.create(TutorialfitPage);
-    //   modal.present();
-    //   modal.onDidDismiss(data => {
-    //     localStorage.setItem('fitting_status', '1')
-    //     this.navCtrl.push(FittingroomPage, { share_id: id })
-    //   })
-
-    // } else {
       this.navCtrl.push(FittingroomPage, { share_id: id ,sharebit:1})
     }
-   // }
   }
 
   ConfirmUser() {

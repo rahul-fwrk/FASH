@@ -46,9 +46,8 @@ color:#878787;" class="emptycart" *ngIf='this?.cartItems?.length == 0'>
       <ion-col col-7 style="padding: 10px;">
         <div class="carttxt_right">
           <h2> {{item.Product.name}} </h2>
-          <h3><span>Size :</span> {{item[0].procolor}} - {{item[0].prosize}} </h3>
+          <h3><span>Size:</span> {{item[0].procolor}} - {{item[0].prosize}} </h3>
           <h3><span>Fulfilled by:</span> {{item.Product.retailer}}</h3>
-          <!-- <h3><span>Est. delivery:</span> jun 13-14</h3> -->
           <div class="quantity">
               <div class="add">
                 <ion-icon name="remove" (click)='Decrease(item.Cart.quantity,item.Cart.id)'></ion-icon>
@@ -58,23 +57,6 @@ color:#878787;" class="emptycart" *ngIf='this?.cartItems?.length == 0'>
               <div class="price"> ${{item.Cart.price * item.Cart.quantity | number : '1.2-2'}}  </div>
           </div>
         </div>
-
-        <!--<ion-item no-padding class="top">
-          <div class="name_cart">
-            <h2> {{item.Product.name}} </h2>
-          </div>
-          <h3>Size : {{item[0].procolor}} - {{item[0].prosize}} </h3>
-          <h3>Fulfilled by: Shop Style</h3>
-          <h3>Est. delivery: jun 13-14</h3>
-            <div class="quantity">
-              <div class="add">
-                <ion-icon name="add" (click)='Increase(item.Cart.quantity,item.Cart.id)'></ion-icon>
-                  <span>{{item.Cart.quantity}}</span>
-                <ion-icon name="remove" (click)='Decrease(item.Cart.quantity,item.Cart.id)'></ion-icon>
-              </div>
-              <div class="price"> ${{item.Cart.price * item.Cart.quantity}}  </div>
-            </div>
-        </ion-item>-->
       </ion-col>
     </ion-row>
 </ion-grid>

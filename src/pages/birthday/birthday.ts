@@ -6,7 +6,6 @@ import { ProfilePage } from '../profile/profile';
 import { LoadingController, AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Appsetting } from '../../providers/appsetting';
-import { ToastController } from 'ionic-angular';
 import { SportyfyPage } from '../sportyfy/sportyfy';
 
 @Component({
@@ -18,7 +17,7 @@ export class BirthdayPage {
   data1:any = {};
   constructor(
     public navCtrl: NavController,
-    public toastCtrl: ToastController,
+   // public toastCtrl: ToastController,
     public http: Http,
     public loadingCtrl: LoadingController,
     public appsetting: Appsetting
@@ -117,14 +116,6 @@ export class BirthdayPage {
           console.log(data)
           Loading.dismiss();
           if (data.isSucess == "true") {
-            // let toast = this.toastCtrl.create({
-            //   message: "Profile is updated",
-            //   duration: 2000,
-            //   cssClass: 'toastCss',
-            //   position: 'middle',
-
-            // });
-            // toast.present();
             this.navCtrl.push(TabsPage);
           } else {
 

@@ -63,7 +63,10 @@ export class FittingroomPage {
       this.sharebit = this.navParams.get('sharebit');
       this.showuserlist();
     }
-    this.showuserlist();
+    if(this.navParams.get('support') == 'true'){
+      console.log('support');
+      this.showuserlist();
+    }
     this.share_id = this.navParams.get('share_id');
     console.log('fitting room, prod id', this.share_id);
   }
@@ -139,29 +142,33 @@ export class FittingroomPage {
           console.log('herereeee');
           if (data.data != null) {
             for (var i = 0; i < data.data.length; i++) {
-              var date = data.data[i].Accept.created;
-              // var date = data.data[i].Accept.created;
+              
+              if (data.data[i].Accept.isgroup != 0) { ///************ code for get group data***************/
+                 if(data.data[i][0].groupdate != null){
+                 var date = data.data[i][0].groupdate;
               var d = moment(date).format('h:mm a');
               this.time = d;
-              if (data.data[i].Accept.isgroup != 0) {
+              }else{
+                this.time = null;
+              }
                 data.data[i].Accept.time = this.time;
                 this.groupdata.push(data.data[i]);
                 this.chatlist();
               } else if (data.data[i].Accept.groupid == user_id) {
-                console.log('else if');
+               // console.log('else if');
                  data.data[i].Accept.time = this.time;
                 this.userimage.push(data.data[i].Users);
                 localStorage.setItem('friendlist', JSON.stringify(this.userimage));
                 this.chatlist();
               } else {
-                console.log('else');
+               // console.log('else');
                 data.data[i].Accept.time = this.time;
                 this.userimage.push(data.data[i].User);
                 localStorage.setItem('friendlist', JSON.stringify(this.userimage));
                 this.chatlist();
               }
-              console.log('here rahul');
-              console.log(data.data[i].Accept.created);
+             // console.log('here rahul');
+             // console.log(data.data[i].Accept.created);
               // this.datadate = new Date(data.data[i].Accept.created);
               // console.log(this.datadate);
             }
@@ -182,35 +189,46 @@ export class FittingroomPage {
         var serialized = this.serializeObj(postdata);
 
         this.http.post(this.appsetting.myGlobalVar + 'lookbooks/usersfittingroomfriend', serialized, options).map(res => res.json()).subscribe(data => {
-          // Loading.dismiss();
+           Loading.dismiss();
           console.log(data)
           if (data.data != null) {
             console.log('herereeee');
             for (var i = 0; i < data.data.length; i++) {
-              console.log(data.data[i][0].date);
-              if(data.data[i][0].date != null){
-                var date = data.data[i][0].date;//data.data[i].Accept.created;
-                var d = moment(date).format('h:mm a');
-                this.time = d;
-                
+            
+              if (data.data[i].Accept.isgroup != 0) { // code for get group data.
+                  if(data.data[i][0].groupdate != null){
+                 var date = data.data[i][0].groupdate;
+              var d = moment(date).format('h:mm a');
+              this.time = d;
               }else{
-                this.time = '';
+                this.time = null;
               }
-              if (data.data[i].Accept.isgroup != 0) {
-                var date = data.data[i][0].groupdate;
-                var d = moment(date).format('h:mm a');
-                data.data[i].Accept.time = d;
+                data.data[i].Accept.time = this.time;
                 console.log('IM HERE IF->', data.data[i])
                 this.groupdata.push(data.data[i]);
                 this.chatlist();
-              } else if (data.data[i].Accept.groupid == user_id) {
+              } else if (data.data[i].Accept.groupid == user_id) { 
+                  if(data.data[i][0].date != null){
+                 var date = data.data[i][0].date;
+              var d = moment(date).format('h:mm a');
+              this.time = d;
+              }else{
+                this.time = null;
+              }
                 data.data[i].Users.lastmessage = data.data[i][0].message;
                 data.data[i].Users.time = this.time;
                 console.log('IM HERE ELSE IF->', this.time)
                 this.userimage.push(data.data[i].Users);
                 console.log('ALL DATA 1', this.userimage)
                 this.chatlist();
-              } else {
+              } else { // code for get group data.
+                  if(data.data[i][0].date != null){
+                 var date = data.data[i][0].date;
+              var d = moment(date).format('h:mm a');
+              this.time = d;
+              }else{
+                this.time = null;
+              }
                 data.data[i].User.time = this.time;
                 data.data[i].User.lastmessage = data.data[i][0].message;
                // console.log('IM HERE ELSE->', this.time)
