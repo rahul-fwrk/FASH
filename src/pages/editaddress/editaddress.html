@@ -112,7 +112,7 @@
 
           <ion-col col-6  style="padding-left:0px;">
             <ion-item  style="padding-left:0px;">
-              <ion-input type="number" placeholder="Zip Code" [(ngModel)]='data.zipcode' maxlength='6' minlength='6' pattern='[0-9]+' required name="zipcode" #zipcode='ngModel'></ion-input>
+              <ion-input type="tel" placeholder="Zip Code" [(ngModel)]='data.zipcode' maxlength='6' pattern='[0-9]+' required name="zipcode" #zipcode='ngModel'></ion-input>
             </ion-item>
             <div *ngIf="zipcode.errors && (zipcode.dirty || zipcode.touched)" class="alert alert-danger">
             <div [hidden]="!zipcode.errors.required" class="alert alert-danger">

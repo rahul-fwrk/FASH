@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import { Appsetting } from '../../providers/appsetting';
 import { CardswipePage } from '../cardswipe/cardswipe';
 import { ProfilePage } from '../profile/profile';
-// import { GenderPage } from '../gender/gender';
+ import { GenderPage } from '../gender/gender';
 import { Media , MediaObject } from '@ionic-native/media';
 import {BirthdayPage} from '../birthday/birthday';
 import {ConfirmationPage} from '../confirmation/confirmation';
@@ -32,7 +32,7 @@ export class HomePage {
      public toastCtrl: ToastController,
   
   ) {
-    alert('new build');
+   // alert('new build');
        platform.ready().then(() => {
         var lastTimeBackPress = 0;
         var timePeriodToExit  = 2000;
@@ -171,11 +171,11 @@ export class HomePage {
   profilePage() {
     this.navCtrl.push(ProfilePage);
   }
-  //   genderPage() {
-  //   // alert("hit")
-  //   this.navCtrl.push(GenderPage);
-  //   // alert("hitjhj")
-  // }
+    genderPage() {
+    // alert("hit")
+    this.navCtrl.push(GenderPage);
+    // alert("hitjhj")
+  }
   serializeObj(obj) {
     var result = [];
     for (var property in obj)

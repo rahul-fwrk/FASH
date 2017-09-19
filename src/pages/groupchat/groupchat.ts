@@ -371,7 +371,6 @@ Groupdata(){
   this.Loading.dismiss();
   console.log(data)
   if(data.status == 0){
-    
     this.groupdata = data.data.Fitting;
     
   } else{
