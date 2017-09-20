@@ -13,6 +13,10 @@
 </ion-header>
 
 <ion-content>
+   <span style="padding:0;text-align:center;position:absolute;height:20px;left:0;right:0;bottom:0;top:0;margin:auto;
+color:#878787;" class="emptycart" *ngIf='length == 0'>
+      No lookbook available yet.
+     </span>
    <!-- <button (click)="birthday()">gggg</button>  -->
    <!-- <button ion-button (click)="genderPage()">hh</button>  -->
      <ion-refresher (ionRefresh)="doRefresh($event)">

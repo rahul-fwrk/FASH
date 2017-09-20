@@ -270,7 +270,6 @@ export class CreategroupPage {
         var ids = '';
         var firstname = '';
         for (var i = 0; i < this.selecteduser.length; i++) {
-
           if (ids == '' && firstname == '') {
             bit = 0
             ids = this.selecteduser[i].id;
@@ -279,7 +278,7 @@ export class CreategroupPage {
           else {
             bit = 1
             ids = ids + ',' + this.selecteduser[i].id;
-            firstname = firstname + ',' + this.selecteduser[i].first_name;
+            firstname = firstname + ', ' + this.selecteduser[i].first_name;
           }
         }
 

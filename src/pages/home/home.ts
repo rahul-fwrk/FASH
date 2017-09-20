@@ -17,7 +17,7 @@ import {ConfirmationPage} from '../confirmation/confirmation';
 
 export class HomePage {
   profile;
-  srcImage;
+  srcImage;length;
   response; IDtobe;profileimage;brandlink:any = 0;
 
 
@@ -88,6 +88,8 @@ export class HomePage {
   
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/listoflookbook', serialized, options).map(res => res.json()).subscribe(data => {
       console.log(data)
+      if(data.data){
+        this.length = 1;
       for(var i=0;i<data.data.length;i++){
         if(data.data[i].Lookbook.brand){
            console.log(data.data[i].Lookbook.brand.search('http://'));
@@ -102,6 +104,9 @@ export class HomePage {
             }
         }
        
+      }
+      }else{
+       this.length = 0;
       }
       this.response = data.data;
       console.log(this.response);
@@ -121,29 +126,21 @@ export class HomePage {
 
 
   image() {
-    //  alert(localStorage.getItem("USERID"))
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem("USERID");
-    // var url = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/productoflookbook'; 
     var postdata = {
       id: user_id
     };
     console.log(postdata);
     var serialized = this.serializeObj(postdata);
-   // alert(JSON.stringify(postdata));
     this.http.post(this.appsetting.myGlobalVar + 'users/user', serialized, options).map(res => res.json()).subscribe(data => {
       console.log(data)
-     // alert(JSON.stringify(data.data));
       if (data.data != null) {
         this.profile = data.data[0].User;
-        this.profileimage = this.profile.image
-      //  alert('profile Image---->'+this.profileimage);
+        this.profileimage = this.profile.image;
       }
-
-      //alert(this.srcImage)
-
       console.log(this.profile)
 
     })

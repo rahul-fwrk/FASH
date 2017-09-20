@@ -16,7 +16,7 @@ import * as moment from 'moment';
   templateUrl: 'chat.html'
 })
 export class ChatPage {
-  interval: any;isDisabled = false;
+  interval: any;isDisabled = false;scrollcard;
   @ViewChild(Content) content: Content;
  
 
@@ -38,9 +38,8 @@ export class ChatPage {
     this.chat_id = this.navParams.get('chat_id');
     this.chatname = this.navParams.get('name');
     console.log(this.chatname);
-    // this.chatshow();
     this.showproductlist();
-
+    
     /********** Code to refresh page after 1 second **************/
 this.interval = setInterval(() => {
    this.content.scrollToBottom(300);
@@ -187,6 +186,11 @@ this.interval = setInterval(() => {
         }
       }
       this.listImages = data.data.reverse();
+      if(this.listImages.length > 0){
+        this.scrollcard = 'scrollcard';
+      }else{
+        this.scrollcard = '';
+      }
 
     })
   }
