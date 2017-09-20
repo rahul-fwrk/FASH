@@ -67,14 +67,15 @@ export class HomePage {
     }
   
     this.lookbooklist();
-    events.subscribe('homepage', (myFav) => {
-      console.log(myFav);
+    events.subscribe('homepage', (home) => {
+      console.log(home);
+      clearInterval(this.appsetting.interval);
       this.lookbooklist();
     })
 
-   // this.mediaplay();
   }
   public lookbooklist() {
+    clearInterval(this.appsetting.interval);
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });

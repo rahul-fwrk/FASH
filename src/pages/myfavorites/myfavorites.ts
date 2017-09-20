@@ -50,6 +50,7 @@ export class MyfavoritesPage {
     this.setvarNow="playTrack";
     events.subscribe('page', (myFav) => {
       console.log(myFav);
+       clearInterval(this.appsetting.interval);
       this.myFavs();
     })
   }
@@ -229,6 +230,7 @@ playTrack(track){
   }
 
   myFavs() {
+    clearInterval(this.appsetting.interval);
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });

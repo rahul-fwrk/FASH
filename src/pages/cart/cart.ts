@@ -23,6 +23,7 @@ export class CartPage {
     public appsetting: Appsetting,
   ) {
 //alert('sdfsd');
+ clearInterval(this.appsetting.interval);
       this.ViewCart();
 
    }
@@ -39,6 +40,7 @@ export class CartPage {
 
 
   public ViewCart() {
+    clearInterval(this.appsetting.interval);
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });

@@ -48,7 +48,7 @@ export class FittingroomPage {
          delete this.accepteduser;
          this.groupdata = [];
          this.userimage = [];
-         
+         clearInterval(this.appsetting.interval);
       this.showuserlist();
     }else{
       this.ConfirmUser();

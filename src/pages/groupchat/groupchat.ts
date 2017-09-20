@@ -21,7 +21,7 @@ export class GroupchatPage {
     content: 'Please wait...'
   });
   chat_id; editedmsg; editedmsgid; scrollcard;
-  moment: any; interval;
+  moment: any;
   data; userchat; listImages; time; loggeduser: any; groupdata; username: any;
   constructor(public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -60,7 +60,7 @@ export class GroupchatPage {
       });
     });
     this.ionViewDidEnter();
-    this.interval = setInterval(() => {
+    this.appsetting.interval = setInterval(() => {
       this.content.scrollToBottom(300);
        this.chatshow();
     }, 1000);
@@ -81,7 +81,7 @@ export class GroupchatPage {
   }
 
   public back() {
-    clearInterval(this.interval);
+    clearInterval(this.appsetting.interval);
     this.navCtrl.push(FittingroomPage, { share_id: null, support: 'true' });
   }
 

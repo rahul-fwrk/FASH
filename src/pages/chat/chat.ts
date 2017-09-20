@@ -16,7 +16,7 @@ import * as moment from 'moment';
   templateUrl: 'chat.html'
 })
 export class ChatPage {
-  interval: any;isDisabled = false;scrollcard;
+  isDisabled = false;scrollcard;
   @ViewChild(Content) content: Content;
  
 
@@ -41,7 +41,7 @@ export class ChatPage {
     this.showproductlist();
     
     /********** Code to refresh page after 1 second **************/
-this.interval = setInterval(() => {
+this.appsetting.interval = setInterval(() => {
    this.content.scrollToBottom(300);
    this.chatshow();
   }, 1000);
@@ -58,7 +58,7 @@ this.interval = setInterval(() => {
   }
 
   public back() {
-   clearInterval(this.interval);
+   clearInterval(this.appsetting.interval);
     this.navCtrl.push(FittingroomPage, { share_id: null ,support:'true'});
      
   }
