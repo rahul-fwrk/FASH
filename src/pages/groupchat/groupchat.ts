@@ -58,7 +58,7 @@ public Loading=this.loadingCtrl.create({
 this.interval = setInterval(() => {
    this.content.scrollToBottom(300);
     this.chatshow();
-  }, 2000);
+  }, 1000);
     this.chat_id = this.navParams.get('chat_id');
     this.chatshow();
     this.Groupdata();

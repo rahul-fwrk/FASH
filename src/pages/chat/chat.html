@@ -17,9 +17,12 @@
     </ion-buttons>
  </ion-toolbar>
 
-<ion-toolbar>
-<div class="chat_protitle">Fitting room - <span style="font-family: futuraheavy;">{{chatname}}</span> </div>
-<div style="padding:0;" *ngIf="listImages">
+ <ion-toolbar style="padding:0; min-height: 27px;" >
+   <div class="chat_protitle">Fitting room - <span style="font-family: futuraheavy;">{{chatname}}</span> </div>
+ </ion-toolbar>
+
+<ion-toolbar *ngIf="listImages">
+<div style="padding:0;">
     <ion-scroll padding scrollX="true">
   <div class="product_car" *ngFor="let img of listImages">
        <div class="imagepro_inn"> 

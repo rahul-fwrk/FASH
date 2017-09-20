@@ -98,15 +98,17 @@ export class ShippingPage {
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem('USERID');
-
-
-
-
+    var apt;
+    if(formdata.value.apt){
+      apt = formdata.value.apt;
+    }else{
+      apt = '';
+    }
     var postdata = {
       uid: user_id,
       name: formdata.value.name,
       address: formdata.value.address,
-      apt: formdata.value.apt,
+      apt: apt,
       country: formdata.value.country,
       defaultstatus: '0',
       city: formdata.value.city,

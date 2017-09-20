@@ -152,8 +152,11 @@ export class FittingroomPage {
     this.http.post(this.appsetting.myGlobalVar + 'users/user', serialized, options).map(res => res.json()).subscribe(data => {
       Loading.dismiss();
       console.log(data)
-      this.status = data.data[0].User.fitting_status;
+      if(data.data){
+           this.status = data.data[0].User.fitting_status;
       console.log(this.status)
+      }
+   
       // alert(this.status)
       if (this.status == "1") {
         var postdata = {
@@ -471,7 +474,7 @@ export class FittingroomPage {
       let toast = this.toastCtrl.create({
         message: 'Network connection failed',
         duration: 3000,
-        position: 'middle'
+        position: 'top'
       });
       toast.present();
     }

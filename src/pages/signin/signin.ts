@@ -73,20 +73,20 @@ export class SigninPage {
 
 
   public login(form) {
-    this.firebase.getToken().then(token => {
-        console.log(`The token is ${token}`)
-        //  alert(token)
-        this.token = token
-        console.log('onToken->', this.token);
-      }) // save the token server-side and use it to push notifications to this device
-      .catch(error => {
-        console.error('Error getting token', error)
-      });
-    this.firebase.onTokenRefresh().subscribe(
-      token => {
-        console.log(`The new token is ${token}`);
-        this.token = token;
-        console.log('onTokenRefresh->', this.token);
+    // this.firebase.getToken().then(token => {
+    //     console.log(`The token is ${token}`)
+    //     //  alert(token)
+    //     this.token = token
+    //     console.log('onToken->', this.token);
+    //   }) // save the token server-side and use it to push notifications to this device
+    //   .catch(error => {
+    //     console.error('Error getting token', error)
+    //   });
+    // this.firebase.onTokenRefresh().subscribe(
+    //   token => {
+    //     console.log(`The new token is ${token}`);
+    //     this.token = token;
+    //     console.log('onTokenRefresh->', this.token);
        // starts here
 
         let headers = new Headers();
@@ -190,10 +190,10 @@ export class SigninPage {
           })
         }
         //end here
-      },
-      error => {
-        console.error('Error refreshing token', error);
-      });
+      // },
+      // error => {
+      //   console.error('Error refreshing token', error);
+      // });
   }
 
   facebookLogin(): firebase.Promise<any> {
@@ -312,7 +312,7 @@ export class SigninPage {
                         if (data.results[0].address_components[i].types[b] == "country") {
                           //this is the object you are looking for
                           var country = data.results[0].address_components[i];
-                          console.log(country.short_name)
+                          alert(country.short_name)
                           localStorage.setItem('country', country.short_name)
                           var autocompleteOptions = {
                             componentRestrictions: { country: country.short_name },
@@ -433,7 +433,7 @@ export class SigninPage {
       let toast = this.toastCtrl.create({
         message: 'Network connection failed',
         duration: 3000,
-        position: 'middle'
+        position: 'top'
       });
       toast.present();
     }

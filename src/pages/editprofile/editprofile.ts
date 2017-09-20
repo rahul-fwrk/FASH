@@ -66,13 +66,16 @@ export class EditprofilePage {
         email: usedata.email,
         number: "",
         gender: usedata.gender,
-        shop: 'CM',//usedata.state_in,
+        shop: 'US',//usedata.state_in,
         myDate : usedata.dob,
       }
        console.log('COUNTRY CODE->',localStorage.getItem('country'))
         if(localStorage.getItem('country')){
           this.data1.shop = localStorage.getItem('country');
+        }else{
+          this.data1.shop = 'US'
         }
+
         console.log('SELECTED CN',this.data1.shop);
     } else {
       this.http.post(this.appsetting.myGlobalVar + 'users/user', serialized, options).map(res => res.json()).subscribe(data => {
