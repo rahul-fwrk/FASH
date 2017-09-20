@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 export class Appsetting {
  
 audio:any;
- myGlobalVar: string = 'http://ec2-18-221-14-43.us-east-2.compute.amazonaws.com/api/';//'http://fashapp.io/api/';
+ myGlobalVar: string = 'http://ec2-13-59-151-198.us-east-2.compute.amazonaws.com/api/';//'http://fashapp.io/api/';
   constructor(public http: Http) {
     console.log('Hello Appsetting Provider');
     // alert('jdhjdh');
