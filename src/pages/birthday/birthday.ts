@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController ,NavParams} from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ProfilePage } from '../profile/profile';
@@ -14,15 +14,20 @@ import { SportyfyPage } from '../sportyfy/sportyfy';
 })
 
 export class BirthdayPage {
-  data1:any = {};
+  data1:any = {};gender;
   constructor(
     public navCtrl: NavController,
    // public toastCtrl: ToastController,
     public http: Http,
     public loadingCtrl: LoadingController,
-    public appsetting: Appsetting
+    public appsetting: Appsetting,
+     public navParams: NavParams,
   ) {
-    console.log('data1')
+    if(this.navParams.get('gender')){
+        this.gender = this.navParams.get('gender');
+        console.log('data1'+this.gender )
+    }
+     
     //userdetails
     if (localStorage.getItem('userfbdata') != null || localStorage.getItem('userfbdata') != undefined) {
       var usedata = JSON.parse(localStorage.getItem('userfbdata'));
@@ -31,7 +36,7 @@ export class BirthdayPage {
         lname: usedata.last_name,
         email: usedata.email,
         number: "",
-        gender: usedata.gender,
+        gender: this.gender,
       }
     } else {
       var user = JSON.parse(localStorage.getItem('USER_DATA'));
@@ -42,7 +47,7 @@ export class BirthdayPage {
         lname: userdata.last_name,
         email: userdata.email,
         number: "",
-        gender: userdata.gender,
+        gender: this.gender,
       }
     }
   }
@@ -67,8 +72,6 @@ export class BirthdayPage {
       console.log('here', userdata);
       if(userdata.last_name == null){
         userdata.last_name = '';
-      } else if (userdata.gender == null){
-        userdata.gender = '';
       }
       this.data1 = {
         first_name: userdata.first_name,
@@ -79,7 +82,7 @@ export class BirthdayPage {
         address: '',
         cards: "",
         state_in: '',
-        gender: userdata.gender,
+        gender: this.gender,
         id: user_id,
       }
     } else {
@@ -97,7 +100,7 @@ export class BirthdayPage {
         address: '',
         cards: "",
         state_in: '',
-        gender: usedata.gender,
+        gender: this.gender,
         id: user_id,
       };
     }

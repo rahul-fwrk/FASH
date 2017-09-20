@@ -59,7 +59,7 @@ this.interval = setInterval(() => {
 
   public back() {
    clearInterval(this.interval);
-    this.navCtrl.push(FittingroomPage, { share_id: null });
+    this.navCtrl.push(FittingroomPage, { share_id: null ,support:'true'});
      
   }
 
@@ -360,28 +360,26 @@ this.interval = setInterval(() => {
     var user_id = localStorage.getItem("USERID");
     if (status == 1) {
       var postdata = {
+        userid:user_id,
         id: proid,
         like: status
       };
       var serialized = this.serializeObj(postdata);
     } else {
       var postdata1 = {
+        userid:user_id,
         id: proid,
         dislike: status
       };
       var serialized = this.serializeObj(postdata1);
     }
     console.log(postdata);
-
-
-
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/likedislikeproduct', serialized, options).map(res => res.json()).subscribe(data => {
       this.Loading.dismiss();
       console.log(data)
       if (data.status == 0) {
         this.showproductlist();
       }
-
 
     })
   }

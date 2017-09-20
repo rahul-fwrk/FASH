@@ -38,8 +38,6 @@ data1:any = {};
       console.log('here', userdata);
       if(userdata.last_name == null){
         userdata.last_name = '';
-      } else if (userdata.gender == null){
-        userdata.gender = '';
       }
       this.data1 = {
         first_name: userdata.first_name,
@@ -50,7 +48,7 @@ data1:any = {};
         address: '',
         cards: "",
         state_in: '',
-        gender: userdata.gender,
+        gender: gender,
         id: user_id,
       }
     } else {
@@ -68,7 +66,7 @@ data1:any = {};
         address: '',
         cards: "",
         state_in: '',
-        gender: usedata.gender,
+        gender: gender,
         id: user_id,
       };
     }
@@ -81,7 +79,6 @@ data1:any = {};
       cssClass: 'loader'
     });
     Loading.present().then(() => {
-
       this.http.post(this.appsetting.myGlobalVar + 'users/editprofile', serialized, options)
         .map(res => res.json())
         .subscribe(data => {
@@ -96,7 +93,7 @@ data1:any = {};
 
             // });
             // toast.present();
-            this.navCtrl.push(BirthdayPage);
+            this.navCtrl.push(BirthdayPage,{gender:gender});
           } else {
 
           }

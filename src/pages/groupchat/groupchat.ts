@@ -1,12 +1,12 @@
-import { Component ,ViewChild ,ContentChild} from '@angular/core';
-import { NavController, NavParams , AlertController,ActionSheetController,ToastController ,Platform} from 'ionic-angular';
-import {Http, Headers, RequestOptions} from '@angular/http';
-import { LoadingController,Content} from 'ionic-angular';
+import { Component, ViewChild, ContentChild } from '@angular/core';
+import { NavController, NavParams, AlertController, ActionSheetController, ToastController, Platform } from 'ionic-angular';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { LoadingController, Content } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
 import { Appsetting } from '../../providers/appsetting';
-import { FittingroomPage } from '../fittingroom/fittingroom'; 
-import { ProductdetailsPage } from '../productdetails/productdetails'; 
+import { FittingroomPage } from '../fittingroom/fittingroom';
+import { ProductdetailsPage } from '../productdetails/productdetails';
 import * as moment from 'moment';
 
 
@@ -15,409 +15,409 @@ import * as moment from 'moment';
   templateUrl: 'groupchat.html'
 })
 export class GroupchatPage {
-   @ViewChild(Content) content: Content;
+  @ViewChild(Content) content: Content;
 
-public Loading=this.loadingCtrl.create({
+  public Loading = this.loadingCtrl.create({
     content: 'Please wait...'
   });
-  chat_id;editedmsg;editedmsgid;
- moment: any;interval;
-  data;userchat;listImages;time;loggeduser:any;groupdata;
+  chat_id; editedmsg; editedmsgid;
+  moment: any; interval;
+  data; userchat; listImages; time; loggeduser: any; groupdata;
   constructor(public navCtrl: NavController,
-  public alertCtrl: AlertController,
-  public http:Http,
-  public platform: Platform,
-  public loadingCtrl:LoadingController,
-  public appsetting: Appsetting,
-  public navParams : NavParams,
-  public actionSheetCtrl:ActionSheetController,
-  public toastCtrl:ToastController
-) {
-         platform.ready().then(() => {
-        var lastTimeBackPress = 0;
-        var timePeriodToExit  = 2000;
+    public alertCtrl: AlertController,
+    public http: Http,
+    public platform: Platform,
+    public loadingCtrl: LoadingController,
+    public appsetting: Appsetting,
+    public navParams: NavParams,
+    public actionSheetCtrl: ActionSheetController,
+    public toastCtrl: ToastController
+  ) {
+    platform.ready().then(() => {
+      var lastTimeBackPress = 0;
+      var timePeriodToExit = 2000;
 
-        platform.registerBackButtonAction(() => {
-            // get current active page
-            let view = this.navCtrl.getActive();
-                if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
-                    this.platform.exitApp(); //Exit from app
-                } else {
-                 // alert('Press back again to exit App?');
-                    let toast = this.toastCtrl.create({
-                        message:  'Press back again to exit from app?',
-                        duration: 3000,
-                        position: 'bottom'
-                    });
-                    toast.present();
-                    lastTimeBackPress = new Date().getTime();
-                }
-        });
+      platform.registerBackButtonAction(() => {
+        // get current active page
+        let view = this.navCtrl.getActive();
+        if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+          this.platform.exitApp(); //Exit from app
+        } else {
+          // alert('Press back again to exit App?');
+          let toast = this.toastCtrl.create({
+            message: 'Press back again to exit from app?',
+            duration: 3000,
+            position: 'bottom'
+          });
+          toast.present();
+          lastTimeBackPress = new Date().getTime();
+        }
+      });
     });
-    this.ionViewDidEnter(); 
-this.interval = setInterval(() => {
-   this.content.scrollToBottom(300);
-    this.chatshow();
-  }, 1000);
+    this.ionViewDidEnter();
+    this.interval = setInterval(() => {
+      this.content.scrollToBottom(300);
+      // this.chatshow();
+    }, 1000);
     this.chat_id = this.navParams.get('chat_id');
     this.chatshow();
     this.Groupdata();
     this.showproductlist();
-    
-      var share_id = this.navParams.get('share_id');
-      console.log(share_id)
-      if(share_id){
-        console.log('Share\...........');
-        this.shareImage(share_id);
 
-      } 
-   
-this.editedmsg = null;
-  }
-  
- public back() {
-   clearInterval(this.interval);
-    this.navCtrl.push(FittingroomPage, {  share_id : null });
+    var share_id = this.navParams.get('share_id');
+    console.log(share_id)
+    if (share_id) {
+      console.log('Share\...........');
+      this.shareImage(share_id);
+
+    }
+
+    this.editedmsg = null;
   }
 
-  public chatshow(){
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  let options = new RequestOptions({ headers: headers });
+  public back() {
+    clearInterval(this.interval);
+    this.navCtrl.push(FittingroomPage, { share_id: null, support: 'true' });
+  }
+
+  public chatshow() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem("USERID");
     this.loggeduser = localStorage.getItem("USERID");
-  	var ddata = {
-     friendid:this.chat_id,
-			userid: user_id
-		};
-		console.log(ddata);
-		var serialized = this.serializeObj(ddata);
+    var ddata = {
+      friendid: this.chat_id,
+      userid: user_id
+    };
+    console.log(ddata);
+    var serialized = this.serializeObj(ddata);
 
-  this.http.post(this.appsetting.myGlobalVar+'lookbooks/groupchatlist',serialized, options).map(res => res.json()).subscribe(data => {
-  this.Loading.dismiss();
-  console.log(data)
-  if(data.data != null){
-            for (var i = 0; i < data.data.length; i++) {
-           
-             var date = data.data[i].Chat.created;
+    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/groupchatlist', serialized, options).map(res => res.json()).subscribe(data => {
+      this.Loading.dismiss();
+      console.log(data)
+      if (data.data != null) {
+        for (var i = 0; i < data.data.length; i++) {
+
+          var date = data.data[i].Chat.created;
           var d = moment(date).format('h:mm a');
           this.time = d;
-         
+
           data.data[i].Chat.time = this.time;
 
-          }
+        }
+      }
+
+      this.userchat = data.data;
+
+    })
   }
-  
-  this.userchat  = data.data;  
- 
-   })
-}
 
 
-  public onetoone(message){
+  public onetoone(message) {
 
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  let options = new RequestOptions({ headers: headers });
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem("USERID");
-    
-  	var postdata = {
+
+    var postdata = {
       friendid: this.chat_id,
       message: message,
-      status:1,
-      single:0,
-			userid: user_id,
-      productid:""
-		};
-		console.log(postdata);
-	var serialized = this.serializeObj(postdata);
-  this.http.post(this.appsetting.myGlobalVar+'lookbooks/onetoonechat',serialized, options).map(res => res.json()).subscribe(data => {
-  this.Loading.dismiss();
- console.log(data)
-  this.chatshow()
-  this.data = '';
-   })
-}
+      status: 1,
+      single: 0,
+      userid: user_id,
+      productid: ""
+    };
+    console.log(postdata);
+    var serialized = this.serializeObj(postdata);
+    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/onetoonechat', serialized, options).map(res => res.json()).subscribe(data => {
+      this.Loading.dismiss();
+      console.log(data)
+      this.chatshow()
+      this.data = '';
+    })
+  }
 
 
-public shareImage(share_id){
-   // alert(share_id)
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  let options = new RequestOptions({ headers: headers });
+  public shareImage(share_id) {
+    // alert(share_id)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem("USERID");
-    
-  	var postdata = {
+
+    var postdata = {
       friendid: this.chat_id,
       message: '',
-      status:0,
-			userid: user_id,
+      status: 0,
+      userid: user_id,
       productid: share_id
-		};
-		console.log(postdata);
-		var serialized = this.serializeObj(postdata);
+    };
+    console.log(postdata);
+    var serialized = this.serializeObj(postdata);
 
-  
-  this.http.post(this.appsetting.myGlobalVar+'lookbooks/onetoonechat',serialized, options).map(res => res.json()).subscribe(data => {
-  this.Loading.dismiss();
- console.log(data)
- share_id = null;
-  this.showproductlist()
-     
-      
-        
-   })
-}
 
- public showproductlist(){
-  // alert("showproduct")
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  let options = new RequestOptions({ headers: headers });
-  
-  //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
-	var user_id = localStorage.getItem("USERID")
-  	var postdata = {
-     friendid:this.chat_id,
-			userid: user_id
-		};
-		console.log(postdata);
-		var serialized = this.serializeObj(postdata);
+    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/onetoonechat', serialized, options).map(res => res.json()).subscribe(data => {
+      this.Loading.dismiss();
+      console.log(data)
+      share_id = null;
+      this.showproductlist()
 
-  this.http.post(this.appsetting.myGlobalVar+'lookbooks/groupchatliststatus',serialized, options).map(res => res.json()).subscribe(data => {
-  this.Loading.dismiss();
-  console.log(data)
-   	
- 
-        this.listImages = data.data;
-        
-        
-   })
-}
 
- serializeObj(obj) {
-		var result = [];
-		for (var property in obj)
-			result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
 
-		return result.join("&");
-	}
+    })
+  }
 
- presentActionSheet(msgid,msg,userid) {
-   console.log(msgid);
-     console.log(msg);
-     console.log(userid);
-     var user_id = localStorage.getItem("USERID")
-     if(userid != user_id){
+  public showproductlist() {
+    // alert("showproduct")
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    let options = new RequestOptions({ headers: headers });
+
+    //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
+    var user_id = localStorage.getItem("USERID")
+    var postdata = {
+      friendid: this.chat_id,
+      userid: user_id
+    };
+    console.log(postdata);
+    var serialized = this.serializeObj(postdata);
+
+    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/groupchatliststatus', serialized, options).map(res => res.json()).subscribe(data => {
+      this.Loading.dismiss();
+      console.log(data)
+
+
+      this.listImages = data.data;
+
+
+    })
+  }
+
+  serializeObj(obj) {
+    var result = [];
+    for (var property in obj)
+      result.push(encodeURIComponent(property) + "=" + encodeURIComponent(obj[property]));
+
+    return result.join("&");
+  }
+
+  presentActionSheet(msgid, msg, userid) {
+    console.log(msgid);
+    console.log(msg);
+    console.log(userid);
+    var user_id = localStorage.getItem("USERID")
+    if (userid != user_id) {
       let actionSheet = this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: 'Delete message',
-          role: 'delete',
-          handler: () => {
-            console.log('delete clicked');
-             console.log(msgid);
+        buttons: [
+          {
+            text: 'Delete message',
+            role: 'delete',
+            handler: () => {
+              console.log('delete clicked');
+              console.log(msgid);
               console.log(msg);
               this.editedmsg = msg;
               this.editedmsgid = msgid;
               this.deleteMessage(msgid);
-              
 
+
+            }
           }
-        }
-      ]
-    });
-     actionSheet.present();
-     }else{
-    let actionSheet = this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: 'Delete message',
-          role: 'delete',
-          handler: () => {
-            console.log('delete clicked');
-             console.log(msgid);
+        ]
+      });
+      actionSheet.present();
+    } else {
+      let actionSheet = this.actionSheetCtrl.create({
+        buttons: [
+          {
+            text: 'Delete message',
+            role: 'delete',
+            handler: () => {
+              console.log('delete clicked');
+              console.log(msgid);
               console.log(msg);
               this.editedmsg = msg;
               this.editedmsgid = msgid;
               this.deleteMessage(msgid);
-              
 
-          }
-        },{
-          text: 'Edit message',
-           role: 'edit',
-          handler: () => {
 
-            console.log('edit clicked');
-             console.log(msgid);
+            }
+          }, {
+            text: 'Edit message',
+            role: 'edit',
+            handler: () => {
+
+              console.log('edit clicked');
+              console.log(msgid);
               console.log(msg);
               this.editedmsg = msg;
-               this.editedmsgid = msgid;
+              this.editedmsgid = msgid;
               this.data = this.editedmsg;
 
+            }
           }
-        }
-      ]
-    });
-     actionSheet.present();
-     }
-   
+        ]
+      });
+      actionSheet.present();
+    }
+
   }
 
-editedchat(editedmsg){
-console.log(this.editedmsgid);
-console.log(editedmsg);
+  editedchat(editedmsg) {
+    console.log(this.editedmsgid);
+    console.log(editedmsg);
 
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  let options = new RequestOptions({ headers: headers });
-  
-  //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
-	var user_id = localStorage.getItem("USERID")
-  //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
-  	var postdata = {
-     id:this.editedmsgid,
-			message: editedmsg
-		};
-		console.log(postdata);
-		var serialized = this.serializeObj(postdata);
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    let options = new RequestOptions({ headers: headers });
 
-  this.http.post(this.appsetting.myGlobalVar+'lookbooks/editchat',serialized, options).map(res => res.json()).subscribe(data => {
-  this.Loading.dismiss();
-  console.log(data)
-  if(data.status == 0){
-    this.data = '';
-      this.editedmsg = null;
-      delete this.editedmsg;
-    this.chatshow();
-  }else{
-  this.editedmsg = null;
-  delete this.editedmsg;
-  this.data = '';
-    let toast = this.toastCtrl.create({
-      message: 'Error in edit message! try again',
-      duration: 3000
-    });
-    toast.present();
-  
+    var user_id = localStorage.getItem("USERID")
+    var postdata = {
+      id: this.editedmsgid,
+      message: editedmsg
+    };
+    console.log(postdata);
+    var serialized = this.serializeObj(postdata);
+
+    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/editchat', serialized, options).map(res => res.json()).subscribe(data => {
+      this.Loading.dismiss();
+      console.log(data)
+      if (data.status == 0) {
+        this.data = '';
+        this.editedmsg = null;
+        delete this.editedmsg;
+        this.chatshow();
+      } else {
+        this.editedmsg = null;
+        delete this.editedmsg;
+        this.data = '';
+        let toast = this.toastCtrl.create({
+          message: 'Error in edit message! try again',
+          duration: 3000
+        });
+        toast.present();
+
+      }
+
+
+    })
+
   }
 
-        
-   })
+  deleteMessage(msgid) {
+    console.log(this.editedmsgid);
 
-}
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    let options = new RequestOptions({ headers: headers });
 
-deleteMessage(msgid){
-console.log(this.editedmsgid);
+    //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
+    var user_id = localStorage.getItem("USERID")
+    //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
+    var postdata = {
+      userid: user_id,
+      id: msgid
+    };
+    console.log(postdata);
+    var serialized = this.serializeObj(postdata);
 
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  let options = new RequestOptions({ headers: headers });
-  
-  //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
-	var user_id = localStorage.getItem("USERID")
-  //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
-  	var postdata = {
-      userid:user_id,
-     id:msgid
-		};
-		console.log(postdata);
-		var serialized = this.serializeObj(postdata);
+    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/deletechat', serialized, options).map(res => res.json()).subscribe(data => {
+      this.Loading.dismiss();
+      console.log(data)
+      if (data.status == 0) {
+        this.data = '';
+        this.editedmsg = null;
+        delete this.editedmsg;
+        this.chatshow();
+      } else {
+        this.editedmsg = null;
+        delete this.editedmsg;
+        this.data = '';
+        let toast = this.toastCtrl.create({
+          message: 'Error in deleting message! try again',
+          duration: 3000
+        });
+        toast.present();
 
-  this.http.post(this.appsetting.myGlobalVar+'lookbooks/deletechat',serialized, options).map(res => res.json()).subscribe(data => {
-  this.Loading.dismiss();
-  console.log(data)
-  if(data.status == 0){
-    this.data = '';
-      this.editedmsg = null;
-      delete this.editedmsg;
-    this.chatshow();
-  }else{
-  this.editedmsg = null;
-  delete this.editedmsg;
-  this.data = '';
-    let toast = this.toastCtrl.create({
-      message: 'Error in deleting message! try again',
-      duration: 3000
-    });
-    toast.present();
-  
+      }
+
+
+    })
+
   }
 
-        
-   })
-
-}
-
-productPage(id){
-  this.navCtrl.push(ProductdetailsPage, { prod_id : id })
-}
-
-/********************************************************/
-Groupdata(){
-
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  let options = new RequestOptions({ headers: headers });
-
-  	var postdata = {  
-     id:this.chat_id
-		};
-		console.log(postdata);
-		var serialized = this.serializeObj(postdata);
-
-  this.http.post(this.appsetting.myGlobalVar+'lookbooks/groupdata',serialized, options).map(res => res.json()).subscribe(data => {
-  this.Loading.dismiss();
-  console.log(data)
-  if(data.status == 0){
-    this.groupdata = data.data.Fitting;
-    
-  } else{
-
-  
+  productPage(id) {
+    this.navCtrl.push(ProductdetailsPage, { prod_id: id })
   }
 
-        
-   })
+  /********************************************************/
+  Groupdata() {
 
-}
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    let options = new RequestOptions({ headers: headers });
 
-/***********************function for product like dislike on chat */
-  public likeDislikeProduct(proid,status){
+    var postdata = {
+      id: this.chat_id
+    };
+    console.log(postdata);
+    var serialized = this.serializeObj(postdata);
+
+    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/groupdata', serialized, options).map(res => res.json()).subscribe(data => {
+      this.Loading.dismiss();
+      console.log(data)
+      if (data.status == 0) {
+        this.groupdata = data.data.Fitting;
+
+      } else {
+
+
+      }
+
+
+    })
+
+  }
+
+  /***********************function for product like dislike on chat */
+  public likeDislikeProduct(proid, status) {
     console.log(proid);
-   // alert(message)
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-  let options = new RequestOptions({ headers: headers });
+    // alert(message)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+    let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem("USERID");
-    if(status == 1){
-  	var postdata = {
-      id:proid,
-      like:status
-    };
-    	var serialized = this.serializeObj(postdata);
-  }else{
-    	var postdata1 = {
-      id:proid,
-      dislike:status
-    };
-    	var serialized = this.serializeObj(postdata1);
-  }
-		console.log(postdata);
-	
+    if (status == 1) {
+      var postdata = {
+        userid: user_id,
+        id: proid,
+        like: status
+      };
+      var serialized = this.serializeObj(postdata);
+    } else {
+      var postdata1 = {
+        userid: user_id,
+        id: proid,
+        dislike: status
+      };
+      var serialized = this.serializeObj(postdata1);
+    }
+    console.log(postdata);
 
-  
-  this.http.post(this.appsetting.myGlobalVar+'lookbooks/likedislikeproduct',serialized, options).map(res => res.json()).subscribe(data => {
-  this.Loading.dismiss();
-  console.log(data)
-  if(data.status==0){
-    this.showproductlist();
+
+
+    this.http.post(this.appsetting.myGlobalVar + 'lookbooks/likedislikeproduct', serialized, options).map(res => res.json()).subscribe(data => {
+      this.Loading.dismiss();
+      console.log(data)
+      if (data.status == 0) {
+        this.showproductlist();
+      }
+
+
+    })
   }
- 
-        
-   })
-}
 
   doRefresh(refresher) {
     console.log('Begin async operation', refresher);

@@ -10,7 +10,7 @@ import { FittingroomPage } from '../fittingroom/fittingroom';
   templateUrl: 'creategroup.html'
 })
 export class CreategroupPage {
-
+  user_data: any;
   constructor(
     public navCtrl: NavController,
     public http: Http,
@@ -21,6 +21,10 @@ export class CreategroupPage {
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController
   ) {
+    if (localStorage.getItem("USER_DATA")) {
+      this.user_data = JSON.parse(localStorage.getItem("USER_DATA")).data;
+      console.log(this.user_data.User.first_name);
+    }
 
   }
 
@@ -291,7 +295,7 @@ export class CreategroupPage {
         userid: user_id,
         name: this.groupname,
         groupid: ids,
-        username: firstname,
+        username: this.user_data.User.first_name + ', ' + firstname,
         image: this.baseImage,
         bit: bit
       }
