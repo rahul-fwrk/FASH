@@ -44,7 +44,7 @@ export class ChatPage {
 this.interval = setInterval(() => {
    this.content.scrollToBottom(300);
    this.chatshow();
-  }, 2000);
+  }, 1000);
     
 
     /***** end **********/
@@ -177,6 +177,7 @@ this.interval = setInterval(() => {
       this.Loading.dismiss();
       console.log(data)
       var share_id: null;
+      if(data.data){
       for(var i=0;i<data.data.length;i++){
         console.log(data.data[i].Chat.productlike);
         if(data.data[i].Chat.productlike != null){
@@ -191,7 +192,7 @@ this.interval = setInterval(() => {
       }else{
         this.scrollcard = '';
       }
-
+      }
     })
   }
 

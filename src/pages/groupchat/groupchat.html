@@ -17,7 +17,7 @@
     </ion-buttons>
   </ion-navbar>
 <ion-toolbar style="padding:0; min-height: 27px;" >
-<div class="chat_protitle" *ngIf="groupdata">Fitting room - <span style="font-family: futuraheavy;">{{groupdata.username}} & you</span> </div>
+<div class="chat_protitle" *ngIf="username">Fitting room - <span style="font-family: futuraheavy;">{{username}} & you</span> </div>
 </ion-toolbar>
 
 <ion-toolbar *ngIf="listImages">
@@ -41,30 +41,9 @@
 </ion-scroll>
 </div>
 </ion-toolbar>
-
-
-
-<!-- <ion-toolbar style="padding:0;" *ngIf="listImages">
-    <ion-scroll padding scrollX="true">
-  <div class="product_car" *ngFor="let img of listImages">
-       <div class="imagepro_inn"> 
-         <img (click)='productPage(img[0]?.prodid)' [src]="img[0]?.prodimage"/>
-          <div class="likecomm">
-           <div class="liken" (click)="likeDislikeProduct(img.Chat.id,1)"> <ion-icon *ngIf="img.Chat.productlike != null" name="thumbs-up" class="liked"><span class="count_no"> {{img.Chat.productlike}} </span></ion-icon><ion-icon  *ngIf="img.Chat.productlike == null" name="thumbs-up"><span class="count_no"> 0</span> </ion-icon> </div>
-           <div end class="disslike" (click)="likeDislikeProduct(img.Chat.id,0)"> <ion-icon *ngIf="img.Chat.productdislike != null" name="thumbs-down" class="disliked"> <span class="count_no"> {{img.Chat.productdislike}} </span> </ion-icon> <ion-icon *ngIf="img.Chat.productdislike == null" name="thumbs-down"><span class="count_no"> 0 </span></ion-icon></div>
-         </div>
-       </div>
-        
-        <div class="chtpro_title"><div class="protitle_n">{{img[0]?.prodname}}</div> 
-         <div style="float:right; font-family: futuraheavy !important;">{{img[0]?.prodprice}}</div></div>
-  </div>
- 
-</ion-scroll>
-</ion-toolbar> -->
-
 </ion-header>
 
-<ion-content class="scrollcard">
+<ion-content class="{{scrollcard}}" style="background:#fff;">
 
 <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="bubbles" refreshingText="Refreshing..."></ion-refresher-content>

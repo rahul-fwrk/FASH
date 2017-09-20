@@ -20,9 +20,9 @@ export class GroupchatPage {
   public Loading = this.loadingCtrl.create({
     content: 'Please wait...'
   });
-  chat_id; editedmsg; editedmsgid;
+  chat_id; editedmsg; editedmsgid; scrollcard;
   moment: any; interval;
-  data; userchat; listImages; time; loggeduser: any; groupdata;
+  data; userchat; listImages; time; loggeduser: any; groupdata; username: any;
   constructor(public navCtrl: NavController,
     public alertCtrl: AlertController,
     public http: Http,
@@ -33,6 +33,11 @@ export class GroupchatPage {
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController
   ) {
+    if (localStorage.getItem("USER_DATA")) {
+      var user_data = JSON.parse(localStorage.getItem("USER_DATA")).data;
+      this.username = user_data.User.first_name;
+      console.log(user_data.User.first_name);
+    }
     platform.ready().then(() => {
       var lastTimeBackPress = 0;
       var timePeriodToExit = 2000;
@@ -57,7 +62,7 @@ export class GroupchatPage {
     this.ionViewDidEnter();
     this.interval = setInterval(() => {
       this.content.scrollToBottom(300);
-      // this.chatshow();
+       this.chatshow();
     }, 1000);
     this.chat_id = this.navParams.get('chat_id');
     this.chatshow();
@@ -187,9 +192,15 @@ export class GroupchatPage {
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/groupchatliststatus', serialized, options).map(res => res.json()).subscribe(data => {
       this.Loading.dismiss();
       console.log(data)
+      if (data.data) {
+        this.listImages = data.data;
+        if (this.listImages.length > 0) {
+          this.scrollcard = 'scrollcard';
+        } else {
+          this.scrollcard = '';
+        }
+      }
 
-
-      this.listImages = data.data;
 
 
     })
@@ -369,7 +380,18 @@ export class GroupchatPage {
       this.Loading.dismiss();
       console.log(data)
       if (data.status == 0) {
-        this.groupdata = data.data.Fitting;
+        console.log(data.data.Fitting.username);
+
+        var g = data.data.Fitting.username.split(', ');
+        console.log(g);
+        var rs = g.indexOf(this.username);
+        g.splice(rs, 1);
+        console.log(g);
+        console.log(rs);
+        this.username = g.join(", ");
+        console.log(this.username);
+        // this.groupdata = data.data.Fitting;
+
 
       } else {
 
