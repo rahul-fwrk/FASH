@@ -25,7 +25,7 @@ export class ChatPage {
   public Loading = this.loadingCtrl.create({
     content: 'Please wait...'
   });
-  chat_id; editedmsg; editedmsgid; username; typingdata; chatname;
+  chat_id; editedmsg; editedmsgid; username; typingdata; chatname;scrollbottom;
   moment: any;
   data; userchat; listImages; time; loggeduser: any;
   constructor(public navCtrl: NavController,
@@ -38,16 +38,23 @@ export class ChatPage {
     public toastCtrl: ToastController,
     public zone: NgZone
   ) {
+       this.scrollbottom = setInterval(()=>{
+      this.content.scrollToBottom(300);
+  },1000)
+    if(this.navParams.get('chat_id')){
     this.chat_id = this.navParams.get('chat_id');
+    }
+
     this.chatname = this.navParams.get('name');
     console.log(this.chatname);
-    this.showproductlist();
-    
+   // this.showproductlist();
     /********** Code to refresh page after 1 second **************/
+ 
+
 this.appsetting.interval = setInterval(() => {
-   this.content.scrollToBottom(300);
    this.chatshow();
    this.showproductlist();
+   //  clearInterval(this.scrollbottom);
   }, 1000);
     
 
@@ -68,7 +75,7 @@ this.appsetting.interval = setInterval(() => {
   }
 
   public chatshow() {
-
+clearInterval(this.scrollbottom);
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
@@ -84,6 +91,7 @@ this.appsetting.interval = setInterval(() => {
 
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/chatlist', serialized, options).map(res => res.json()).subscribe(data => {
       this.Loading.dismiss();
+      
       console.log(data)
       if (data.data != null) {
         for (var i = 0; i < data.data.length; i++) {
@@ -98,6 +106,7 @@ this.appsetting.interval = setInterval(() => {
       }
       //this.ionViewDidLoad();
       this.userchat = data.data;
+    
 
     })
   }

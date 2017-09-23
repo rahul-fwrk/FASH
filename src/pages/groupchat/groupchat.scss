@@ -50,12 +50,12 @@ page-groupchat {
     color: #878787;
     font-size: 12px;
 }
-.liked.icon {
-    color:rgba(74,144,226,0.7);
-}
-.disliked.icon {
-    color:rgba(139,87,42,0.6);
-}
+// .liked.icon {
+//     color:rgba(74,144,226,0.7);
+// }
+// .disliked.icon {
+//     color:rgba(139,87,42,0.6);
+// }
 .chatusername{
     font-family: futuraheavy;
     color: #50e3c2;
@@ -139,6 +139,7 @@ span.time {
     left: 10px;
     bottom: 5px;
     color: #fff;
+    z-index: 999;
     font-family: futuraheavy;
 }
 .disslike {
@@ -172,12 +173,12 @@ span.time {
 .likecomm .icon {
     font-size: 19px;
 }
-.liked.icon {
-    color:rgba(74,144,226,0.7);
-}
-.disliked.icon {
-    color:rgba(139,87,42,0.6);
-}
+// .liked.icon {
+//     color:rgba(74,144,226,0.7);
+// }
+// .disliked.icon {
+//     color:rgba(139,87,42,0.6);
+// }
 .chat_protitle{
     background: rgba(155, 155, 155, 0.1);
     font-family: futuraheavy;

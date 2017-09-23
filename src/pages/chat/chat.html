@@ -37,14 +37,12 @@
         <div style="float:right; font-family: futuraheavy !important;">${{img[0]?.prodprice | number : '1.2-2'}}</div>
       </div>
   </div>
- 
 </ion-scroll>
 </div>
 </ion-toolbar>
-
 </ion-header>
 
-<ion-content id="scroll" class="{{scrollcard}}" style="background:#fff;" (ionScroll)="scrollHandler($event)">
+<ion-content id="scroll" class="{{scrollcard}}" style="background:#fff;" (ionScroll)="scrollHandler($event)" position="bottom">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh"
       refreshingSpinner="bubbles"
