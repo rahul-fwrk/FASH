@@ -30,6 +30,7 @@ export class ProductdetailsPage {
   colorToShow = null;
   buttonBit = '0';
   sizeToShow = null;
+  modelstat = false;
   first;
   prod_id; showDetails; diseases; showImages; sizes = []; fav;
   sizemodal; allColors; allsizes;
@@ -50,8 +51,16 @@ export class ProductdetailsPage {
     var id = this.navParams.get('prod_id')
     console.log(id);
     this.details(id)
-    this.events.subscribe('CartPage', () => {
-      this.navCtrl.push(CartPage);
+    this.events.subscribe('CartPage', (hh) => {
+      console.log('Hey'+hh+'status');
+        this.modelstat = true;
+        if(this.modelstat == true){
+          this.navCtrl.push(CartPage);
+        }else{
+          this.modelstat = false;
+        }
+        
+    
     })
 
   }

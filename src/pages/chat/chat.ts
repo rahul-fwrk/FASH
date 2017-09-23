@@ -1,4 +1,4 @@
-import { Component, ViewChild, ContentChild } from '@angular/core';
+import { Component, ViewChild, ContentChild,NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AlertController, ActionSheetController, ToastController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -10,6 +10,7 @@ import { FittingroomPage } from '../fittingroom/fittingroom';
 import { ProductdetailsPage } from '../productdetails/productdetails';
 import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
+import {Autosize} from 'ionic2-autosize';
 
 @Component({
   selector: 'page-chat',
@@ -17,6 +18,7 @@ import * as moment from 'moment';
 })
 export class ChatPage {
   isDisabled = false;scrollcard;
+   public scrollAmount = 44;
   @ViewChild(Content) content: Content;
  
 
@@ -33,7 +35,8 @@ export class ChatPage {
     public appsetting: Appsetting,
     public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public zone: NgZone
   ) {
     this.chat_id = this.navParams.get('chat_id');
     this.chatname = this.navParams.get('name');
@@ -44,6 +47,7 @@ export class ChatPage {
 this.appsetting.interval = setInterval(() => {
    this.content.scrollToBottom(300);
    this.chatshow();
+   this.showproductlist();
   }, 1000);
     
 
@@ -161,6 +165,7 @@ this.appsetting.interval = setInterval(() => {
 
   public showproductlist() {
     // alert("showproduct")
+    console.log('show product');
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
@@ -380,6 +385,12 @@ this.appsetting.interval = setInterval(() => {
       console.log(data)
       if (data.status == 0) {
         this.showproductlist();
+      }else{
+         let toast = this.toastCtrl.create({
+          message: data.msg,
+          duration: 3000
+        });
+        toast.present();
       }
 
     })
@@ -403,24 +414,23 @@ this.appsetting.interval = setInterval(() => {
       refresher.complete();
     }, 2000);
   }
+ scrollHandler(event) {
+   console.log(`ScrollEvent: ${event}`)
+  // console.log(JSON.stringify(event.scrollTop));
+   console.log(event.scrollTop);
+   this.zone.run(()=>{
+     if(event.scrollTop != 0){
+       
+     }else{
+       
+     }
+     console.log('hello')
+     
+     // since scrollAmount is data-binded,
+     // the update needs to happen in zone
+     this.scrollAmount++
+   })
+ }
 
-
-  showAlert() {
-    let alert = this.alertCtrl.create({
-      subTitle: 'You voted YES for Cabana Top!',
-      cssClass: 'vote',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
-
-  showaAlert() {
-    let alert = this.alertCtrl.create({
-      subTitle: 'You voted NO for Cabana Top!',
-      cssClass: 'vote',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
 
 }

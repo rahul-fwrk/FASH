@@ -193,7 +193,7 @@ export class GroupchatPage {
       this.Loading.dismiss();
       console.log(data)
       if (data.data) {
-        this.listImages = data.data;
+        this.listImages = data.data.reverse();
         if (this.listImages.length > 0) {
           this.scrollcard = 'scrollcard';
         } else {

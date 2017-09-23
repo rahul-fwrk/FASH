@@ -189,6 +189,8 @@ export class PaymentPage {
         console.log('COUNTRY CODE->', localStorage.getItem('country'))
         if (localStorage.getItem('country')) {
           this.card.country = localStorage.getItem('country');
+        }else{
+          this.card.country = 'US';
         }
       })
   }
@@ -452,6 +454,8 @@ export class PaymentPage {
     //console.log('COUNTRY CODE->',localStorage.getItem('country'))
         if(localStorage.getItem('country')){
           this.card.country = localStorage.getItem('country');
+        }else{
+          this.card.country = 'US';
         }
         //console.log('SELECTED CN',this.data.country)
     return this.shownGroup === group;

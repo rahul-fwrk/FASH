@@ -41,6 +41,8 @@ countrylist() {
         console.log('COUNTRY CODE->', localStorage.getItem('country'))
         if (localStorage.getItem('country')) {
           this.card.country = localStorage.getItem('country')
+        }else{
+          this.card.country = 'US';
         }
       })
 }

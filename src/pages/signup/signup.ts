@@ -143,7 +143,6 @@ export class SignupPage {
         }, options)
           .map(res => res.json())
           .subscribe(data => {
-
             this.data = data;
             console.log(this.data);
             if (data.status == 0) {
@@ -227,7 +226,12 @@ export class SignupPage {
                 //this is the object you are looking for
                 var country = data.results[0].address_components[i];
                 console.log(country.short_name)
-                localStorage.setItem('country', country.short_name)
+                if(country.short_name){
+                  localStorage.setItem('country', country.short_name)
+                }else{
+                  localStorage.setItem('country','US');
+                }
+                
                 //  alert(localStorage.getItem('country'))
                 var autocompleteOptions = {
                   componentRestrictions: { country: country.short_name },
@@ -380,8 +384,12 @@ export class SignupPage {
                           //this is the object you are looking for
                           var country = data.results[0].address_components[i];
                           console.log(country.short_name)
-
-                          localStorage.setItem('country', country.short_name)
+                          if(country.short_name){
+                            localStorage.setItem('country', country.short_name);
+                          }else{
+                            localStorage.setItem('country','US');
+                          }
+                          
                           var autocompleteOptions = {
                             componentRestrictions: { country: country.short_name },
                             types: ['geocode']
@@ -409,7 +417,7 @@ export class SignupPage {
 
                 });
 
-                this.navCtrl.push(SportyfyPage);
+                this.navCtrl.push(BirthdayPage);
               })
           });
         })

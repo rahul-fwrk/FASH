@@ -46,6 +46,8 @@ export class ShippingPage {
         console.log('COUNTRY CODE->', localStorage.getItem('country'))
         if (localStorage.getItem('country')) {
           this.data.country = JSON.parse(localStorage.getItem('country'));
+        }else{
+          this.data.country = 'US';
         }
       })
   }
@@ -201,6 +203,8 @@ export class ShippingPage {
     // console.log('COUNTRY CODE->',localStorage.getItem('country'))
         if(localStorage.getItem('country')){
           this.data.country = localStorage.getItem('country');
+        }else{
+          this.data.country = 'US';
         }
       //  console.log('SELECTED CN',this.data.country)
     return this.shownGroup === group;

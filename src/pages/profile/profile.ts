@@ -215,8 +215,12 @@ export class ProfilePage {
 		};
 		console.log(postdata);
 		var serialized = this.serializeObj(postdata);
-		// alert(JSON.stringify(postdata));
+		 var Loading = this.loadingCtrl.create({
+        spinner: 'bubbles',
+      });
+      Loading.present().then(() => {
 		this.http.post(this.appsetting.myGlobalVar + 'users/user', serialized, options).map(res => res.json()).subscribe(data => {
+			Loading.dismiss();
 			console.log(data);
 			this.profile = data.data[0].User;
 			this.srcImage = this.profile.image;
@@ -224,6 +228,10 @@ export class ProfilePage {
 			//	alert(JSON.stringify(this.profile));
 
 		})
+	  },err=>{
+       console.log(err);
+        Loading.dismiss();
+     });
 	}
 
 	login() {

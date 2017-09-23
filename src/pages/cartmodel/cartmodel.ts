@@ -29,8 +29,8 @@ export class CartmodelPage {
 
   cartPage(){
     this.dismiss()
-    this.events.publish('CartPage', 'cartPage')
-   // this.navCtrl.push(CartPage) // call on dismiss function
+    this.events.publish('CartPage', 'cartPage');
+    //this.navCtrl.push(CartPage) // call on dismiss function
   }
 
 dismiss() {this.viewCtrl.dismiss();}

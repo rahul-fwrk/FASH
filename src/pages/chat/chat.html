@@ -44,7 +44,7 @@
 
 </ion-header>
 
-<ion-content id="scroll" class="{{scrollcard}}" style="background:#fff;">
+<ion-content id="scroll" class="{{scrollcard}}" style="background:#fff;" (ionScroll)="scrollHandler($event)">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh"
       refreshingSpinner="bubbles"

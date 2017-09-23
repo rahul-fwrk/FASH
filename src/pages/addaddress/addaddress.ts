@@ -41,6 +41,10 @@ export class AddaddressPage {
           this.data = {
             country : localStorage.getItem('country'),
           }
+        }else{
+          this.data = {
+            country : 'US',
+          }
         }
       })
   }

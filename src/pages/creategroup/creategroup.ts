@@ -308,7 +308,7 @@ export class CreategroupPage {
           Loading.dismiss();
           console.log(data.data);
           if (data.status == 0) {
-            this.navCtrl.push(FittingroomPage);
+            this.navCtrl.push(FittingroomPage,{support:'true'});
           }
 
           console.log(data);

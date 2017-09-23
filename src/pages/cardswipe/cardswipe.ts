@@ -466,14 +466,12 @@ title: any;
       // return false;
       this.http.post(this.appsetting.myGlobalVar + 'lookbooks/addtofavourite', serialized, options).map(res => res.json()).subscribe(data => {
         Loading.dismiss();
-
         console.log(data)
         if (data.status == 0) {
-          
+         // alert(data.msg);
+          this.showToast(data.msg);
           console.log(data.bit)
           if (data.bit == 1) {
-            
-            this.showToast(data.msg);
             this.events.publish('Liked', '2');  // only for the stacks, so that Red dot remains in the next card
           } else {
             this.events.publish('Liked', '0');

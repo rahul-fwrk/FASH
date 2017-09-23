@@ -259,14 +259,12 @@ export class FittingroomPage {
               }
                 data.data[i].User.time = this.time;
                 data.data[i].User.lastmessage = data.data[i][0].message;
-               // console.log('IM HERE ELSE->', this.time)
                 this.userimage.push(data.data[i].User);
                 console.log('ALL DATA 2', this.userimage)
               }
             }
           }
           console.log(this.userimage);
-          // console.log(this.groupdata);
         })
 
         this.chatlist();

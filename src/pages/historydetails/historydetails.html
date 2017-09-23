@@ -33,7 +33,7 @@
         <div class="cart">
           <img [src]="hist_detail.Product.image">
            <div *ngIf="hist_detail.OrderItem.soldout == 1 && hist_detail.OrderItem.trackingid == null" class="priceremove"> SOLD OUT </div>
-          <div *ngIf="hist_detail.OrderItem.soldout == 0 && hist_detail.OrderItem.trackingid != null" class="priceremove"> {{hist_detail.OrderItem.trackingid}} </div>
+          <div *ngIf="hist_detail.OrderItem.soldout == 0 && hist_detail.OrderItem.trackingid != null" class="priceremove"> CONFIRMED </div>
       
         </div>
         </ion-col>

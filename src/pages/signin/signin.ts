@@ -14,6 +14,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Geolocation } from '@ionic-native/geolocation';
 import { TabsPage } from '../tabs/tabs';
 import { SportyfyPage } from '../sportyfy/sportyfy';
+import { BirthdayPage } from '../birthday/birthday';
 import { Firebase } from '@ionic-native/firebase';
 import { Diagnostic } from '@ionic-native/diagnostic';
 
@@ -73,20 +74,20 @@ export class SigninPage {
 
 
   public login(form) {
-    this.firebase.getToken().then(token => {
-        console.log(`The token is ${token}`)
-        //  alert(token)
-        this.token = token
-        console.log('onToken->', this.token);
-      }) // save the token server-side and use it to push notifications to this device
-      .catch(error => {
-        console.error('Error getting token', error)
-      });
-    this.firebase.onTokenRefresh().subscribe(
-      token => {
-        console.log(`The new token is ${token}`);
-        this.token = token;
-        console.log('onTokenRefresh->', this.token);
+    // this.firebase.getToken().then(token => {
+    //     console.log(`The token is ${token}`)
+    //     //  alert(token)
+    //     this.token = token
+    //     console.log('onToken->', this.token);
+    //   }) // save the token server-side and use it to push notifications to this device
+    //   .catch(error => {
+    //     console.error('Error getting token', error)
+    //   });
+    // this.firebase.onTokenRefresh().subscribe(
+    //   token => {
+    //     console.log(`The new token is ${token}`);
+    //     this.token = token;
+    //     console.log('onTokenRefresh->', this.token);
        // starts here
 
         let headers = new Headers();
@@ -151,7 +152,12 @@ export class SigninPage {
                         if (data.results[0].address_components[i].types[b] == "country") {
                           //this is the object you are looking for
                           var country = data.results[0].address_components[i];
-                          localStorage.setItem('country', country.short_name)
+                          if(country.short_name){
+                            localStorage.setItem('country', country.short_name)
+                          }else{
+                            localStorage.setItem('country','US')
+                          }
+                          
                           var autocompleteOptions = {
                             componentRestrictions: { country: country.short_name },
                             types: ['geocode']
@@ -190,10 +196,10 @@ export class SigninPage {
           })
         }
         //end here
-      },
-      error => {
-        console.error('Error refreshing token', error);
-      });
+      // },
+      // error => {
+      //   console.error('Error refreshing token', error);
+      // });
   }
 
   facebookLogin(): firebase.Promise<any> {
@@ -226,16 +232,10 @@ export class SigninPage {
         headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
         let options = new RequestOptions({ headers: headers });
         this.http.post(' https://graph.facebook.com/v2.9/' + res.authResponse.userID + '?fields=id,email,name,birthday,locale,age_range,gender,first_name,last_name&access_token=' + res.authResponse.accessToken, options).map(res => res.json()).subscribe(data => {
-          //  this.Loading.dismiss();
-          //  alert("fectch data")
-          //alert(JSON.stringify(data))
-          // console.log(data)
           this.userfbdata = data;
           localStorage.setItem('userfbdata', JSON.stringify(data))
 
         })
-        //  alert(JSON.stringify(res));
-        //  alert("srishjti")
         const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
         return this.afAuth.auth.signInWithCredential(facebookCredential).then((success) => {
           console.log("Firebase success: " + JSON.stringify(success));
@@ -244,18 +244,9 @@ export class SigninPage {
           localStorage.setItem('logIn_role', 'FB');
           localStorage.setItem('User', JSON.stringify(this.userProfile));
           this.User = JSON.parse(localStorage.getItem('User'));
-          //  alert('user ' + JSON.stringify(this.User));
-          //  alert('first_name'+this.User.displayName);
-
-          //  alert(this.User.email); 
-          //  alert(this.User.uid);
-          //   alert(this.User.photoURL);
-
           let headers = new Headers();
           headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
           let options = new RequestOptions({ headers: headers });
-
-          //  var url: string =  'http://rakesh.crystalbiltech.com/fash/api/users/fb_login';
           var data_fb = {
             first_name: this.User.displayName,
             last_name: "",
@@ -271,11 +262,8 @@ export class SigninPage {
 
 
           };
-         // alert('post data');
-         // alert(JSON.stringify(data_fb));
 
           var Serialized = this.serializeObj(data_fb);
-
           var Loading = this.loadingCtrl.create({
             spinner: 'bubbles',
             showBackdrop: false,
@@ -312,8 +300,13 @@ export class SigninPage {
                         if (data.results[0].address_components[i].types[b] == "country") {
                           //this is the object you are looking for
                           var country = data.results[0].address_components[i];
-                          alert(country.short_name)
-                          localStorage.setItem('country', country.short_name)
+                         // alert(country.short_name)
+                         if(country.short_name){
+                          localStorage.setItem('country', country.short_name);
+                         }else{
+                           localStorage.setItem('country','US');
+                         }
+                          
                           var autocompleteOptions = {
                             componentRestrictions: { country: country.short_name },
                             types: ['geocode']
@@ -337,7 +330,7 @@ export class SigninPage {
                 }).catch((error) => {
                   console.log('Error getting location', error);
                 });
-                this.navCtrl.push(SportyfyPage);
+                this.navCtrl.push(BirthdayPage);
               })
           });
         }).catch((error) => {
@@ -373,7 +366,12 @@ export class SigninPage {
             if (data.results[0].address_components[i].types[b] == "country") {
               var country = data.results[0].address_components[i];
               console.log(country.short_name)
-              localStorage.setItem('country', country.short_name)
+              if(country.short_name){
+                 localStorage.setItem('country', country.short_name);
+              }else{
+                 localStorage.setItem('country','US');
+              }
+             
               var autocompleteOptions = {
                 componentRestrictions: { country: country.short_name },
                 types: ['geocode']

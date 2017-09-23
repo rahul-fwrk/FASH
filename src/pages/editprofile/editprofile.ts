@@ -73,7 +73,7 @@ export class EditprofilePage {
         if(localStorage.getItem('country')){
           this.data1.shop = localStorage.getItem('country');
         }else{
-          this.data1.shop = 'US'
+          this.data1.shop = 'US';
         }
 
         console.log('SELECTED CN',this.data1.shop);
@@ -99,6 +99,8 @@ export class EditprofilePage {
         console.log('COUNTRY CODE->',localStorage.getItem('country'))
         if(localStorage.getItem('country')){
           this.data1.shop = localStorage.getItem('country');
+        }else{
+          this.data1.shop = 'US';
         }
         console.log('SELECTED CN',this.data1.shop)
       })
@@ -158,7 +160,6 @@ export class EditprofilePage {
 
 
   public countrylist() {
-
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     var options = new RequestOptions({ headers: headers });
