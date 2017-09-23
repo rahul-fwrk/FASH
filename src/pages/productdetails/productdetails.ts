@@ -52,15 +52,7 @@ export class ProductdetailsPage {
     console.log(id);
     this.details(id)
     this.events.subscribe('CartPage', (hh) => {
-      console.log('Hey'+hh+'status');
-        this.modelstat = true;
-        if(this.modelstat == true){
           this.navCtrl.push(CartPage);
-        }else{
-          this.modelstat = false;
-        }
-        
-    
     })
 
   }

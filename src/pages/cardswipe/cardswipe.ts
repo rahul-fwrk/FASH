@@ -188,7 +188,6 @@ title: any;
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
-    //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/listoflookbook'; 
     var postdata = {
       id: idd
     };
@@ -213,16 +212,14 @@ title: any;
       
     }
         data.data.forEach(function (value, key) {
-          console.log(value);
-        //  alert(value.Lookbook.playlist);
-          aa.getplaylist(accessToken,tokenType,value.Lookbook.playlist);
+          console.log(value.Playlist.Music);
+          aa.tracks = value.Playlist.Music;
+          aa.playTrack(aa.tracks[0]);
           if(value.Lookbook.brand != null){
             var search = value.Lookbook.brand.search('http://');
             var searchhttps = value.Lookbook.brand.search('https://');
            if(search >= 0 || searchhttps >= 0){
              value.Lookbook.brandlink = 1;
-              // value.Lookbook.image = value.Lookbook.brand;
-              // value.Lookbook.brand = '';
             }else{
               value.Lookbook.brandlink = 0;
             }
@@ -536,55 +533,27 @@ title: any;
 
 
   playTrack(track){
-    if(localStorage.getItem('code')){
     this.bit = true;
         // First stop any currently playing tracks
         for(let checkTrack of this.tracks){
             if(checkTrack.playing){
                 this.pauseTrack(checkTrack);
-                const file: MediaObject = this.media.create(checkTrack.url);
+                const file: MediaObject = this.media.create(checkTrack.music);
                 this.appsetting.audio = file;
             }
         }
-
         track.playing = true;
-       
         this.currentTrack = track;
-        const file: MediaObject = this.media.create(this.currentTrack.url);
+        const file: MediaObject = this.media.create(this.currentTrack.music);
         this.appsetting.audio = file;
-       // alert('starts')
         this.appsetting.audio.play();
         this.appsetting.audio.onSuccess.subscribe(() => {
-         // alert("onSuccess");
           if(this.tracknow==true){
               this.nexttTrack();
           }
         },err=>{
-           //   alert('next unsuccessful');
         })
-          }else{
-              let confirm = this.alertCtrl.create({
-      title: 'FASH',
-      message: 'Please login with spotify to play lookbook track',
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: () => {
-            confirm.dismiss();
-            console.log('Disagree clicked');
-          }
-        },
-        {
-          text: 'Login',
-          handler: () => {
-            this.navCtrl.push(SportyfyPage);
-            console.log('Agree clicked');
-          }
-        }
-      ]
-    });
-    confirm.present();
-          }
+   
     }
  
     pauseTrack(track){
@@ -631,48 +600,7 @@ title: any;
       }
   
     }
-  /******** function for get playlist *****************/
-
-  public getplaylist(token, tokentype,urldata) {
-   // alert(token);
-  //  alert(tokentype);
-   // alert(urldata);
-    var url = urldata;//"https://api.spotify.com/v1/users/mango_official/playlists/3KE0N6vRrsuPnIg0ciVHU5";
-    var data = { 'token': token, 'token_type': tokentype, 'urld': urldata };
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-    let options = new RequestOptions({ headers: headers });
-   // alert(JSON.stringify(data));
-    var serialized = this.serializeObj(data);
-    this.http.post(this.appsetting.myGlobalVar + 'cities/spotifygetplaylist', serialized, options).map(res => res.json()).subscribe(data => {
-     // alert('success');
-     // alert(JSON.stringify(data));
-
-    // this.tracks = data.tracks.items;
-      for (var i = 0; i < data.tracks.items.length; i++) {
-        // alert(data.tracks.items[i].track.name);
-        // alert('artist name');
-        // alert(data.tracks.items[i].track.artists[i].name);
-        if (data.tracks.items[i].track.preview_url != null) {
-          this.tracks.push({
-            'url': data.tracks.items[i].track.preview_url,
-            'playing':false,
-            'title':data.tracks.items[i].track.name,
-            'artist':data.tracks.items[i].track.artists[0].name
-          });
-        }
-      }
-      this.currentTrack = this.tracks[0];
-      this.playTrack(this.currentTrack);
-     // alert(JSON.stringify(this.tracks));
-    },
-      err => {
-
-       // alert(JSON.stringify(err));
-       // alert('err' + JSON.stringify(err))
-
-      })
-  }
+  
 
     ionViewDidEnter() {
     console.log('rahul');

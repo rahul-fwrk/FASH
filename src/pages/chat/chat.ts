@@ -38,24 +38,22 @@ export class ChatPage {
     public toastCtrl: ToastController,
     public zone: NgZone
   ) {
-       this.scrollbottom = setInterval(()=>{
-      this.content.scrollToBottom(300);
-  },1000)
+     this.ionViewDidEnter();
+      
     if(this.navParams.get('chat_id')){
     this.chat_id = this.navParams.get('chat_id');
     }
 
     this.chatname = this.navParams.get('name');
     console.log(this.chatname);
-   // this.showproductlist();
+    this.showproductlist();
     /********** Code to refresh page after 1 second **************/
  
 
 this.appsetting.interval = setInterval(() => {
    this.chatshow();
-   this.showproductlist();
    //  clearInterval(this.scrollbottom);
-  }, 1000);
+  }, 5000);
     
 
     /***** end **********/
@@ -75,7 +73,7 @@ this.appsetting.interval = setInterval(() => {
   }
 
   public chatshow() {
-clearInterval(this.scrollbottom);
+   clearInterval(this.scrollbottom);
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
@@ -91,7 +89,6 @@ clearInterval(this.scrollbottom);
 
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/chatlist', serialized, options).map(res => res.json()).subscribe(data => {
       this.Loading.dismiss();
-      
       console.log(data)
       if (data.data != null) {
         for (var i = 0; i < data.data.length; i++) {
@@ -440,6 +437,11 @@ clearInterval(this.scrollbottom);
      this.scrollAmount++
    })
  }
+ionViewDidEnter(){
+   this.scrollbottom = setInterval(()=>{
+      this.content.scrollToBottom(300);
+  },1000)
+}
 
 
 }
