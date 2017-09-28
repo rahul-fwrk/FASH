@@ -587,7 +587,7 @@ export class CardswipePage {
     }
     track.playing = true;
     this.currentTrack = track;
-    const file: MediaObject = this.media.create(this.currentTrack.music);//http://codedreaming.com/wp-content/uploads/main_tune.mp3
+    const file: MediaObject = this.media.create(this.currentTrack.music);
     this.appsetting.audio = file;
     this.appsetting.audio.play();
     this.appsetting.audio.onSuccess.subscribe(() => {
@@ -595,6 +595,7 @@ export class CardswipePage {
         this.nexttTrack();
       }
     }, err => {
+
     })
 
   }
@@ -645,36 +646,36 @@ export class CardswipePage {
   }
 
 /*************** In App purchase for brands *********************/
-InAppPurchage(){
-  var loginurl = 'https://shop.mango.com/in';
-  var target = '_blank';
-  var options = 'location=yes';
-  var brandsite = this.inappBrowser.create(loginurl, target, options);
-  console.log(loginurl);
-  console.log(target);
-  console.log(brandsite);
+// InAppPurchage(){
+//   var loginurl = 'https://shop.mango.com/in';
+//   var target = '_blank';
+//   var options = 'location=yes';
+//   var brandsite = this.inappBrowser.create(loginurl, target, options);
+//   console.log(loginurl);
+//   console.log(target);
+//   console.log(brandsite);
   
-  brandsite.on('loadstart').subscribe((e) => {
-    console.log(e);
-    let url = e.url;
-    console.log(url);
-    alert(url);
+//   brandsite.on('loadstart').subscribe((e) => {
+//     console.log(e);
+//     let url = e.url;
+//     console.log(url);
+//     alert(url);
 
-    // var redirect_uri = e.url.split('code=');
-    // console.log(redirect_uri);
-    // if (redirect_uri[0] == 'https://rakesh.crystalbiltech.com/?') {
-    //   brandsite.close();
-    // }
-  }, err => {
-    console.log("InAppBrowser loadstart Event Error: " + err);
-   // alert(err)
-  });
+//     // var redirect_uri = e.url.split('code=');
+//     // console.log(redirect_uri);
+//     // if (redirect_uri[0] == 'https://rakesh.crystalbiltech.com/?') {
+//     //   brandsite.close();
+//     // }
+//   }, err => {
+//     console.log("InAppBrowser loadstart Event Error: " + err);
+//    // alert(err)
+//   });
 
-  brandsite.on('exit').subscribe((e) => {
-   alert('On exit');
-  alert(e);
-  })
-}
+//   brandsite.on('exit').subscribe((e) => {
+//    alert('On exit');
+//   alert(e);
+//   })
+// }
 
 
   ionViewDidEnter() {
