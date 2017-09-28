@@ -62,7 +62,6 @@ playTrack(track){
         // First stop any currently playing tracks
  
         for(let checkTrack of this.tracks){
- 
             if(checkTrack.playing){
                 this.pauseTrack(checkTrack);
                 const file: MediaObject = this.media.create(checkTrack.url);

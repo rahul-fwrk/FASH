@@ -95,7 +95,6 @@ export class SigninPage {
         let options = new RequestOptions({ headers: headers });
         localStorage.removeItem('fabuser');
          localStorage.removeItem('logIn_role');
-        //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/users/login'; 
         console.log(form.value.password.indexOf(' '));
         if (form.value.password.indexOf(' ') >= 0) {
           let toast = this.toastCtrl.create({
@@ -129,12 +128,11 @@ export class SigninPage {
                 localStorage.setItem("swipe_status", JSON.stringify(data.data.User.swipe_status));
                 localStorage.setItem('fitting_status', JSON.stringify(data.data.User.fitting_status));
                 localStorage.setItem('favourite_status', JSON.stringify(data.data.User.favourite_status));
-
                 var user_id = data.data.User.id;
-                console.log(user_id)
+                console.log(user_id);
                 localStorage.setItem("USERID", data.data.User.id);
                 localStorage.setItem("swipe_status", data.data.User.swipe_status);
-                console.log(localStorage.getItem("USERID"))
+                console.log(localStorage.getItem("USERID"));
                 this.geolocation.getCurrentPosition().then((resp) => {
                   console.log(resp)
                   console.log(resp.coords.longitude)
@@ -189,8 +187,6 @@ export class SigninPage {
                   position: 'middle'
                 });
                 toast.present();
-                //alert(data.msg);
-
               }
             })
           })
@@ -206,35 +202,30 @@ export class SigninPage {
     this.firebase.getToken()
       .then(token => {
         console.log(`The token is ${token}`)
-        // alert(token)
         this.token = token
-
       }) // save the token server-side and use it to push notifications to this device
       .catch(error => console.error('Error getting token', error));
     this.firebase.onTokenRefresh().subscribe(
       token => {
         console.log(`The new token is ${token}`);
-        this.token = token
-        // alert('token'+token)
+        this.token = token;
       },
       error => {
         console.error('Error refreshing token', error);
       });
-    //  alert("start");
+
     var fabuser = 1;
     localStorage.setItem('fabuser', '1');
 
     if (this.platform.is('cordova')) {
 
       return this.facebook.login(['public_profile', 'email']).then(res => {
-
         let headers = new Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
         let options = new RequestOptions({ headers: headers });
         this.http.post(' https://graph.facebook.com/v2.9/' + res.authResponse.userID + '?fields=id,email,name,birthday,locale,age_range,gender,first_name,last_name&access_token=' + res.authResponse.accessToken, options).map(res => res.json()).subscribe(data => {
-          this.userfbdata = data;
-          localStorage.setItem('userfbdata', JSON.stringify(data))
-
+        this.userfbdata = data;
+        localStorage.setItem('userfbdata', JSON.stringify(data))
         })
         const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
         return this.afAuth.auth.signInWithCredential(facebookCredential).then((success) => {
@@ -259,8 +250,6 @@ export class SigninPage {
             cards: "",
             address: "",
             tokenid: this.token
-
-
           };
 
           var Serialized = this.serializeObj(data_fb);
@@ -274,14 +263,12 @@ export class SigninPage {
             this.http.post(this.appsetting.myGlobalVar + 'users/fblogin', Serialized, options)
               .map(res => res.json())
               .subscribe(datares => {
-               // alert(JSON.stringify(datares.data.User));
                 Loading.dismiss();
                 localStorage.setItem("USER_DATA", JSON.stringify(datares))
                 localStorage.setItem("swipe_status", JSON.stringify(datares.data.User.swipe_status));
                 localStorage.setItem('fitting_status', JSON.stringify(datares.data.User.fitting_status));
                 localStorage.setItem('favourite_status', JSON.stringify(datares.data.User.favourite_status));
                 localStorage.setItem("USERID", datares.data.User.id)
-               // alert(datares.data.User.id);
                 this.geolocation.getCurrentPosition().then((resp) => {
                   console.log(resp)
                   console.log(resp.coords.longitude)
@@ -289,18 +276,14 @@ export class SigninPage {
                   let options = new RequestOptions({ headers: headers });
 
                   this.http.post('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + resp.coords.latitude + ',' + resp.coords.longitude + '&key=AIzaSyAy-7ToF2VeQ5l733vRis8gIK0MhCmj53k', options).map(res => res.json()).subscribe(data => {
-
                     console.log(JSON.stringify(data));
-
                     console.log(data.results);
                     var address = data.results[0].address_components[0].long_name + ', ' + data.results[0].address_components[1].long_name;
-                    //alert(address)
                     for (var i = 0; i < data.results[0].address_components.length; i++) {
                       for (var b = 0; b < data.results[0].address_components[i].types.length; b++) {
                         if (data.results[0].address_components[i].types[b] == "country") {
                           //this is the object you are looking for
                           var country = data.results[0].address_components[i];
-                         // alert(country.short_name)
                          if(country.short_name){
                           localStorage.setItem('country', country.short_name);
                          }else{
@@ -315,7 +298,6 @@ export class SigninPage {
 
                         }
                         if (data.results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                          //this is the object you are looking for
                           var country = data.results[0].address_components[i];
                           console.log(country.short_name)
                           localStorage.setItem('city', country.long_name);
@@ -330,7 +312,13 @@ export class SigninPage {
                 }).catch((error) => {
                   console.log('Error getting location', error);
                 });
-                this.navCtrl.push(BirthdayPage);
+                if(datares.data.User.allreadyloggedin == 1){
+                  alert('fb logged in second time');
+                }else{
+                  alert('fb logged in first time');
+                  this.navCtrl.push(BirthdayPage);
+                }
+                
               })
           });
         }).catch((error) => {

@@ -105,7 +105,6 @@ export class SignupPage {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
-    // var url = 'http://rakesh.crystalbiltech.com/fash/api/users/registration';
     if (signup.value.password.indexOf(' ') >= 0) {
       let toast = this.toastCtrl.create({
         message: 'Space not allowed',
@@ -173,8 +172,6 @@ export class SignupPage {
                   this.navCtrl.push(GenderPage);
                 }
               })
-
-
             } else {
 
               Loading.dismiss();
@@ -190,8 +187,6 @@ export class SignupPage {
               });
               toast.present();
             }
-
-
           })
       });
 
@@ -204,17 +199,10 @@ export class SignupPage {
       console.log(resp.coords.longitude)
       console.log(resp.coords.latitude)
          this.diagnostic.switchToLocationSettings();
-      // var Loading = this.loadingCtrl.create({
-      //   spinner: 'hide',
-      //   content: '<img width="32px" src="../assets/images/Loading_icon.gif">'
-      // });
-      // Loading.present().then(() => {
+
         this.http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng=' + resp.coords.latitude + ',' + resp.coords.longitude + '&sensor=true').map(res => res.json()).subscribe(data => {
-          // this.http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + resp.coords.latitude + ',' + resp.coords.longitude + '&key=AIzaSyABpAuj9-Y3JJaYHQE1YusDPNHWyyWJk8U',
-         // Loading.dismiss();
           console.log('rahul');
           console.log(JSON.stringify(data))
-          // alert(JSON.stringify(data))
           console.log(data.results);
           var address = data.results[0].formatted_address;
           localStorage.setItem('location', address);
@@ -231,8 +219,6 @@ export class SignupPage {
                 }else{
                   localStorage.setItem('country','US');
                 }
-                
-                //  alert(localStorage.getItem('country'))
                 var autocompleteOptions = {
                   componentRestrictions: { country: country.short_name },
                   types: ['geocode']
@@ -241,11 +227,9 @@ export class SignupPage {
 
               }
               if (data.results[0].address_components[i].types[b] == "administrative_area_level_1") {
-                //this is the object you are looking for
                 var country = data.results[0].address_components[i];
                 console.log(country.short_name)
-                localStorage.setItem('city', country.long_name)
-                // alert(localStorage.getItem('city'))
+                localStorage.setItem('city', country.long_name);
                 var autocompleteOptions = {
                   componentRestrictions: { country: country.short_name },
                   types: ['geocode']
@@ -375,7 +359,7 @@ export class SignupPage {
 
                     console.log(data.results);
                     var address = data.results[0].address_components[0].long_name + ', ' + data.results[0].address_components[1].long_name;
-                    //alert(address)
+                 
                     for (var i = 0; i < data.results[0].address_components.length; i++) {
                       for (var b = 0; b < data.results[0].address_components[i].types.length; b++) {
 
@@ -411,7 +395,6 @@ export class SignupPage {
                       }
                     }
                   })
-                  //var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+resp.coords.latitude+','+resp.coords.longitude+'&key=AIzaSyAy-7ToF2VeQ5l733vRis8gIK0MhCmj53k';
                 }).catch((error) => {
                   console.log('Error getting location', error);
 
@@ -423,13 +406,9 @@ export class SignupPage {
         })
           .catch((error) => {
             console.log("Firebase failure: " + JSON.stringify(error));
-            // alert("Firebase failure: " + JSON.stringify(error));
-
           });
       }).catch((error) => {
         console.log(error)
-
-        // alert("err failure: " + JSON.stringify(error));
 
       });
     } else {
@@ -437,17 +416,10 @@ export class SignupPage {
       return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then((success) => {
         console.log("Firebase success: LOOK HERE " + JSON.stringify(success));
         this.userProfile = success;
-
-        //  localStorage.setItem('logIn_role', 'FB');
-        //  localStorage.setItem('User', JSON.stringify(this.userProfile));
-
         var User = localStorage.getItem('User');
-        // alert('user ' + User);
       })
         .catch((error) => {
           console.log("Firebase failure: " + JSON.stringify(error));
-          //  alert("Firebase failure: " + JSON.stringify(error));
-          // this.navCtrl.push(ForgotpwPage);
         });;
     }
   }

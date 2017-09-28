@@ -106,26 +106,6 @@ export class CardswipePage {
       });
     });
     this.ionViewDidEnter();
-
-    // this.tracks = [{
-    //       playing:false,
-    //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGONewCampaignFallWinter2017.mp3"
-    //     },
-    //     {
-    //       playing:false,
-    //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGOSTORETEAM.mp3"
-    //     },
-    //     {
-    //       playing:false,
-    //       music:"https://rakesh.crystalbiltech.com/fash/upload/MangoCommittedCollection.mp3"
-    //     },
-    //     {
-    //       playing:false,
-    //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGONewCampaignFallWinter2017.mp3"
-    //     }]
-
-    //console.log(this.tracks);
-
     var swipe_status = JSON.parse(localStorage.getItem('swipe_status'));
     console.log('firsttime swipe', swipe_status);
     var idd: any = localStorage.getItem('lookbookid')
@@ -220,6 +200,7 @@ export class CardswipePage {
           if (value.Playlist.Music) {
             console.log(value.Playlist.Music);
             aa.tracks = value.Playlist.Music;
+            localStorage.setItem('tracks',this.tracks);
             aa.playTrack(aa.tracks[0]);
           }
           if (value.Lookbook.brand != null) {
@@ -258,9 +239,11 @@ export class CardswipePage {
 
       let allcards: any = this.allcards;
       data.data.forEach(function (value, key) {
+        //console.log(value.Playlist.Music.length);
         if (value.Playlist.Music) {
           console.log(value.Playlist.Music);
           this.tracks = value.Playlist.Music;
+          localStorage.setItem('tracks',this.tracks);
           this.playTrack(this.tracks[0]);
         }
         if (value.Lookbook.brand != null) {
@@ -522,80 +505,27 @@ export class CardswipePage {
     return result.join("&");
   }
 
-  // playAudio(){
-  //   // alert('play audio');
-  //   // this.audurl = 'http://codedreaming.com/wp-content/uploads/main_tune.mp3';
-  //   // if(this.audurl!=""){
-  //   //     this.audio = new Audio(this.audurl);
-  //   //     this.audio.load();
-  //   //     this.audio.play();  
-  //   // }else{
-  //   //     let alert = this.alertCtrl.create({
-  //   //       title: 'Play Audio',
-  //   //       subTitle: 'Please enter audio link in edit profile',
-  //   //       });
-  //   //     alert.present();
-  //   //     setTimeout(()=>alert.dismiss(),1500);
-  //   // }
-
-  //   alert("helloji");
-  //     this.bit = true;
-  //     let track = [{
-  //       playing:false,
-  //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGONewCampaignFallWinter2017.mp3"
-  //     },
-  //     {
-  //       playing:false,
-  //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGOSTORETEAM.mp3"
-  //     },
-  //     {
-  //       playing:false,
-  //       music:"https://rakesh.crystalbiltech.com/fash/upload/MangoCommittedCollection.mp3"
-  //     },
-  //     {
-  //       playing:false,
-  //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGONewCampaignFallWinter2017.mp3"
-  //     }
-  //     ]
-  //     alert(JSON.stringify(track));
-  //    alert(JSON.stringify(track.music));
-  //         // First stop any currently playing tracks
-  //         // for(let checkTrack of this.tracks){
-  //         //     if(checkTrack.playing){
-  //         //         this.pauseTrack(checkTrack);
-  //         //         const file: MediaObject = this.media.create(checkTrack.music);
-  //         //         this.appsetting.audio = file;
-  //         //     }
-  //         // }
-  //         // this.currentTrack = track;
-  //        track.playing=true;
-
-  //         const file: MediaObject = this.media.create(track.music);//http://codedreaming.com/wp-content/uploads/main_tune.mp3
-  //         this.appsetting.audio = file;
-  //         this.appsetting.audio.play();
-  // }
-
   playTrack(track) {
     this.bit = true;
     var aa = this;
-    for (let checkTrack of this.tracks) {
-      if (checkTrack.playing) {
-        aa.pauseTrack(checkTrack);
-        const file: MediaObject = this.media.create(checkTrack.music);
+    if(this.appsetting.audio != undefined)
+      {
+        this.appsetting.audio.play();
+      }else{
+        track.playing = true;
+        this.currentTrack = track;
+        const file: MediaObject = this.media.create(this.currentTrack.music);
+        localStorage.setItem('currenttrack',this.currentTrack);
         this.appsetting.audio = file;
+        this.appsetting.audio.play();
       }
-    }
-    track.playing = true;
-    this.currentTrack = track;
-    const file: MediaObject = this.media.create(this.currentTrack.music);
-    this.appsetting.audio = file;
-    this.appsetting.audio.play();
+
     this.appsetting.audio.onSuccess.subscribe(() => {
-      if (this.tracknow == true) {
+    if (this.tracknow == true) {
+      //localStorage.setItem('currenttrack',this.currentTrack);
         this.nexttTrack();
       }
     }, err => {
-
     })
 
   }
@@ -616,6 +546,7 @@ export class CardswipePage {
   nexttTrack() {
     let index = this.tracks.indexOf(this.currentTrack);
     index >= this.tracks.length - 1 ? index = 0 : index++;
+    this.appsetting.audio=undefined;
     this.playTrack(this.tracks[index]);
   }
 
@@ -623,6 +554,7 @@ export class CardswipePage {
     this.setvarNow = "nextTrack";
     let index = this.tracks.indexOf(this.currentTrack);
     index >= this.tracks.length - 1 ? index = 0 : index++;
+    this.appsetting.audio=undefined;
     this.playTrack(this.tracks[index]);
   }
 
@@ -630,6 +562,7 @@ export class CardswipePage {
     this.setvarNow = "prevTrack";
     let index = this.tracks.indexOf(this.currentTrack);
     index > 0 ? index-- : index = this.tracks.length - 1;
+    this.appsetting.audio=undefined;
     this.playTrack(this.tracks[index]);
   }
 
