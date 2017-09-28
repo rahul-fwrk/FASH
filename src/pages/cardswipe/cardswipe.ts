@@ -6,7 +6,7 @@ import { LoadingController, AlertController } from 'ionic-angular';
 import { TutorialPage } from '../tutorial/tutorial';
 import { TabsPage } from '../tabs/tabs';
 import { SigninPage } from '../signin/signin';
-import { ToastController,Platform } from 'ionic-angular';
+import { ToastController, Platform } from 'ionic-angular';
 import { ProductdetailsPage } from '../productdetails/productdetails'; //
 import { TutorialfavPage } from '../tutorialfav/tutorialfav';
 import { TutorialfitPage } from '../tutorialfit/tutorialfit';
@@ -15,6 +15,7 @@ import { FittingroomPage } from '../fittingroom/fittingroom';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import 'rxjs/Rx';
 import { Events } from 'ionic-angular';
 import { Slides } from 'ionic-angular';
@@ -41,28 +42,28 @@ export class CardswipePage {
 
 
   cards: Array<any>;
-  lastItem;artist:any;
+  lastItem; artist: any;
   //stackConfig: StackConfig;
   recentCard: string = '';
   resLength: any;
   index;
-  bit:boolean = true;
+  bit: boolean = true;
   allcards: any = [];
   allLookbookIDs;
   lastProductofLookbook;
   selectedItem;
   nextLookbook_id;
   alreadyPushed// check if u need this
-  lengthofLoookbook;brandlink;
+  lengthofLoookbook; brandlink;
 
   tracks: any = [];
   playing: boolean = true;
   currentTrack: any;
-title: any;
+  title: any;
   audioIndex;
   setvarNow: any;
   tracknow: boolean = true;
-  //
+  audurl; audio;
   res;
   text;
   brand;
@@ -76,45 +77,62 @@ title: any;
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
-     private nativeAudio: NativeAudio,
+    private nativeAudio: NativeAudio,
     public media: Media,
     public file: File,
     public platform: Platform,
+    public inappBrowser: InAppBrowser
   ) {
-       platform.ready().then(() => {
-        var lastTimeBackPress = 0;
-        var timePeriodToExit  = 2000;
+    this.setvarNow="playTrack";
+    platform.ready().then(() => {
+      var lastTimeBackPress = 0;
+      var timePeriodToExit = 2000;
 
-        platform.registerBackButtonAction(() => {
-            // get current active page
-            let view = this.navCtrl.getActive();
-                if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
-                    this.platform.exitApp(); //Exit from app
-                } else {
-                 // alert('Press back again to exit App?');
-                    let toast = this.toastCtrl.create({
-                        message:  'Press back again to exit from app?',
-                        duration: 3000,
-                        position: 'bottom'
-                    });
-                    toast.present();
-                    lastTimeBackPress = new Date().getTime();
-                }
-        });
+      platform.registerBackButtonAction(() => {
+        // get current active page
+        let view = this.navCtrl.getActive();
+        if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+          this.platform.exitApp(); //Exit from app
+        } else {
+          // alert('Press back again to exit App?');
+          let toast = this.toastCtrl.create({
+            message: 'Press back again to exit from app?',
+            duration: 3000,
+            position: 'bottom'
+          });
+          toast.present();
+          lastTimeBackPress = new Date().getTime();
+        }
+      });
     });
-  this.ionViewDidEnter();
+    this.ionViewDidEnter();
+
+    // this.tracks = [{
+    //       playing:false,
+    //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGONewCampaignFallWinter2017.mp3"
+    //     },
+    //     {
+    //       playing:false,
+    //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGOSTORETEAM.mp3"
+    //     },
+    //     {
+    //       playing:false,
+    //       music:"https://rakesh.crystalbiltech.com/fash/upload/MangoCommittedCollection.mp3"
+    //     },
+    //     {
+    //       playing:false,
+    //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGONewCampaignFallWinter2017.mp3"
+    //     }]
+
+    //console.log(this.tracks);
+
     var swipe_status = JSON.parse(localStorage.getItem('swipe_status'));
-     console.log('firsttime swipe', swipe_status);
-    // if (swipe_status != 1) {
-    //   this.tutorialModal()
-    //   localStorage.setItem('swipe_status', '1');
-    // }
-    
+    console.log('firsttime swipe', swipe_status);
     var idd: any = localStorage.getItem('lookbookid')
     this.viewfrontPage(idd);
     this.viewlookbook();
     this.lookbooklist();
-    
+
   }
 
 
@@ -135,13 +153,9 @@ title: any;
   }
 
 
-
-  //isEnd()
   ondrag() {
-    // let activeIndex = this.slides.getActiveIndex();
     var length = this.slides.length();
     console.log(length);
-    // var length1 = this.lengthofLoookbook;
     console.log('ONdrag currentLookbook', this.nextLookbook_id)
     if (this.nextLookbook_id == undefined) {
       var currentLookbook_id: any = localStorage.getItem('lookbookid');
@@ -153,21 +167,17 @@ title: any;
 
     var first = this.slides.isBeginning()
     var last = this.slides.isEnd()
-    // console.log('Is First? ' ,first);
     console.log('Is Last', last);
     if (last == true) {
       this.allLookbookIDs.forEach(function (value, $index) {
         if (value.Lookbook.id == currentLookbook_id) {
           var next_lookbook_INDEX = $index + 1;
-          console.log('currentLookbook_id', currentLookbook_id)
-          //alert(JSON.stringify(data[next_lookbook_INDEX]));
-            if(data[next_lookbook_INDEX].Lookbook != undefined){
-                aa.nextLookbook_id = data[next_lookbook_INDEX].Lookbook.id
-            } else {
-               this.showToast('Sorry, there is no data available.')
-            }
-        
-          // console.log('nextLookbook_id ',aa.nextLookbook_id)
+          console.log('currentLookbook_id', currentLookbook_id);
+          if (data[next_lookbook_INDEX].Lookbook != undefined) {
+            aa.nextLookbook_id = data[next_lookbook_INDEX].Lookbook.id
+          } else {
+            this.showToast('Sorry, there is no data available.')
+          }
         }
       });
       this.nextLookbook_id = aa.nextLookbook_id;
@@ -202,25 +212,22 @@ title: any;
     Loading.present().then(() => {
       this.http.post(this.appsetting.myGlobalVar + 'lookbooks/frontpageoflookbook', serialized, options).map(res => res.json()).subscribe(data => {
         Loading.dismiss();
+        console.log(data.data);
+
         let allcards: any = this.allcards;
-            if(localStorage.getItem('accessToken') && localStorage.getItem('tokenType')){
-    //  alert(localStorage.getItem('accessToken'));
-      var accessToken = localStorage.getItem('accessToken');
-     // alert('tokenType');
-     // alert(localStorage.getItem('tokenType'));
-      var tokenType = localStorage.getItem('tokenType');
-      
-    }
         data.data.forEach(function (value, key) {
-          console.log(value.Playlist.Music);
-          aa.tracks = value.Playlist.Music;
-          aa.playTrack(aa.tracks[0]);
-          if(value.Lookbook.brand != null){
+          console.log(value);
+          if (value.Playlist.Music) {
+            console.log(value.Playlist.Music);
+            aa.tracks = value.Playlist.Music;
+            aa.playTrack(aa.tracks[0]);
+          }
+          if (value.Lookbook.brand != null) {
             var search = value.Lookbook.brand.search('http://');
             var searchhttps = value.Lookbook.brand.search('https://');
-           if(search >= 0 || searchhttps >= 0){
-             value.Lookbook.brandlink = 1;
-            }else{
+            if (search >= 0 || searchhttps >= 0) {
+              value.Lookbook.brandlink = 1;
+            } else {
               value.Lookbook.brandlink = 0;
             }
           }
@@ -240,21 +247,31 @@ title: any;
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
 
-
     var idd: any = this.nextLookbook_id;
-
     var postdata = {
       id: idd
     };
-    // console.log(postdata);
     var serialized = this.serializeObj(postdata);
 
 
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/frontpageoflookbook', serialized, options).map(res => res.json()).subscribe(data => {
 
       let allcards: any = this.allcards;
-      //console.log('front COVER:- ',this.allcards);
       data.data.forEach(function (value, key) {
+        if (value.Playlist.Music) {
+          console.log(value.Playlist.Music);
+          this.tracks = value.Playlist.Music;
+          this.playTrack(this.tracks[0]);
+        }
+        if (value.Lookbook.brand != null) {
+          var search = value.Lookbook.brand.search('http://');
+          var searchhttps = value.Lookbook.brand.search('https://');
+          if (search >= 0 || searchhttps >= 0) {
+            value.Lookbook.brandlink = 1;
+          } else {
+            value.Lookbook.brandlink = 0;
+          }
+        }
         allcards.push(value)
       })
       this.allcards = allcards;
@@ -267,20 +284,17 @@ title: any;
 
   }
 
-
   showToast(msg) {
     var toast = this.toastCtrl.create({
       message: msg,
       duration: 2000,
       cssClass: 'toastCss',
       position: 'middle',
-      // closeButtonText: 'ok'
     });
     toast.present();
   }
 
 
-  //our api
   public viewlookbook() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
@@ -293,21 +307,17 @@ title: any;
     };
     console.log(postdata);
     var serialized = this.serializeObj(postdata);
-
     var Loading = this.loadingCtrl.create({
       spinner: 'bubbles',
       showBackdrop: false,
       cssClass: 'loader'
     });
+
     Loading.present().then(() => {
       this.http.post(this.appsetting.myGlobalVar + 'lookbooks/productoflookbook', serialized, options)
         .map(res => res.json()).subscribe(data => {
           Loading.dismiss();
-
-          // console.log('our data : ', data);
           if (data.status == 0) {
-
-            // this.allcards = data.data;  //for front page
             let allcards = this.allcards
             data.data.forEach(function (value, key) {
               allcards.push(value);
@@ -317,9 +327,7 @@ title: any;
             console.log('VIEW LOOK BOOK', this.allcards);
             this.lastItem = this.allcards[this.allcards.length - 1];
             this.lengthofLoookbook = this.lastItem;
-            this.lastProductofLookbook = this.lastItem.Product.id
-            // this.allcards.push(this.lengthofLoookbook);
-            // console.log('Last Item', this.lastItem);
+            this.lastProductofLookbook = this.lastItem.Product.id;
           } else {
             this.showToast('Sorry, no products available')
           }
@@ -333,7 +341,6 @@ title: any;
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
-    // var idd = localStorage.getItem('lookbookid');
     var uid = localStorage.getItem('USERID')
     var postdata = {
       lookbookid: id,
@@ -351,8 +358,6 @@ title: any;
     Loading.present().then(() => {
       this.http.post(this.appsetting.myGlobalVar + 'lookbooks/productoflookbook', serialized, options).map(res => res.json()).subscribe(data => {
         Loading.dismiss();
-
-        // console.log('our data : ', data);
         if (data.status == 0) {
           console.log('old', this.allcards)
           let allcards = this.allcards
@@ -361,10 +366,6 @@ title: any;
           });
           this.allcards = allcards;
           console.log('updated', this.allcards);
-          // this.lastItem = this.allcards[this.allcards.length - 1];
-          // this.lengthofLoookbook = this.lastItem;
-          // this.lastProductofLookbook = this.lastItem.Product.id
-          // console.log('Last Item', this.lastItem);
         } else {
           this.showToast('Sorry, no products available')
         }
@@ -379,7 +380,6 @@ title: any;
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
-    // var idd = localStorage.getItem('lookbookid');
     var uid = localStorage.getItem('USERID')
     var postdata = {
       lookbookid: id,
@@ -427,15 +427,6 @@ title: any;
     if (user_id == null || undefined) {
       this.ConfirmUser();
     } else {
-
-     // var firsTime = JSON.parse(localStorage.getItem('favourite_status'));
-      // if (firsTime == 0) {
-      //   let modal = this.modalCtrl.create(TutorialfavPage);
-      //   modal.present();
-      //   modal.onDidDismiss(data => {
-      //     localStorage.setItem('favourite_status', '1')
-      //   })
-      // }
       let headers = new Headers();
       headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
       let options = new RequestOptions({ headers: headers });
@@ -465,7 +456,7 @@ title: any;
         Loading.dismiss();
         console.log(data)
         if (data.status == 0) {
-         // alert(data.msg);
+          // alert(data.msg);
           this.showToast(data.msg);
           console.log(data.bit)
           if (data.bit == 1) {
@@ -488,10 +479,10 @@ title: any;
     if (user_id == null || undefined) {
       this.ConfirmUser();
     } else {
-    console.log(id);
-    var fit: any = JSON.parse(localStorage.getItem('fitting_status'));
-    console.log('statata', fit)
-      this.navCtrl.push(FittingroomPage, { share_id: id ,sharebit:1})
+      console.log(id);
+      var fit: any = JSON.parse(localStorage.getItem('fitting_status'));
+      console.log('statata', fit)
+      this.navCtrl.push(FittingroomPage, { share_id: id, sharebit: 1 })
     }
   }
 
@@ -531,78 +522,162 @@ title: any;
     return result.join("&");
   }
 
+  // playAudio(){
+  //   // alert('play audio');
+  //   // this.audurl = 'http://codedreaming.com/wp-content/uploads/main_tune.mp3';
+  //   // if(this.audurl!=""){
+  //   //     this.audio = new Audio(this.audurl);
+  //   //     this.audio.load();
+  //   //     this.audio.play();  
+  //   // }else{
+  //   //     let alert = this.alertCtrl.create({
+  //   //       title: 'Play Audio',
+  //   //       subTitle: 'Please enter audio link in edit profile',
+  //   //       });
+  //   //     alert.present();
+  //   //     setTimeout(()=>alert.dismiss(),1500);
+  //   // }
 
-  playTrack(track){
+  //   alert("helloji");
+  //     this.bit = true;
+  //     let track = [{
+  //       playing:false,
+  //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGONewCampaignFallWinter2017.mp3"
+  //     },
+  //     {
+  //       playing:false,
+  //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGOSTORETEAM.mp3"
+  //     },
+  //     {
+  //       playing:false,
+  //       music:"https://rakesh.crystalbiltech.com/fash/upload/MangoCommittedCollection.mp3"
+  //     },
+  //     {
+  //       playing:false,
+  //       music:"https://rakesh.crystalbiltech.com/fash/upload/MANGONewCampaignFallWinter2017.mp3"
+  //     }
+  //     ]
+  //     alert(JSON.stringify(track));
+  //    alert(JSON.stringify(track.music));
+  //         // First stop any currently playing tracks
+  //         // for(let checkTrack of this.tracks){
+  //         //     if(checkTrack.playing){
+  //         //         this.pauseTrack(checkTrack);
+  //         //         const file: MediaObject = this.media.create(checkTrack.music);
+  //         //         this.appsetting.audio = file;
+  //         //     }
+  //         // }
+  //         // this.currentTrack = track;
+  //        track.playing=true;
+
+  //         const file: MediaObject = this.media.create(track.music);//http://codedreaming.com/wp-content/uploads/main_tune.mp3
+  //         this.appsetting.audio = file;
+  //         this.appsetting.audio.play();
+  // }
+
+  playTrack(track) {
     this.bit = true;
-        // First stop any currently playing tracks
-        for(let checkTrack of this.tracks){
-            if(checkTrack.playing){
-                this.pauseTrack(checkTrack);
-                const file: MediaObject = this.media.create(checkTrack.music);
-                this.appsetting.audio = file;
-            }
-        }
-        track.playing = true;
-        this.currentTrack = track;
-        const file: MediaObject = this.media.create(this.currentTrack.music);
+    var aa = this;
+    for (let checkTrack of this.tracks) {
+      if (checkTrack.playing) {
+        aa.pauseTrack(checkTrack);
+        const file: MediaObject = this.media.create(checkTrack.music);
         this.appsetting.audio = file;
-        this.appsetting.audio.play();
-        this.appsetting.audio.onSuccess.subscribe(() => {
-          if(this.tracknow==true){
-              this.nexttTrack();
-          }
-        },err=>{
-        })
-   
+      }
     }
- 
-    pauseTrack(track){
-        track.playing = false;
-        this.appsetting.audio.pause();
-        this.currentTrack = track;
-    }
-  pausetyTrack(track){
+    track.playing = true;
+    this.currentTrack = track;
+    const file: MediaObject = this.media.create(this.currentTrack.music);//http://codedreaming.com/wp-content/uploads/main_tune.mp3
+    this.appsetting.audio = file;
+    this.appsetting.audio.play();
+    this.appsetting.audio.onSuccess.subscribe(() => {
+      if (this.tracknow == true) {
+        this.nexttTrack();
+      }
+    }, err => {
+    })
+
+  }
+
+  pauseTrack(track) {
+    track.playing = false;
+    this.appsetting.audio.pause();
+    this.currentTrack = track;
+  }
+
+  pausetyTrack(track) {
     this.bit = false;
-        track.playing = false;
-        this.appsetting.audio.pause();
-        this.currentTrack = track;
-    }
+    track.playing = false;
+    this.appsetting.audio.pause();
+    this.currentTrack = track;
+  }
 
-  nexttTrack(){
-        let index = this.tracks.indexOf(this.currentTrack);
-        index >= this.tracks.length - 1 ? index = 0 : index++;
-        this.playTrack(this.tracks[index]);
-    }
+  nexttTrack() {
+    let index = this.tracks.indexOf(this.currentTrack);
+    index >= this.tracks.length - 1 ? index = 0 : index++;
+    this.playTrack(this.tracks[index]);
+  }
 
-    nextTrack(){
-        this.setvarNow = "nextTrack";
-        let index = this.tracks.indexOf(this.currentTrack);
-        index >= this.tracks.length - 1 ? index = 0 : index++;
-        this.playTrack(this.tracks[index]);
-    }
- 
-    prevTrack(){
-        this.setvarNow = "prevTrack";
-        let index = this.tracks.indexOf(this.currentTrack);
-        index > 0 ? index-- : index = this.tracks.length - 1;
-        this.playTrack(this.tracks[index]);
-    }
+  nextTrack() {
+    this.setvarNow = "nextTrack";
+    let index = this.tracks.indexOf(this.currentTrack);
+    index >= this.tracks.length - 1 ? index = 0 : index++;
+    this.playTrack(this.tracks[index]);
+  }
 
-    stopaudio(){
-      //alert('stop');
-      if(this.appsetting.audio){
-            this.tracknow = false;
+  prevTrack() {
+    this.setvarNow = "prevTrack";
+    let index = this.tracks.indexOf(this.currentTrack);
+    index > 0 ? index-- : index = this.tracks.length - 1;
+    this.playTrack(this.tracks[index]);
+  }
+
+  stopaudio() {
+    if (this.appsetting.audio) {
+      this.tracknow = false;
       this.appsetting.audio.stop();
       this.appsetting.audio.release();
       this.navCtrl.push(TabsPage);
-      }else{
-        this.navCtrl.push(TabsPage);
-      }
-  
+    } else {
+      this.navCtrl.push(TabsPage);
     }
-  
 
-    ionViewDidEnter() {
+  }
+
+/*************** In App purchase for brands *********************/
+InAppPurchage(){
+  var loginurl = 'https://shop.mango.com/in';
+  var target = '_blank';
+  var options = 'location=yes';
+  var brandsite = this.inappBrowser.create(loginurl, target, options);
+  console.log(loginurl);
+  console.log(target);
+  console.log(brandsite);
+  
+  brandsite.on('loadstart').subscribe((e) => {
+    console.log(e);
+    let url = e.url;
+    console.log(url);
+    alert(url);
+
+    // var redirect_uri = e.url.split('code=');
+    // console.log(redirect_uri);
+    // if (redirect_uri[0] == 'https://rakesh.crystalbiltech.com/?') {
+    //   brandsite.close();
+    // }
+  }, err => {
+    console.log("InAppBrowser loadstart Event Error: " + err);
+   // alert(err)
+  });
+
+  brandsite.on('exit').subscribe((e) => {
+   alert('On exit');
+  alert(e);
+  })
+}
+
+
+  ionViewDidEnter() {
     console.log('rahul');
     console.log(window.navigator.onLine);
     if (window.navigator.onLine == true) {

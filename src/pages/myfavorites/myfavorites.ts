@@ -1,4 +1,4 @@
-import { Component ,Injectable} from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { NavController, Nav } from 'ionic-angular';
 import { CardswipePage } from '../cardswipe/cardswipe';
 import { ProductdetailsPage } from '../productdetails/productdetails';
@@ -12,11 +12,8 @@ import { File } from '@ionic-native/file';
 import { Appsetting } from '../../providers/appsetting';
 import 'rxjs/add/operator/map';
 import { Events } from 'ionic-angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { NativeAudio } from '@ionic-native/native-audio';
-import { Media, MediaObject } from '@ionic-native/media';
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Rx";
+import { Subject } from "rxjs/Subject";
+import { Observable } from "rxjs/Rx";
 
 @Component({
   selector: 'page-myfavorites',
@@ -40,185 +37,17 @@ export class MyfavoritesPage {
     public toastCtrl: ToastController,
     public events: Events,
     public nav: Nav,
-    public inappBrowser: InAppBrowser,
-    private nativeAudio: NativeAudio,
-    public media: Media,
-    public file: File
+
   ) {
-    //alert('update alert');
-    this.currentTrack = this.tracks[0];
-    this.setvarNow="playTrack";
+
     events.subscribe('page', (myFav) => {
       console.log(myFav);
-       clearInterval(this.appsetting.interval);
+      clearInterval(this.appsetting.interval);
       this.myFavs();
     })
   }
- protected resumeHalted = false;
-    protected resumeSubject = new Subject<any>();
-  /************ function for play audio ********/
- 
-playTrack(track){
-        // First stop any currently playing tracks
-        for(let checkTrack of this.tracks){
-            if(checkTrack.playing){
-             // alert("pausenow");
-                this.pauseTrack(checkTrack);
-                const file: MediaObject = this.media.create(checkTrack.url);
-                this.audio = file;
-            }
-        }
-
-        track.playing = true;
-        this.currentTrack = track;
-        const file: MediaObject = this.media.create(this.currentTrack.url);
-        this.audio = file;
-      //  alert('starts')
-        this.audio.play();
-        this.audio.onSuccess.subscribe(() => {
-        //  alert("onSuccess");
-          if(this.tracknow==true){
-              this.nexttTrack();
-          }
-        },err=>{
-            //  alert('next unsuccessful');
-        })
-    }
- 
-    pauseTrack(track){
-        track.playing = false;
-        this.audio.pause();
-        this.currentTrack = track;
-    }
-
-  nexttTrack(){
-        this.tracknow = true;
-        let index = this.tracks.indexOf(this.currentTrack);
-        index >= this.tracks.length - 1 ? index = 0 : index++;
-        this.playTrack(this.tracks[index]);
-    }
-
-    nextTrack(){
-        this.setvarNow = "nextTrack";
-        let index = this.tracks.indexOf(this.currentTrack);
-        index >= this.tracks.length - 1 ? index = 0 : index++;
-        this.playTrack(this.tracks[index]);
-    }
- 
-    prevTrack(){
-        this.setvarNow = "prevTrack";
-        let index = this.tracks.indexOf(this.currentTrack);
-        index > 0 ? index-- : index = this.tracks.length - 1;
-        this.playTrack(this.tracks[index]);
-    }
-
-
-  /************ function for spotify login ****************/
-  logSpotify() {
-    if (!localStorage.getItem('code')) {
-      var loginurl = 'https://accounts.spotify.com/authorize/?client_id=d1c1031c1b214739a9ba672e90cd2798&response_type=code&redirect_uri=https://rakesh.crystalbiltech.com&scope=';
-      var target = '_self'
-      var options = 'location=yes'
-      var openspotify = this.inappBrowser.create(loginurl, target, options);
-      console.log(loginurl);
-      console.log(target);
-      console.log(openspotify);
-      openspotify.on('loadstart').subscribe((e) => {
-      //  alert(e)
-        console.log(e);
-        let url = e.url;
-        console.log(url);
-        var redirect_uri = e.url.split('code=');
-        console.log(redirect_uri);
-       // alert(redirect_uri[0]);
-        if (redirect_uri[0] == 'https://rakesh.crystalbiltech.com/?') {
-          let code = redirect_uri[1];
-        //  alert('code--->' + code);
-          console.log(code);
-          localStorage.setItem('code', code);
-          openspotify.close();
-        }
-      }, err => {
-        console.log("InAppBrowser loadstart Event Error: " + err);
-       // alert(err)
-      });
-
-      openspotify.on('exit').subscribe((e) => {
-        var code = localStorage.getItem('code');
-        this.getToken(code);
-      })
-    } else {
-     // alert('token found');
-      var code = localStorage.getItem('code');
-      this.getToken(code);
-    }
-
-  }
-
-  /********** function for get token from spotify ***********/
-  private getToken(code) {
-
-   // alert('you are here ....');
-    //alert(code)
-    var url: "https://accounts.spotify.com/api/token";
-    this.http.get(this.appsetting.myGlobalVar + 'cities/spotifytoken').map(res => res.json()).subscribe(data => {
-     // alert('success');
-     //alert(JSON.stringify(data));
-      this.getplaylist(data.access_token, data.token_type);
-      // this.response = data.data;
-    },
-      err => {
-       // alert(JSON.stringify(err));
-       // alert('err' + JSON.stringify(err))
-      })
-
-  }
-
-  /******** function for get playlist *****************/
-
-  private getplaylist(token, tokentype) {
-   // alert(token);
-   // alert(tokentype);
-    var url = "https://api.spotify.com/v1/users/mango_official/playlists/3KE0N6vRrsuPnIg0ciVHU5";
-    var data = { 'token': token, 'token_type': tokentype, 'urld': url };
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
-    let options = new RequestOptions({ headers: headers });
-
-    var serialized = this.serializeObj(data);
-    this.http.post(this.appsetting.myGlobalVar + 'cities/spotifygetplaylist', serialized, options).map(res => res.json()).subscribe(data => {
-    //  alert('success');
-     // alert(JSON.stringify(data));
-
-    // this.tracks = data.tracks.items;
-      for (var i = 0; i < data.tracks.items.length; i++) {
-        if (data.tracks.items[i].track.preview_url != null) {
-          this.tracks.push({
-            'url': data.tracks.items[i].track.preview_url,
-            'playing':false
-            //  'title':data.tracks.items[i].track.name,
-            //  'artist':data.tracks.items[i].artists[0].name
-          });
-        }
-        //console.log(data.tracks.items[i].artists.length);
-      }
-
-    //  alert(JSON.stringify(this.tracks));
-      this.currentTrack = this.tracks[0];
-    },
-      err => {
-    //    alert(JSON.stringify(err));
-     //   alert('err' + JSON.stringify(err))
-      })
-  }
-
-  stopaudio() {
-    if (this.audio.src) {
-      this.audio.pause();
-    }
-  }
-
-
+  protected resumeHalted = false;
+  protected resumeSubject = new Subject<any>();
 
   doRefresh(refresher) {
     console.log('Begin async operation', refresher);
@@ -273,7 +102,7 @@ playTrack(track){
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
-              this.navCtrl.push(TabsPage);
+            this.navCtrl.push(TabsPage);
           }
         },
         {
@@ -294,7 +123,6 @@ playTrack(track){
       duration: 2500,
       cssClass: 'toastCss',
       position: 'middle',
-      // closeButtonText: 'ok'
     });
     toast.present();
   }
