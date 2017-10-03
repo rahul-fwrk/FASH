@@ -51,7 +51,7 @@
            <img *ngIf="userlist.User.image == null" src="assets/images/noimage.jpg">
         </ion-avatar>
      
-        <h3 class="username_txt">{{userlist.User.first_name}}</h3>
+        <h3 class="username_txt">{{userlist.User.complete_name}}</h3>
         <!--<p>Send you a fitting room invitation</p>-->
       
       <ion-icon class="addbtns" name="ios-add-circle" item-end (click)="addgroupmember(userlist.User)"></ion-icon>
@@ -70,7 +70,7 @@
       <img *ngIf="user.image != null" [src]="user.image">
         <img *ngIf="user.image == null" src="assets/images/noimage.jpg">
     </ion-avatar>
-    <h3 class="username_txt">{{user.first_name}}</h3>
+    <h3 class="username_txt">{{user.complete_name}}</h3>
 <ion-icon class="removbtns" name="remove-circle" item-end (click)="removemember(user.id)"></ion-icon>
   </ion-item>
 

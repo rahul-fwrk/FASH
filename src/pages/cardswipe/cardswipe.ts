@@ -43,7 +43,6 @@ export class CardswipePage {
 
   cards: Array<any>;
   lastItem; artist: any;
-  //stackConfig: StackConfig;
   recentCard: string = '';
   resLength: any;
   index;
@@ -63,7 +62,7 @@ export class CardswipePage {
   audioIndex;
   setvarNow: any;
   tracknow: boolean = true;
-  audurl; audio;
+  audurl; audio;playsong:any = 0;
   res;
   text;
   brand;
@@ -166,7 +165,6 @@ export class CardswipePage {
     }
   }
 
-  // Connected through HTML
   voteUp(like: boolean, index: number) {
     let removedCard = this.allcards.pop();
     console.log(this.allcards)
@@ -193,15 +191,21 @@ export class CardswipePage {
       this.http.post(this.appsetting.myGlobalVar + 'lookbooks/frontpageoflookbook', serialized, options).map(res => res.json()).subscribe(data => {
         Loading.dismiss();
         console.log(data.data);
-
         let allcards: any = this.allcards;
         data.data.forEach(function (value, key) {
           console.log(value);
-          if (value.Playlist.Music) {
-            console.log(value.Playlist.Music);
-            aa.tracks = value.Playlist.Music;
-            localStorage.setItem('tracks',this.tracks);
-            aa.playTrack(aa.tracks[0]);
+          console.log(aa.appsetting.audio);
+          if(aa.playsong == 1){
+            //aa.tracknow = false;
+            console.log('stop');
+            aa.appsetting.audio.stop();
+            aa.appsetting.audio.release();
+          }else if (value.Playlist.Music) {
+              aa.playsong = 1;
+              console.log(value.Playlist.Music);
+              aa.tracks = value.Playlist.Music;
+              aa.playTrack(aa.tracks[0]);
+            
           }
           if (value.Lookbook.brand != null) {
             var search = value.Lookbook.brand.search('http://');
@@ -243,7 +247,6 @@ export class CardswipePage {
         if (value.Playlist.Music) {
           console.log(value.Playlist.Music);
           this.tracks = value.Playlist.Music;
-          localStorage.setItem('tracks',this.tracks);
           this.playTrack(this.tracks[0]);
         }
         if (value.Lookbook.brand != null) {
@@ -305,7 +308,6 @@ export class CardswipePage {
             data.data.forEach(function (value, key) {
               allcards.push(value);
             })
-
             this.allcards = allcards;
             console.log('VIEW LOOK BOOK', this.allcards);
             this.lastItem = this.allcards[this.allcards.length - 1];
@@ -506,6 +508,7 @@ export class CardswipePage {
   }
 
   playTrack(track) {
+    console.log(track);
     this.bit = true;
     var aa = this;
     if(this.appsetting.audio != undefined)
@@ -571,9 +574,8 @@ export class CardswipePage {
       this.tracknow = false;
       this.appsetting.audio.stop();
       this.appsetting.audio.release();
-      this.navCtrl.push(TabsPage);
     } else {
-      this.navCtrl.push(TabsPage);
+     // this.navCtrl.push(TabsPage);
     }
 
   }

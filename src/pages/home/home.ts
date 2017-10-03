@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, AlertController,ToastController,Platform,Events } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController,ToastController,Platform,Events,MenuController } from 'ionic-angular';
 import { ProductcardPage } from '../productcard/productcard';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -30,20 +30,17 @@ export class HomePage {
     public media: Media,
     public platform: Platform,
      public toastCtrl: ToastController,
+     public menu: MenuController
   
   ) {
-   // alert('new build');
        platform.ready().then(() => {
         var lastTimeBackPress = 0;
         var timePeriodToExit  = 2000;
-
         platform.registerBackButtonAction(() => {
-            // get current active page
             let view = this.navCtrl.getActive();
                 if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
                     this.platform.exitApp(); //Exit from app
                 } else {
-                 // alert('Press back again to exit App?');
                     let toast = this.toastCtrl.create({
                         message:  'Press back again to exit from app?',
                         duration: 3000,
@@ -54,39 +51,36 @@ export class HomePage {
                 }
         });
     });
-    this.ionViewDidEnter(); 
+    this.ionViewDidLoad(); 
     if (this.navParams.get('checkout') == 'yes') {
-      // refreshes the controller after checkout
       console.log('CHECKOUT');
-      
     }
+
     console.log('YES UPDATED');
     if( localStorage.getItem("USERID")){
       this.image() // if a user is logged in
       this.srcImage = null;
     }
-  
+
     this.lookbooklist();
     events.subscribe('homepage', (home) => {
       console.log(home);
       clearInterval(this.appsetting.interval);
       this.lookbooklist();
-    })
-
+    });
   }
+  
   public lookbooklist() {
     clearInterval(this.appsetting.interval);
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
-    var user_id = localStorage.getItem("USERID")
-    //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/listoflookbook'; 
+    var user_id = localStorage.getItem("USERID");
     var postdata = {
       id: user_id
     };
     console.log(postdata);
     var serialized = this.serializeObj(postdata);
-  
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/listoflookbook', serialized, options).map(res => res.json()).subscribe(data => {
       console.log(data)
       if(data.data){
@@ -98,8 +92,6 @@ export class HomePage {
         var searchhttps = data.data[i].Lookbook.brand.search('https://');
          if(search >= 0 || searchhttps >= 0){
              data.data[i].Lookbook.brandlink = 1;
-              // value.Lookbook.image = value.Lookbook.brand;
-               //data.data[i].Lookbook.brand = '';
             }else{
               data.data[i].Lookbook.brandlink = 0;
             }
@@ -143,14 +135,8 @@ export class HomePage {
         this.profileimage = this.profile.image;
       }
       console.log(this.profile)
-
     })
-    //})
   }
-  
-//   birthday(){
-//     this.navCtrl.push(BirthdayPage);
-//   }
   confirmation(){
  this.navCtrl.push(ConfirmationPage);
   }
@@ -170,9 +156,7 @@ export class HomePage {
     this.navCtrl.push(ProfilePage);
   }
     genderPage() {
-    // alert("hit")
     this.navCtrl.push(GenderPage);
-    // alert("hitjhj")
   }
   serializeObj(obj) {
     var result = [];
@@ -181,7 +165,8 @@ export class HomePage {
 
     return result.join("&");
   }
-  ionViewDidEnter() {
+
+  ionViewDidLoad() {
     console.log('rahul');
     console.log(window.navigator.onLine);
     if (window.navigator.onLine == true) {
@@ -193,6 +178,7 @@ export class HomePage {
       });
       toast.present();
     }
-
+    this.menu.swipeEnable(false, 'left');
+    this.menu.enable(false, 'left');
   }
 }

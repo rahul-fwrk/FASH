@@ -32,7 +32,7 @@
   <ion-list *ngIf="searchlist != null" radio-group [(ngModel)]="data1">
     <ion-item item-left *ngFor="let userlist of searchlist">
       <ion-label>
-        <h5 class="inv_title">{{userlist.User.first_name}}</h5>
+        <h5 class="inv_title">{{userlist.User.complete_name}}</h5>
         <p class="loc_title">Send a fitting room invitation</p>
       </ion-label>
       <ion-radio color="dark" item-left name='data1' [value]="userlist.User.id" (click)="getID(userlist.User.id)" ngDefaultControl></ion-radio>

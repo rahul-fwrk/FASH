@@ -17,11 +17,11 @@ import {Autosize} from 'ionic2-autosize';
   templateUrl: 'chat.html'
 })
 export class ChatPage {
-  isDisabled = false;scrollcard;
+  newindex: number;
+  lasindex: any;
+  isDisabled = false; scrollcard;
    public scrollAmount = 44;
   @ViewChild(Content) content: Content;
- 
-
   public Loading = this.loadingCtrl.create({
     content: 'Please wait...'
   });
@@ -47,15 +47,45 @@ export class ChatPage {
     this.chatname = this.navParams.get('name');
     console.log(this.chatname);
     this.showproductlist();
+    this.chatshow();
     /********** Code to refresh page after 1 second **************/
- 
-
 this.appsetting.interval = setInterval(() => {
-   this.chatshow();
-   //  clearInterval(this.scrollbottom);
-  }, 5000);
-    
+   let headers = new Headers();
+   headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+   let options = new RequestOptions({ headers: headers });
+   var user_id = localStorage.getItem("USERID");
+   this.loggeduser = localStorage.getItem("USERID"); 
+   var ddata = {
+     friendid: this.chat_id,
+     userid: user_id
+   };
+   console.log(ddata);
+   var serialized = this.serializeObj(ddata);
 
+   this.http.post(this.appsetting.myGlobalVar + 'lookbooks/chatlist', serialized, options).map(res => res.json()).subscribe(data => {
+     this.Loading.dismiss();
+     console.log(data.data);
+     if (data.data != null) {
+       this.newindex = parseInt(data.data[data.data.length-1].Chat.id);
+       console.log('last index : '+this.lasindex);
+       if(this.newindex == this.lasindex){
+        this.content.scrollToBottom(300);
+        this.lasindex = null;
+        //this.lasindex = parseInt(data.data[data.data.length-1].Chat.id);
+      // alert('last index : '+this.lasindex);
+       }
+       for (var i = 0; i < data.data.length; i++) {
+         var date = data.data[i].Chat.created;
+         var d = moment(date).format('h:mm a');
+         this.time = d;
+         data.data[i].Chat.time = this.time;
+         console.log(data.data[i][0].username);
+         this.username = data.data[i][0].username;
+       }
+     }
+     this.userchat = data.data;
+   })
+  }, 2000);
     /***** end **********/
     var share_id = this.navParams.get('share_id');
     console.log(share_id)
@@ -73,13 +103,13 @@ this.appsetting.interval = setInterval(() => {
   }
 
   public chatshow() {
-   clearInterval(this.scrollbottom);
+   // alert('chat show');
+   //clearInterval(this.scrollbottom);
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
     var user_id = localStorage.getItem("USERID");
-    this.loggeduser = localStorage.getItem("USERID");
-    //var url: string = 'http://rakesh.crystalbiltech.com/fash/api/lookbooks/chatlist'; 
+    this.loggeduser = localStorage.getItem("USERID"); 
     var ddata = {
       friendid: this.chat_id,
       userid: user_id
@@ -89,8 +119,10 @@ this.appsetting.interval = setInterval(() => {
 
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/chatlist', serialized, options).map(res => res.json()).subscribe(data => {
       this.Loading.dismiss();
-      console.log(data)
+      console.log(data.data);
       if (data.data != null) {
+        this.lasindex = parseInt(data.data[data.data.length-1].Chat.id)
+        
         for (var i = 0; i < data.data.length; i++) {
           var date = data.data[i].Chat.created;
           var d = moment(date).format('h:mm a');
@@ -110,7 +142,6 @@ this.appsetting.interval = setInterval(() => {
 
 
   public onetoone(message) {
-    // alert(message)
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
@@ -126,8 +157,6 @@ this.appsetting.interval = setInterval(() => {
     };
     console.log(postdata);
     var serialized = this.serializeObj(postdata);
-
-
     this.http.post(this.appsetting.myGlobalVar + 'lookbooks/onetoonechat', serialized, options).map(res => res.json()).subscribe(data => {
       this.Loading.dismiss();
       console.log(data)
@@ -421,26 +450,24 @@ this.appsetting.interval = setInterval(() => {
     }, 2000);
   }
  scrollHandler(event) {
-   console.log(`ScrollEvent: ${event}`)
-  // console.log(JSON.stringify(event.scrollTop));
-   console.log(event.scrollTop);
+   console.log(`ScrollEvent: ${event}`);
+  //  var eve = event;
+  //  console.log(eve);
    this.zone.run(()=>{
-     if(event.scrollTop != 0){
-       
-     }else{
-       
-     }
      console.log('hello')
-     
-     // since scrollAmount is data-binded,
-     // the update needs to happen in zone
-     this.scrollAmount++
+     if(event == null){
+      clearInterval(this.scrollbottom);
+     }else{
+      this.scrollAmount++;
+     }
+    
    })
  }
 ionViewDidEnter(){
-   this.scrollbottom = setInterval(()=>{
-      this.content.scrollToBottom(300);
-  },1000)
+  var aa = this;
+   this.scrollbottom = setTimeout(function() {
+    aa.content.scrollToBottom(300);
+   }, 3000);
 }
 
 
