@@ -12,7 +12,6 @@ import { TutorialfavPage } from '../tutorialfav/tutorialfav';
 import { TutorialfitPage } from '../tutorialfit/tutorialfit';
 import { SportyfyPage } from '../sportyfy/sportyfy';
 import { FittingroomPage } from '../fittingroom/fittingroom';
-import { NativeAudio } from '@ionic-native/native-audio';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -39,23 +38,22 @@ export class CardswipePage {
   // @ViewChild('myswing1') swingStack: SwingStackComponent;
   // @ViewChildren('mycards1') swingCards: QueryList<SwingCardComponent>;
   @ViewChild(Slides) slides: Slides; // for slide change event
-
-
   cards: Array<any>;
   lastItem; artist: any;
   recentCard: string = '';
   resLength: any;
-  index;
-  bit: boolean = true;
   allcards: any = [];
   allLookbookIDs;
   lastProductofLookbook;
   selectedItem;
   nextLookbook_id;
-  alreadyPushed// check if u need this
+  alreadyPushed;// check if u need this
   lengthofLoookbook; brandlink;
-
-  tracks: any = [];
+  res;text;brand;name;
+  /*********** variables for music player */
+  index;
+  bit: boolean = true;
+  // tracks: any = [];
   playing: boolean = true;
   currentTrack: any;
   title: any;
@@ -63,10 +61,7 @@ export class CardswipePage {
   setvarNow: any;
   tracknow: boolean = true;
   audurl; audio;playsong:any = 0;
-  res;
-  text;
-  brand;
-  name;
+
   constructor(
     public http: Http,
     public appsetting: Appsetting,
@@ -76,7 +71,6 @@ export class CardswipePage {
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
-    private nativeAudio: NativeAudio,
     public media: Media,
     public file: File,
     public platform: Platform,
@@ -86,14 +80,12 @@ export class CardswipePage {
     platform.ready().then(() => {
       var lastTimeBackPress = 0;
       var timePeriodToExit = 2000;
-
       platform.registerBackButtonAction(() => {
         // get current active page
         let view = this.navCtrl.getActive();
         if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
           this.platform.exitApp(); //Exit from app
         } else {
-          // alert('Press back again to exit App?');
           let toast = this.toastCtrl.create({
             message: 'Press back again to exit from app?',
             duration: 3000,
@@ -179,7 +171,7 @@ export class CardswipePage {
     var postdata = {
       id: idd
     };
-    console.log(postdata);
+    // console.log(postdata);
     var serialized = this.serializeObj(postdata);
 
     var Loading = this.loadingCtrl.create({
@@ -190,22 +182,19 @@ export class CardswipePage {
     Loading.present().then(() => {
       this.http.post(this.appsetting.myGlobalVar + 'lookbooks/frontpageoflookbook', serialized, options).map(res => res.json()).subscribe(data => {
         Loading.dismiss();
-        console.log(data.data);
         let allcards: any = this.allcards;
         data.data.forEach(function (value, key) {
-          console.log(value);
-          console.log(aa.appsetting.audio);
-          if(aa.playsong == 1){
-            //aa.tracknow = false;
-            console.log('stop');
+          if(aa.appsetting.palycyrretn == 1){
             aa.appsetting.audio.stop();
             aa.appsetting.audio.release();
+            aa.appsetting.audio = undefined;
+            aa.appsetting.tracks = value.Playlist.Music;
+            aa.playTrack(aa.appsetting.tracks[0]);
           }else if (value.Playlist.Music) {
               aa.playsong = 1;
-              console.log(value.Playlist.Music);
-              aa.tracks = value.Playlist.Music;
-              aa.playTrack(aa.tracks[0]);
-            
+              aa.appsetting.palycyrretn = 1;
+              aa.appsetting.tracks = value.Playlist.Music;
+              aa.playTrack(aa.appsetting.tracks[0]);
           }
           if (value.Lookbook.brand != null) {
             var search = value.Lookbook.brand.search('http://');
@@ -219,7 +208,6 @@ export class CardswipePage {
           allcards.push(value)
         })
         this.allcards = allcards;
-        console.log('withnewfrontcover', this.allcards)
       }, err => {
         Loading.dismiss();
 
@@ -243,7 +231,6 @@ export class CardswipePage {
 
       let allcards: any = this.allcards;
       data.data.forEach(function (value, key) {
-        //console.log(value.Playlist.Music.length);
         if (value.Playlist.Music) {
           console.log(value.Playlist.Music);
           this.tracks = value.Playlist.Music;
@@ -473,7 +460,7 @@ export class CardswipePage {
 
   ConfirmUser() {
     let alert = this.alertCtrl.create({
-      title: 'Fash',
+      title: 'FASH',
       message: 'Please login to use this feature.',
       buttons: [
         {
@@ -513,12 +500,15 @@ export class CardswipePage {
     var aa = this;
     if(this.appsetting.audio != undefined)
       {
+        this.currentTrack = track;
         this.appsetting.audio.play();
+        //alert("play");
       }else{
+        //alert("track");
         track.playing = true;
         this.currentTrack = track;
         const file: MediaObject = this.media.create(this.currentTrack.music);
-        localStorage.setItem('currenttrack',this.currentTrack);
+        localStorage.setItem('currenttrack',JSON.stringify(this.currentTrack));
         this.appsetting.audio = file;
         this.appsetting.audio.play();
       }
@@ -547,26 +537,26 @@ export class CardswipePage {
   }
 
   nexttTrack() {
-    let index = this.tracks.indexOf(this.currentTrack);
-    index >= this.tracks.length - 1 ? index = 0 : index++;
+    let index = this.appsetting.tracks.indexOf(this.currentTrack);
+    index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
     this.appsetting.audio=undefined;
-    this.playTrack(this.tracks[index]);
+    this.playTrack(this.appsetting.tracks[index]);
   }
 
   nextTrack() {
     this.setvarNow = "nextTrack";
-    let index = this.tracks.indexOf(this.currentTrack);
-    index >= this.tracks.length - 1 ? index = 0 : index++;
+    let index = this.appsetting.tracks.indexOf(this.currentTrack);
+    index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
     this.appsetting.audio=undefined;
-    this.playTrack(this.tracks[index]);
+    this.playTrack(this.appsetting.tracks[index]);
   }
 
   prevTrack() {
     this.setvarNow = "prevTrack";
-    let index = this.tracks.indexOf(this.currentTrack);
-    index > 0 ? index-- : index = this.tracks.length - 1;
+    let index = this.appsetting.tracks.indexOf(this.currentTrack);
+    index > 0 ? index-- : index = this.appsetting.tracks.length - 1;
     this.appsetting.audio=undefined;
-    this.playTrack(this.tracks[index]);
+    this.playTrack(this.appsetting.tracks[index]);
   }
 
   stopaudio() {

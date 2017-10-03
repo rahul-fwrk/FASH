@@ -6,7 +6,6 @@ import { ProfilePage } from '../profile/profile';
 import { LoadingController, AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Appsetting } from '../../providers/appsetting';
-import { SportyfyPage } from '../sportyfy/sportyfy';
 
 @Component({
   selector: 'page-birthday',
@@ -17,7 +16,6 @@ export class BirthdayPage {
   data1:any = {};gender;
   constructor(
     public navCtrl: NavController,
-   // public toastCtrl: ToastController,
     public http: Http,
     public loadingCtrl: LoadingController,
     public appsetting: Appsetting,

@@ -4,22 +4,22 @@
      <ion-title class="title1" *ngIf="currentTrack">{{currentTrack.musicname}}<p *ngIf="currentTrack.artist">{{currentTrack.artist}}</p></ion-title>
       
      <!-- <button start ion-button clear>
-<img width="11px" src="assets/images/back_btn.svg">
+<img width="11px" src="assets/images/back_btn.svg" (click)="back()">
 </button> -->
      <ion-buttons end *ngIf="currentTrack">
       <button ion-button color="light" clear (click)="prevTrack()">
-<img width="18px" src="assets/images/fast-forward.png">
-</button>
-<button *ngIf="bit == false" ion-button color="light" clear (click)="playTrack(currentTrack)">
-<img width="18px" src="assets/images/play.png">
-</button> 
-<button *ngIf="bit == true" ion-button color="light" clear (click)="pausetyTrack(currentTrack)">
-<img width="12px" src="assets/images/pause.png">
-</button>
+      <img width="18px" src="assets/images/fast-forward.png">
+      </button>
+      <button *ngIf="bit == false" ion-button color="light" clear (click)="playTrack(currentTrack)">
+      <img width="18px" src="assets/images/play.png">
+      </button> 
+      <button *ngIf="bit == true" ion-button color="light" clear (click)="pausetyTrack(currentTrack)">
+      <img width="12px" src="assets/images/pause.png">
+      </button>
 
-<button ion-button color="light" clear (click)="nextTrack()">
-<img width="18px" src="assets/images/fast-forwardr.png">
-</button>
+      <button ion-button color="light" clear (click)="nextTrack()">
+      <img width="18px" src="assets/images/fast-forwardr.png">
+      </button>
     </ion-buttons>   
   </ion-navbar>
 </ion-header>

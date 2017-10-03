@@ -236,7 +236,7 @@ export class SigninPage {
           localStorage.setItem('User', JSON.stringify(this.userProfile));
           this.User = JSON.parse(localStorage.getItem('User'));
           let headers = new Headers();
-          headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+          headers.append('Content-Type','application/x-www-form-urlencoded;charset=utf-8');
           let options = new RequestOptions({ headers: headers });
           var data_fb = {
             first_name: this.User.displayName,
@@ -289,13 +289,10 @@ export class SigninPage {
                          }else{
                            localStorage.setItem('country','US');
                          }
-                          
                           var autocompleteOptions = {
                             componentRestrictions: { country: country.short_name },
                             types: ['geocode']
                           };
-
-
                         }
                         if (data.results[0].address_components[i].types[b] == "administrative_area_level_1") {
                           var country = data.results[0].address_components[i];
@@ -313,9 +310,8 @@ export class SigninPage {
                   console.log('Error getting location', error);
                 });
                 if(datares.data.User.allreadyloggedin == 1){
-                  alert('fb logged in second time');
+                  
                 }else{
-                  alert('fb logged in first time');
                   this.navCtrl.push(BirthdayPage);
                 }
                 

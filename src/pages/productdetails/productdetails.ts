@@ -14,7 +14,7 @@ import { Events, Slides } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { TutorialfavPage } from '../tutorialfav/tutorialfav';
 import { TutorialfitPage } from '../tutorialfit/tutorialfit';
-//import { DecimalPipe } from '@angular/common';
+import { Media, MediaObject } from '@ionic-native/media';
 
 @Component({
   selector: 'page-productdetails',
@@ -35,7 +35,17 @@ export class ProductdetailsPage {
   prod_id; showDetails; diseases; showImages; sizes = []; fav;
   sizemodal; allColors; allsizes;
   colorModal;isFirst;
-
+  /********** variables for music player **********/
+  index;
+  bit: boolean = true;
+  // tracks: any = [];
+  playing: boolean = true;
+  currentTrack: any;
+  title: any;
+  audioIndex;
+  setvarNow: any;
+  tracknow: boolean = true;
+  audurl; audio;playsong:any = 0;
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -46,6 +56,7 @@ export class ProductdetailsPage {
     public events: Events,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
+    public media: Media,
   ) {
 
     var id = this.navParams.get('prod_id')
@@ -54,7 +65,9 @@ export class ProductdetailsPage {
     this.events.subscribe('CartPage', (hh) => {
           this.navCtrl.push(CartPage);
     })
-
+console.log(this.appsetting.tracks);
+    this.currentTrack = JSON.parse(localStorage.getItem('currenttrack'));
+    console.log(this.currentTrack);
   }
 
 
@@ -396,6 +409,71 @@ this.navCtrl.push(FittingroomPage,{support:'true'});
       this.showToast('Please select a color and size');
     }
   }
+
+  playTrack(track) {
+    console.log(track);
+    this.bit = true;
+    var aa = this;
+    if(this.appsetting.audio != undefined)
+      {
+        this.currentTrack = track;
+        this.appsetting.audio.play();
+      }else{
+        track.playing = true;
+        this.currentTrack = track;
+        const file: MediaObject = this.media.create(this.currentTrack.music);
+        localStorage.setItem('currenttrack',JSON.stringify(this.currentTrack));
+        this.appsetting.audio = file;
+        this.appsetting.audio.play();
+      }
+
+    this.appsetting.audio.onSuccess.subscribe(() => {
+    if (this.tracknow == true) {
+      //localStorage.setItem('currenttrack',this.currentTrack);
+        this.nexttTrack();
+      }
+    }, err => {
+    })
+
+  }
+
+  pauseTrack(track) {
+    track.playing = false;
+    this.appsetting.audio.pause();
+    this.currentTrack = track;
+  }
+
+  pausetyTrack(track) {
+    this.bit = false;
+    track.playing = false;
+    this.appsetting.audio.pause();
+    this.currentTrack = track;
+  }
+
+  nexttTrack() {
+    let index = this.appsetting.tracks.indexOf(this.currentTrack);
+    index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+    this.appsetting.audio=undefined;
+    this.playTrack(this.appsetting.tracks[index]);
+  }
+
+  nextTrack() {
+    this.setvarNow = "nextTrack";
+    let index = this.appsetting.tracks.indexOf(this.currentTrack);
+    index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+    this.appsetting.audio=undefined;
+    this.playTrack(this.appsetting.tracks[index]);
+  }
+
+  prevTrack() {
+    this.setvarNow = "prevTrack";
+    let index = this.appsetting.tracks.indexOf(this.currentTrack);
+    index > 0 ? index-- : index = this.appsetting.tracks.length - 1;
+    this.appsetting.audio=undefined;
+    this.playTrack(this.appsetting.tracks[index]);
+  }
+
+
 
 }
 
