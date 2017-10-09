@@ -5,6 +5,9 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { ProfilePage } from '../profile/profile';
 import { LoadingController, AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
+import { MediaPlugin } from 'ionic-native';
+import { File } from '@ionic-native/file';
+import { Media, MediaObject } from '@ionic-native/media';
 import { Appsetting } from '../../providers/appsetting';
 import { ToastController } from 'ionic-angular';
 import { PaymentPage } from '../payment/payment';
@@ -19,13 +22,32 @@ export class AddaddressPage {
   countries; addressList;
   defaultstatus=0;
   default;
+  /********** variables for music player **********/
+  index;
+  bit: boolean = true;
+  tracks: any = [];
+  playing: boolean = true;
+  currentTrack: any;
+  title: any;
+  audioIndex;
+  setvarNow: any;
+  tracknow: boolean = true;
+  audurl; audio;playsong:any = 0;
+
   constructor(
     public navCtrl: NavController,
     public http: Http,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     public appsetting: Appsetting,
+    public media: Media,
+    public file: File
   ) {
+    if(localStorage.getItem('currenttrack')){
+      this.currentTrack = JSON.parse(localStorage.getItem('currenttrack'));
+      console.log(this.currentTrack);
+      }
+    this.setvarNow="playTrack";
     this.countrylist();
     console.log('updated')
   }

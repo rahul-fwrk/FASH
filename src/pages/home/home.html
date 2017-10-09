@@ -21,8 +21,8 @@ color:#878787;" class="emptycart" *ngIf='length == 0'>
     <ion-refresher-content style="color:#878787;" pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing..."></ion-refresher-content>
   </ion-refresher>
 <div class="padding_outer">
-  <div id="photos" >
-    <div class="product_box" *ngFor="let home of response" (click)="cardswipePage(home.Lookbook.id)">
+  <div class="prosec_outer" >
+    <div class="product_box" *ngFor="let home of response" (click)="cardswipePage(home.Lookbook.id,home[0])">
      <img src="{{home.Lookbook.image}}">
   <div class="overlay"></div>
   <div class="content_pro">

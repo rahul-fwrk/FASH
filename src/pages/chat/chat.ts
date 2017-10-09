@@ -8,6 +8,9 @@ import {Observable} from 'rxjs';
 import { Appsetting } from '../../providers/appsetting';
 import { FittingroomPage } from '../fittingroom/fittingroom';
 import { ProductdetailsPage } from '../productdetails/productdetails';
+import { MediaPlugin } from 'ionic-native';
+import { Media, MediaObject } from '@ionic-native/media';
+import { File } from '@ionic-native/file';
 import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 import {Autosize} from 'ionic2-autosize';
@@ -21,6 +24,18 @@ export class ChatPage {
   lasindex: any;
   isDisabled = false; scrollcard;
    public scrollAmount = 44;
+   /********** variables for music player **********/
+  index;
+  tracks: any = [];
+  bit: boolean = true;
+  // tracks: any = [];
+  playing: boolean = true;
+  currentTrack: any;
+  title: any;
+  audioIndex;
+  setvarNow: any;
+  tracknow: boolean = true;
+  audurl; audio;playsong:any = 0;
   @ViewChild(Content) content: Content;
   public Loading = this.loadingCtrl.create({
     content: 'Please wait...'
@@ -36,10 +51,16 @@ export class ChatPage {
     public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
-    public zone: NgZone
+    public zone: NgZone,
+    public media: Media,
+    public file: File
   ) {
      this.ionViewDidEnter();
-      
+     if(localStorage.getItem('currenttrack')){
+      this.currentTrack = JSON.parse(localStorage.getItem('currenttrack'));
+      console.log(this.currentTrack);
+      }
+    this.setvarNow="playTrack";
     if(this.navParams.get('chat_id')){
     this.chat_id = this.navParams.get('chat_id');
     }
@@ -96,11 +117,80 @@ this.appsetting.interval = setInterval(() => {
     this.editedmsg = null;
   }
 
+  
+
   public back() {
    clearInterval(this.appsetting.interval);
     this.navCtrl.push(FittingroomPage, { share_id: null ,support:'true'});
      
   }
+
+  /************ function for play audio ********/
+playTrack(track) {
+  console.log(track);
+  this.bit = true;
+  var aa = this;
+  if(this.appsetting.audio != undefined)
+    {
+      this.currentTrack = track;
+      this.appsetting.audio.play();
+    }else{
+      track.loaded = true;
+      track.playing = true;
+      this.currentTrack = track;
+      const file: MediaObject = this.media.create(this.currentTrack.music);
+      localStorage.setItem('currenttrack',JSON.stringify(this.currentTrack));
+      this.appsetting.audio = file;
+      this.appsetting.audio.play();
+    }
+
+  this.appsetting.audio.onSuccess.subscribe(() => {
+  if (this.tracknow == true) {
+    //localStorage.setItem('currenttrack',this.currentTrack);
+      this.nexttTrack();
+    }
+  }, err => {
+  })
+
+}
+
+pauseTrack(track) {
+  track.playing = false;
+  this.appsetting.audio.pause();
+  this.currentTrack = track;
+}
+
+pausetyTrack(track) {
+  this.bit = false;
+  track.playing = false;
+  this.appsetting.audio.pause();
+  this.currentTrack = track;
+}
+
+nexttTrack() {
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
+
+nextTrack() {
+  this.setvarNow = "nextTrack";
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
+
+prevTrack() {
+  this.setvarNow = "prevTrack";
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index > 0 ? index-- : index = this.appsetting.tracks.length - 1;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
+
+
 
   public chatshow() {
    // alert('chat show');

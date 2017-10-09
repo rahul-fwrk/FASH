@@ -1,9 +1,14 @@
 <ion-header>
-  <ion-navbar color="header-color">
-    <ion-title class="title1" *ngIf="currentTrack">{{currentTrack.musicname}}
+   <!-- <ion-navbar color="header-color" *ngIf="currentTrack == null">
+        <ion-title class="" style="font-weight: bold;">FASH</ion-title>
+      </ion-navbar> -->
+
+
+  <ion-navbar color="header-color" *ngIf="currentTrack">
+    <ion-title class="title1">{{currentTrack.musicname}}
       <p *ngIf="currentTrack.artist">{{currentTrack.artist}}</p>
     </ion-title>
-    <ion-buttons end *ngIf="currentTrack">
+    <ion-buttons end>
       <button ion-button color="light" clear (click)="prevTrack()">
       <img width="18px" src="assets/images/fast-forward.png">
       </button>
@@ -144,4 +149,15 @@
       </ion-row>
     </ion-grid>
   </div>
+
+
+  <ion-list no-lines>
+      <button ion-item *ngFor="let item of alltrack" (click)="playTrack(item)">
+          {{item.musicname}} -> {{item.artist}}
+      </button> 
+    </ion-list>
+
+
+
+
 </ion-content>

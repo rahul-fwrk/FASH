@@ -65,7 +65,19 @@ page-home {
   position: relative;
   display: inline-block;
   float: left;
-
+  height: 215px;
+  width: 45.27%;
+}
+.product_box img {
+    position: absolute;
+    top: 0;
+    margin: auto;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    min-width: auto;
+    width: auto;
+    max-width: 100%;
 }
 
 .padding_outer {

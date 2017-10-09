@@ -4,7 +4,6 @@ import { ModalController } from 'ionic-angular';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { Appsetting } from '../../providers/appsetting';
 import { LoadingController, AlertController } from 'ionic-angular';
-
 import { CartmodelPage } from '../cartmodel/cartmodel';
 import { ChatPage } from '../chat/chat';
 import { CartPage } from '../cart/cart';
@@ -34,18 +33,17 @@ export class ProductdetailsPage {
   first;
   prod_id; showDetails; diseases; showImages; sizes = []; fav;
   sizemodal; allColors; allsizes;
-  colorModal;isFirst;
+  colorModal; isFirst;
   /********** variables for music player **********/
-  index;
+  index;alltrack;
   bit: boolean = true;
-  // tracks: any = [];
   playing: boolean = true;
   currentTrack: any;
   title: any;
   audioIndex;
   setvarNow: any;
   tracknow: boolean = true;
-  audurl; audio;playsong:any = 0;
+  audurl; audio; playsong: any = 0;
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -63,11 +61,19 @@ export class ProductdetailsPage {
     console.log(id);
     this.details(id)
     this.events.subscribe('CartPage', (hh) => {
-          this.navCtrl.push(CartPage);
+      this.navCtrl.push(CartPage);
     })
-console.log(this.appsetting.tracks);
-    this.currentTrack = JSON.parse(localStorage.getItem('currenttrack'));
-    console.log(this.currentTrack);
+    console.log(this.appsetting.tracks);
+    if (localStorage.getItem('currenttrack')) {
+      this.currentTrack = JSON.parse(localStorage.getItem('currenttrack'));
+      console.log(this.currentTrack);
+    }
+    if (localStorage.getItem('alltracks')) {
+      this.appsetting.tracks = JSON.parse(localStorage.getItem('alltracks'));
+      this.alltrack = JSON.parse(localStorage.getItem('alltracks'));
+      console.log(this.appsetting.tracks);
+    }
+   
   }
 
 
@@ -77,7 +83,6 @@ console.log(this.appsetting.tracks);
       duration: 2000,
       cssClass: 'toastCss',
       position: 'middle',
-      // closeButtonText: 'ok'
     });
     toast.present();
   }
@@ -87,7 +92,6 @@ console.log(this.appsetting.tracks);
       duration: 4000,
       cssClass: 'toastCss',
       position: 'middle',
-      // closeButtonText: 'ok'
     });
     toast.present();
   }
@@ -130,9 +134,7 @@ console.log(this.appsetting.tracks);
             this.showDetails = 1;
           } else {
             this.showDetails = data.data.Product;
-            // this.showDetails.Price; //number:'{minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}'
             this.showImages = data.data.Productimage;
-            //this.isFirst = this.slides.isBeginning();
             this.sizes = data.data.Productsize;
             this.fav = data.data[0].favs;
 
@@ -154,7 +156,7 @@ console.log(this.appsetting.tracks);
             this.diseases = [
               { title: "Product Information", description: this.showDetails.product_information },
               { title: "Return Policy", description: "When you place an order on FASH,  the     order will be fulfilled and shipped by the relevant merchant (also called a third party     seller), your return will be sent back to the seller instead of FASH. You can view the    Seller's return policy before you purchase an item by viewing the Returns and Refunds Policy section of the Seller's home page." },// this is static discription bcos i don't have data from backend.
-           ];
+            ];
           }
         }, err => {
           Loading.dismiss();
@@ -169,15 +171,6 @@ console.log(this.appsetting.tracks);
     if (user_id == null || undefined) {
       this.ConfirmUser('Please login to use this feature.');
     } else {
-      // var firsTime = JSON.parse(localStorage.getItem('favourite_status'));
-      // if (firsTime == 0) {
-      //   let modal = this.modalCtrl.create(TutorialfavPage);
-      //   modal.present();
-      //   modal.onDidDismiss(data => {
-      //     localStorage.setItem('favourite_status', '1')
-      //   })
-      // }
-
       let headers = new Headers();
       headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
       let options = new RequestOptions({ headers: headers });
@@ -246,13 +239,13 @@ console.log(this.appsetting.tracks);
       console.log('last', last);
       if (!last) {
         this.slides.slideNext();
-      }else if(last == true){
-      this.slides.slideTo(0,1000);
+      } else if (last == true) {
+        this.slides.slideTo(0, 1000);
       }
     }
   }
 
-  AddToCart(name, id, sizeid, price,retailer) {
+  AddToCart(name, id, sizeid, price, retailer) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
     let options = new RequestOptions({ headers: headers });
@@ -291,7 +284,7 @@ console.log(this.appsetting.tracks);
             var size = this.sizeToShow;
             var color = this.colorToShow;
             console.log('sizetoshow', size);
-            let modal = this.modalCtrl.create(CartmodelPage, { name: name, price: price, size: size, image: img, color: color, count: data.count ,retailername:retailer});
+            let modal = this.modalCtrl.create(CartmodelPage, { name: name, price: price, size: size, image: img, color: color, count: data.count, retailername: retailer });
             modal.present();
           } else {
             this.showToast2('This product has already been added to your cart. Please increase product quantity at checkout.');
@@ -317,17 +310,7 @@ console.log(this.appsetting.tracks);
     } else {
       var fit: any = JSON.parse(localStorage.getItem('fitting_status'));
       console.log('statata', fit)
-      // if (fit == 0) {
-      //   let modal = this.modalCtrl.create(TutorialfitPage);
-      //   modal.present();
-      //   modal.onDidDismiss(data => {
-      //     localStorage.setItem('fitting_status', '1')
-      //     this.navCtrl.push(FittingroomPage, { share_id: id })
-      //   })
-
-      // } else {
-        this.navCtrl.push(FittingroomPage, { share_id: id ,sharebit:1})
-      //}
+      this.navCtrl.push(FittingroomPage, { share_id: id, sharebit: 1 })
     }
 
   }
@@ -396,14 +379,14 @@ console.log(this.appsetting.tracks);
     alert.present();
   }
 
-customersupport(){
-this.navCtrl.push(FittingroomPage,{support:'true'});
-}
-  cartmodelModal(id, price, name,retailer) {
+  customersupport() {
+    this.navCtrl.push(FittingroomPage, { support: 'true' });
+  }
+  cartmodelModal(id, price, name, retailer) {
     var size = this.selectedSize;
     console.log('product id : ', id, 'price :', price, 'size :', size);
     if (size != null) {
-      this.AddToCart(name, id, size, price,retailer);
+      this.AddToCart(name, id, size, price, retailer);
     } else {
       console.log('Select a size')
       this.showToast('Please select a color and size');
@@ -414,22 +397,21 @@ this.navCtrl.push(FittingroomPage,{support:'true'});
     console.log(track);
     this.bit = true;
     var aa = this;
-    if(this.appsetting.audio != undefined)
-      {
-        this.currentTrack = track;
-        this.appsetting.audio.play();
-      }else{
-        track.playing = true;
-        this.currentTrack = track;
-        const file: MediaObject = this.media.create(this.currentTrack.music);
-        localStorage.setItem('currenttrack',JSON.stringify(this.currentTrack));
-        this.appsetting.audio = file;
-        this.appsetting.audio.play();
-      }
+    if (this.appsetting.audio != undefined) {
+      this.currentTrack = track;
+      this.appsetting.audio.play();
+    } else {
+      track.playing = true;
+      this.currentTrack = track;
+      const file: MediaObject = this.media.create(this.currentTrack.music);
+      localStorage.setItem('currenttrack', JSON.stringify(this.currentTrack));
+      this.appsetting.audio = file;
+      this.appsetting.audio.play();
+    }
 
     this.appsetting.audio.onSuccess.subscribe(() => {
-    if (this.tracknow == true) {
-      //localStorage.setItem('currenttrack',this.currentTrack);
+      if (this.tracknow == true) {
+        localStorage.setItem('currenttrack',this.currentTrack);
         this.nexttTrack();
       }
     }, err => {
@@ -453,7 +435,7 @@ this.navCtrl.push(FittingroomPage,{support:'true'});
   nexttTrack() {
     let index = this.appsetting.tracks.indexOf(this.currentTrack);
     index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
-    this.appsetting.audio=undefined;
+    this.appsetting.audio = undefined;
     this.playTrack(this.appsetting.tracks[index]);
   }
 
@@ -461,7 +443,7 @@ this.navCtrl.push(FittingroomPage,{support:'true'});
     this.setvarNow = "nextTrack";
     let index = this.appsetting.tracks.indexOf(this.currentTrack);
     index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
-    this.appsetting.audio=undefined;
+    this.appsetting.audio = undefined;
     this.playTrack(this.appsetting.tracks[index]);
   }
 
@@ -469,7 +451,7 @@ this.navCtrl.push(FittingroomPage,{support:'true'});
     this.setvarNow = "prevTrack";
     let index = this.appsetting.tracks.indexOf(this.currentTrack);
     index > 0 ? index-- : index = this.appsetting.tracks.length - 1;
-    this.appsetting.audio=undefined;
+    this.appsetting.audio = undefined;
     this.playTrack(this.appsetting.tracks[index]);
   }
 

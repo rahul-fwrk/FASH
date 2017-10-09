@@ -1,20 +1,26 @@
 <ion-header>
  <ion-toolbar color="header-color">
-    <ion-title class="title1">YOU DON'T KNOW ME<p>Jax Jones feat. RAYE</p></ion-title>
+  <ion-title class="title1">{{currentTrack.musicname}}
+    <p *ngIf="currentTrack.artist">{{currentTrack.artist}}</p>
+  </ion-title>
      <button start ion-button clear (click)="back()">
 <img width="11px" src="assets/images/back_btn.svg">
 </button>
-    <ion-buttons end>
-      <button ion-button color="light" clear>
-      <img width="18px" src="assets/images/fast-forward.png">
-      </button>
-      <button ion-button color="light" clear>
-      <img width="12px" src="assets/images/pause.png">
-      </button>
-      <button ion-button color="light" clear>
-      <img width="18px" src="assets/images/fast-forwardr.png">
-      </button>
-    </ion-buttons>
+<ion-buttons end>
+  <button ion-button color="light" clear (click)="prevTrack()">
+  <img width="18px" src="assets/images/fast-forward.png">
+  </button>
+  <button *ngIf="bit == false" ion-button color="light" clear (click)="playTrack(currentTrack)">
+  <img width="18px" src="assets/images/play.png">
+  </button>
+  <button *ngIf="bit == true" ion-button color="light" clear (click)="pausetyTrack(currentTrack)">
+  <img width="12px" src="assets/images/pause.png">
+  </button>
+
+  <button ion-button color="light" clear (click)="nextTrack()">
+  <img width="18px" src="assets/images/fast-forwardr.png">
+  </button>
+</ion-buttons>
  </ion-toolbar>
 
  <ion-toolbar style="padding:0; min-height: 27px;" >

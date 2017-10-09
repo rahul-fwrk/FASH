@@ -9,6 +9,9 @@ import { LoadingController, AlertController ,Platform} from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { Appsetting } from '../../providers/appsetting';
 import { CreategroupPage } from '../creategroup/creategroup';
+import { MediaPlugin } from 'ionic-native';
+import { File } from '@ionic-native/file';
+import { Media, MediaObject } from '@ionic-native/media';
 import { GroupchatPage } from '../groupchat/groupchat';
 import { SigninPage } from '../signin/signin';
 import { DatePipe } from '@angular/common';
@@ -28,7 +31,17 @@ export class FittingroomPage {
   fit: any;
   sharebit = 0;
   dPipe = new DatePipe('en-US');
-
+  /********** variables for music player **********/
+  index;
+  bit: boolean = true;
+  tracks: any = [];
+  playing: boolean = true;
+  currentTrack: any;
+  title: any;
+  audioIndex;
+  setvarNow: any;
+  tracknow: boolean = true;
+  audurl; audio;playsong:any = 0;
   constructor(
     public navCtrl: NavController,
     public nav: Nav,
@@ -39,9 +52,15 @@ export class FittingroomPage {
     public loadingCtrl: LoadingController,
     public appsetting: Appsetting,
     public toastCtrl:ToastController,
-    public alertCtrl:AlertController
-
+    public alertCtrl:AlertController,
+    public media: Media,
+    public file: File
   ) {
+    if(localStorage.getItem('currenttrack')){
+      this.currentTrack = JSON.parse(localStorage.getItem('currenttrack'));
+      console.log(this.currentTrack);
+      }
+    this.setvarNow="playTrack";
     events.subscribe('page2', (res) => {
       console.log(res);
        if(localStorage.getItem("USERID")){
@@ -55,30 +74,7 @@ export class FittingroomPage {
     }
     })
 
-       platform.ready().then(() => {
-        var lastTimeBackPress = 0;
-        var timePeriodToExit  = 2000;
-        platform.registerBackButtonAction(() => {
-            // get current active page
-            let view = this.navCtrl.getActive();
-                if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
-                    this.platform.exitApp(); //Exit from app
-                } else {
-                 // alert('Press back again to exit App?');
-                    let toast = this.toastCtrl.create({
-                        message:  'Press back again to exit from app?',
-                        duration: 3000,
-                        position: 'bottom'
-                    });
-                    toast.present();
-                    lastTimeBackPress = new Date().getTime();
-                }
-        });
-    });
     this.ionViewDidEnter(); 
-
-
-
     this.fit = JSON.parse(localStorage.getItem('fitting_status'));
      if (this.fit == 0) {
         localStorage.setItem('fitting_status', '1')
@@ -121,6 +117,70 @@ export class FittingroomPage {
     });
     alert.present();
   }
+    /************ function for play audio ********/
+playTrack(track) {
+  console.log(track);
+  this.bit = true;
+  var aa = this;
+  if(this.appsetting.audio != undefined)
+    {
+      this.currentTrack = track;
+      this.appsetting.audio.play();
+    }else{
+      track.loaded = true;
+      track.playing = true;
+      this.currentTrack = track;
+      const file: MediaObject = this.media.create(this.currentTrack.music);
+      localStorage.setItem('currenttrack',JSON.stringify(this.currentTrack));
+      this.appsetting.audio = file;
+      this.appsetting.audio.play();
+    }
+
+  this.appsetting.audio.onSuccess.subscribe(() => {
+  if (this.tracknow == true) {
+    //localStorage.setItem('currenttrack',this.currentTrack);
+      this.nexttTrack();
+    }
+  }, err => {
+  })
+
+}
+
+pauseTrack(track) {
+  track.playing = false;
+  this.appsetting.audio.pause();
+  this.currentTrack = track;
+}
+
+pausetyTrack(track) {
+  this.bit = false;
+  track.playing = false;
+  this.appsetting.audio.pause();
+  this.currentTrack = track;
+}
+
+nexttTrack() {
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
+
+nextTrack() {
+  this.setvarNow = "nextTrack";
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
+
+prevTrack() {
+  this.setvarNow = "prevTrack";
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index > 0 ? index-- : index = this.appsetting.tracks.length - 1;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
   showToast(msg) {
     var toast = this.toastCtrl.create({
       message: msg,

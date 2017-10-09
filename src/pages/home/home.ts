@@ -96,7 +96,6 @@ export class HomePage {
               data.data[i].Lookbook.brandlink = 0;
             }
         }
-       
       }
       }else{
        this.length = 0;

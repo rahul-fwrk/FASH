@@ -51,6 +51,7 @@
         "cordova-plugin-firebase": "^0.1.22",
         "cordova-plugin-geolocation": "^2.4.3",
         "cordova-plugin-inappbrowser": "^1.7.1",
+        "cordova-plugin-ionic-webview": "^1.1.14",
         "cordova-plugin-media": "^3.0.1",
         "cordova-plugin-nativeaudio": "^3.0.9",
         "cordova-plugin-network-information": "^1.3.3",
@@ -103,7 +104,8 @@
                 "APP_ID": "109483146372178",
                 "APP_NAME": "FASH"
             },
-            "nl.x-services.plugins.backgroundaudio": {}
+            "nl.x-services.plugins.backgroundaudio": {},
+            "cordova-plugin-ionic-webview": {}
         },
         "platforms": [
             "android",

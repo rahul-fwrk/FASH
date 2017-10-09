@@ -2,21 +2,40 @@ import { Component } from '@angular/core';
 import { NavController,LoadingController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Appsetting } from '../../providers/appsetting';
-
+import { MediaPlugin } from 'ionic-native';
+import { Media, MediaObject } from '@ionic-native/media';
+import { File } from '@ionic-native/file';
 @Component({
   selector: 'page-terms',
   templateUrl: 'terms.html'
 })
 export class TermsPage {
 content;
+/********** variables for music player **********/
+        index;
+        tracks: any = [];
+        bit: boolean = true;
+        // tracks: any = [];
+        playing: boolean = true;
+        currentTrack: any;
+        title: any;
+        audioIndex;
+        setvarNow: any;
+        tracknow: boolean = true;
+        audurl; audio;playsong:any = 0;
   constructor(public navCtrl: NavController,
   public http:Http,
   public appsetting:Appsetting,
-  public loadingCtrl:LoadingController
-
+  public loadingCtrl:LoadingController,
+  public media: Media,
+  public file: File
   ) {
-this.termscontent();
-    
+    if(localStorage.getItem('currenttrack')){
+      this.currentTrack = JSON.parse(localStorage.getItem('currenttrack'));
+      console.log(this.currentTrack);
+      }
+    this.setvarNow="playTrack";
+    this.termscontent();
   }
 
   termscontent(){

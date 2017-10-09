@@ -19,24 +19,12 @@ import 'rxjs/Rx';
 import { Events } from 'ionic-angular';
 import { Slides } from 'ionic-angular';
 
-// import {
-//   StackConfig,
-//   Stack,
-//   Card,
-//   ThrowEvent,
-//   DragEvent,
-//   SwingStackComponent,
-//   SwingCardComponent
-// } from 'angular2-swing';
-
 @Component({
   selector: 'page-cardswipe',
   templateUrl: 'cardswipe.html'
 })
 
 export class CardswipePage {
-  // @ViewChild('myswing1') swingStack: SwingStackComponent;
-  // @ViewChildren('mycards1') swingCards: QueryList<SwingCardComponent>;
   @ViewChild(Slides) slides: Slides; // for slide change event
   cards: Array<any>;
   lastItem; artist: any;
@@ -50,10 +38,10 @@ export class CardswipePage {
   alreadyPushed;// check if u need this
   lengthofLoookbook; brandlink;
   res;text;brand;name;
+
   /*********** variables for music player */
   index;
   bit: boolean = true;
-  // tracks: any = [];
   playing: boolean = true;
   currentTrack: any;
   title: any;
@@ -77,25 +65,6 @@ export class CardswipePage {
     public inappBrowser: InAppBrowser
   ) {
     this.setvarNow="playTrack";
-    platform.ready().then(() => {
-      var lastTimeBackPress = 0;
-      var timePeriodToExit = 2000;
-      platform.registerBackButtonAction(() => {
-        // get current active page
-        let view = this.navCtrl.getActive();
-        if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
-          this.platform.exitApp(); //Exit from app
-        } else {
-          let toast = this.toastCtrl.create({
-            message: 'Press back again to exit from app?',
-            duration: 3000,
-            position: 'bottom'
-          });
-          toast.present();
-          lastTimeBackPress = new Date().getTime();
-        }
-      });
-    });
     this.ionViewDidEnter();
     var swipe_status = JSON.parse(localStorage.getItem('swipe_status'));
     console.log('firsttime swipe', swipe_status);
@@ -114,10 +83,8 @@ export class CardswipePage {
 
     this.http.get(this.appsetting.myGlobalVar + 'lookbooks/lookbooksid', options)
       .map(res => res.json()).subscribe(data => {
-
         console.log('allLookbookids', data)
         this.allLookbookIDs = data.data;
-
       }, err => {
 
       })
@@ -162,7 +129,6 @@ export class CardswipePage {
     console.log(this.allcards)
   }
 
-
   public viewfrontPage(idd) {
     var aa = this;
     let headers = new Headers();
@@ -183,14 +149,17 @@ export class CardswipePage {
       this.http.post(this.appsetting.myGlobalVar + 'lookbooks/frontpageoflookbook', serialized, options).map(res => res.json()).subscribe(data => {
         Loading.dismiss();
         let allcards: any = this.allcards;
+        
         data.data.forEach(function (value, key) {
           if(aa.appsetting.palycyrretn == 1){
+              //alert("hello");
             aa.appsetting.audio.stop();
             aa.appsetting.audio.release();
             aa.appsetting.audio = undefined;
             aa.appsetting.tracks = value.Playlist.Music;
             aa.playTrack(aa.appsetting.tracks[0]);
           }else if (value.Playlist.Music) {
+              //alert("2hello");
               aa.playsong = 1;
               aa.appsetting.palycyrretn = 1;
               aa.appsetting.tracks = value.Playlist.Music;
@@ -497,7 +466,7 @@ export class CardswipePage {
   playTrack(track) {
     console.log(track);
     this.bit = true;
-    var aa = this;
+    //var aa = this;
     if(this.appsetting.audio != undefined)
       {
         this.currentTrack = track;
@@ -506,7 +475,10 @@ export class CardswipePage {
       }else{
         //alert("track");
         track.playing = true;
+        track.loaded = true;
         this.currentTrack = track;
+        console.log(track);
+        console.log("vikrantrack");
         const file: MediaObject = this.media.create(this.currentTrack.music);
         localStorage.setItem('currenttrack',JSON.stringify(this.currentTrack));
         this.appsetting.audio = file;
@@ -523,7 +495,15 @@ export class CardswipePage {
 
   }
 
+  nexttTrack() {
+    let index = this.appsetting.tracks.indexOf(this.currentTrack);
+    index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+    this.appsetting.audio=undefined;
+    this.playTrack(this.appsetting.tracks[index]);
+  }
+
   pauseTrack(track) {
+    track.loaded = false;
     track.playing = false;
     this.appsetting.audio.pause();
     this.currentTrack = track;
@@ -531,16 +511,10 @@ export class CardswipePage {
 
   pausetyTrack(track) {
     this.bit = false;
+    track.loaded = false;
     track.playing = false;
     this.appsetting.audio.pause();
     this.currentTrack = track;
-  }
-
-  nexttTrack() {
-    let index = this.appsetting.tracks.indexOf(this.currentTrack);
-    index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
-    this.appsetting.audio=undefined;
-    this.playTrack(this.appsetting.tracks[index]);
   }
 
   nextTrack() {

@@ -8,13 +8,13 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { LoadingController, AlertController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { MediaPlugin } from 'ionic-native';
+import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
 import { Appsetting } from '../../providers/appsetting';
 import 'rxjs/add/operator/map';
 import { Events } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { NativeAudio } from '@ionic-native/native-audio';
-import { Media, MediaObject } from '@ionic-native/media';
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Rx";
 
@@ -24,12 +24,19 @@ import {Observable} from "rxjs/Rx";
 })
 @Injectable()
 export class MyfavoritesPage {
-  allProducts; audio;
+  allProducts;
+  /********** variables for music player **********/
+  index;
   tracks: any = [];
+  bit: boolean = true;
+  // tracks: any = [];
   playing: boolean = true;
   currentTrack: any;
+  title: any;
   audioIndex;
   setvarNow: any;
+  tracknow: boolean = true;
+  audurl; audio;playsong:any = 0;
   
   constructor(
     public navCtrl: NavController,
@@ -46,7 +53,10 @@ export class MyfavoritesPage {
     public file: File
   ) {
     //alert('update alert');
-    this.currentTrack = this.tracks[0];
+    if(localStorage.getItem('currenttrack')){
+      this.currentTrack = JSON.parse(localStorage.getItem('currenttrack'));
+      console.log(this.currentTrack);
+      }
     this.setvarNow="playTrack";
     events.subscribe('page', (myFav) => {
       console.log(myFav);
@@ -56,66 +66,69 @@ export class MyfavoritesPage {
  protected resumeHalted = false;
     protected resumeSubject = new Subject<any>();
   /************ function for play audio ********/
- 
-playTrack(track){
- alert(JSON.stringify(track));
-        // First stop any currently playing tracks
- 
-        for(let checkTrack of this.tracks){
-            if(checkTrack.playing){
-                this.pauseTrack(checkTrack);
-                const file: MediaObject = this.media.create(checkTrack.url);
-                this.audio = file;
-                alert("hello");
-                file.pause();
-                file.stop();
-                file.release();
-            }
-        }
- 
-        track.playing = true;
-        this.currentTrack = track;
-        const file: MediaObject = this.media.create(this.currentTrack.url);
-        this.audio = file;
-        alert('starts')
-        file.play();
-        // setTimeout(function(){ alert("Hello");   
-        //         file.pause();
-        //         file.stop();
-        //         file.release();  
-        //       }, 4000);
+playTrack(track) {
+  console.log(track);
+  this.bit = true;
+  var aa = this;
+  if(this.appsetting.audio != undefined)
+    {
+      this.currentTrack = track;
+      this.appsetting.audio.play();
+    }else{
+      track.loaded = true;
+      track.playing = true;
+      this.currentTrack = track;
+      const file: MediaObject = this.media.create(this.currentTrack.music);
+      localStorage.setItem('currenttrack',JSON.stringify(this.currentTrack));
+      this.appsetting.audio = file;
+      this.appsetting.audio.play();
     }
- 
-    pauseTrack(track){
-        alert(JSON.stringify(track)); 
-        alert("vikki");
-        track.playing = false;
-        const file: MediaObject = this.media.create(track.url);
-        file.pause();
-        file.stop();
-        file.release(); 
-        this.currentTrack = track;
-        //clearInterval(this.progressInterval);
- 
+
+  this.appsetting.audio.onSuccess.subscribe(() => {
+  if (this.tracknow == true) {
+    //localStorage.setItem('currenttrack',this.currentTrack);
+      this.nexttTrack();
     }
- 
-    nextTrack(){
-        this.setvarNow="nextTrack";
-        let index = this.tracks.indexOf(this.currentTrack);
-        index >= this.tracks.length - 1 ? index = 0 : index++;
- 
-        this.playTrack(this.tracks[index]);
- 
-    }
- 
-    prevTrack(){
-        this.setvarNow="prevTrack";
-        let index = this.tracks.indexOf(this.currentTrack);
-        index > 0 ? index-- : index = this.tracks.length - 1;
- 
-        this.playTrack(this.tracks[index]);
- 
-    }
+  }, err => {
+  })
+
+}
+
+pauseTrack(track) {
+  track.playing = false;
+  this.appsetting.audio.pause();
+  this.currentTrack = track;
+}
+
+pausetyTrack(track) {
+  this.bit = false;
+  track.playing = false;
+  this.appsetting.audio.pause();
+  this.currentTrack = track;
+}
+
+nexttTrack() {
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
+
+nextTrack() {
+  this.setvarNow = "nextTrack";
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index >= this.appsetting.tracks.length - 1 ? index = 0 : index++;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
+
+prevTrack() {
+  this.setvarNow = "prevTrack";
+  let index = this.appsetting.tracks.indexOf(this.currentTrack);
+  index > 0 ? index-- : index = this.appsetting.tracks.length - 1;
+  this.appsetting.audio=undefined;
+  this.playTrack(this.appsetting.tracks[index]);
+}
 
 
   /************ function for spotify login ****************/
